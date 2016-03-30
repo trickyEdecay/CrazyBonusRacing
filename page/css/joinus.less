@@ -1,0 +1,121 @@
+@yellowOfSIA: #FFB90D;
+@color-coffee : #77552c;
+@fontface : "微软雅黑","黑体";
+
+.a_button_gray{
+    background-color: #ddd;
+    color:#333;
+    font-family: @fontface;
+    padding:10px;
+    padding-left: 20px;
+    padding-right:20px;
+    border-radius: 5px;
+    cursor:pointer;
+}
+.a_button_gray:hover,
+.a_button_gray:focus{
+    background-color: #eee;
+    text-decoration: none;
+    color:#333;
+}
+
+.div_line(@width : 40%,@bold : 1px){
+    display: inline-block;
+    width:@width;
+    height:@bold;
+    background-color: @yellowOfSIA;
+}
+
+.div_divideline{
+    .div_line(40%);
+}
+
+.div_separateline{
+    .div_line(85%,3px);
+}
+.div-littletitle{
+    display: block;
+    position:relative;
+    height:80px;
+    line-height: 80px;
+    
+    font-size: 14px;
+    font-family: @fontface;
+    width:100%;
+    text-align: center;  
+    overflow: hidden;
+}
+.div-littletitle-index{
+    position:absolute;
+    left:5px;
+    bottom:-15px;
+    font-family: @fontface;
+    font-size:70px;
+    color: #ddd;
+}
+.div-littletitle-content{
+    position:absolute;
+    left:50%;
+}
+must{
+    color:#ff0000;
+    font-size: 15px;
+}
+.div-radio-bigbutton{
+    display: block;
+    height:100px;   
+    font-size: 18px;
+    line-height:100px;  
+    background-color:#fff;
+    cursor:pointer;
+}
+.div-radio-bigbutton:focus,.div-radio-submitbutton:focus
+.div-radio-bigbutton:hover,.div-radio-submitbutton:hover{
+    background-color: lighten(@yellowOfSIA,40%);
+}
+.div-radio-bigbutton-active,.div-radio-submitbutton:active{
+    background-color: lighten(@yellowOfSIA,20%) !important;
+    color:#fff;
+}
+.div-radio-submitbutton{
+    display: block;
+    height:60px;   
+    font-size: 15px;
+    line-height:60px;  
+    background-color:#fafafa;
+    cursor:pointer;
+}
+
+
+
+.tipsOffer{
+    position: relative;
+    padding:15px;
+    padding-left: 50px;
+    text-align: left;
+    background-color: lighten(@color-coffee,30%);
+    font-family: @fontface;
+    color:#fff;
+}
+.tipsOfferFlip{
+    text-align: center;
+    background-color: lighten(@color-coffee,20%);
+    cursor: pointer;
+}
+.div-tipsOffer-index{
+    position:absolute;
+    left:5px;
+    top:-15px;
+    font-family: @fontface;
+    font-size:70px;
+    color: lighten(@color-coffee,20%);
+    z-index: 1;
+}
+.div-tipsOffer-content{
+    z-index: 20;
+}
+.p_errorinfo{
+    padding-top:20px;
+    padding-bottom:20px;
+    font-size: 20px;
+}
