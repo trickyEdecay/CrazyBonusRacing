@@ -58,6 +58,9 @@ switch($what){
     case 'showprize':
         showprize();
         break;
+    case 'getQuestionInfo':
+        getQuestionInfo();
+        break;
     case 'togglereging':
         togglereging($_POST['changeto']);
         break;
@@ -90,7 +93,7 @@ switch($what){
 function checkCAQlogin(){
     session_start();
     if(isset($_COOKIE['auth'])){ //先判断cookie存在与否
-        list($id, $name,$randomkey) = explode(':', $_COOKIE['auth']);
+        list($peopleid, $name,$randomkey) = explode(':', $_COOKIE['auth']);
         $_SESSION['randomkey']=$randomkey; //使用randomkey来记录登录状态
         $_SESSION['name']=$name; //使用name来记录登录状态
         $_SESSION['peopleid']=$peopleid; //使用name来记录登录状态
@@ -273,18 +276,21 @@ function showkey($questionid){
     }
     $now = date("Y-m-d H:i:s");
     
+    //要用毫秒来记录先后顺序
+    $ts =  floor(microtime()*1000);
+    
     $result = $nc ->mysql("select id,addscore,minusscore,randomtrue from question where question.id = (select value from question_config where keyname = 'currentquestionid') limit 1");
     $row = mysql_fetch_array($result);
     $questionid = $row['id'];
     $addscore = $row['addscore'];
     $minusscore = $row['minusscore'];
     $randomtrue = $row['randomtrue'];
-    $result = $nc ->mysql("update question_people,question_buffer set question_people.score = question_people.score+$addscore,question_people.rightcount=question_people.rightcount+1,question_people.rightids=concat(rightids,'$questionid,'),achievetime = '$now' where question_people.id = question_buffer.peopleid and question_buffer.state='done' and question_buffer.choose = '$randomtrue' and question_buffer.questionid = $questionid");
-    $result = $nc ->mysql("update question_people,question_buffer set question_people.score = question_people.score-$minusscore,question_people.wrongcount=question_people.wrongcount+1,question_people.wrongids=concat(wrongids,'$questionid,'),achievetime = '$now' where question_people.id = question_buffer.peopleid and (question_buffer.state='done' or question_buffer.state='joined' or question_buffer.state='timeout') and question_buffer.choose <> '$randomtrue' and question_buffer.questionid = $questionid");
+    $result = $nc ->mysql("update question_people,question_buffer set question_people.score = question_people.score+$addscore,question_people.rightcount=question_people.rightcount+1,question_people.rightids=concat(rightids,'$questionid,'),achievetime = '$now',achievets = '$ts' where question_people.id = question_buffer.peopleid and question_buffer.state='done' and question_buffer.choose = '$randomtrue' and question_buffer.questionid = $questionid");
+    $result = $nc ->mysql("update question_people,question_buffer set question_people.score = question_people.score-$minusscore,question_people.wrongcount=question_people.wrongcount+1,question_people.wrongids=concat(wrongids,'$questionid,'),achievetime = '$now',achievets = '$ts' where question_people.id = question_buffer.peopleid and (question_buffer.state='done' or question_buffer.state='joined' or question_buffer.state='timeout') and question_buffer.choose <> '$randomtrue' and question_buffer.questionid = $questionid");
     $result = $nc ->mysql("update question_people set score=0 where score<0");
     
     $result = $nc->mysql("set @ranking=0");
-    $result = $nc->mysql("update (select id,@ranking:=@ranking+1 as temprank from question_people order by score,achievetime) temp,question_people set question_people.ranking = temp.temprank where question_people.id = temp.id");
+    $result = $nc->mysql("update (select id,@ranking:=@ranking+1 as temprank from question_people order by score desc,achievetime asc,achievets asc) temp,question_people set question_people.ranking = temp.temprank where question_people.id = temp.id");
 
     
     $err->{'code'} = 0000;
@@ -360,6 +366,44 @@ function togglereging($changeto){
     
     $err->{'code'} = 0000;
     $err->{'info'} = "操作成功";
+    die(json_encode($err));
+}
+
+function getQuestionInfo(){
+    $nc = new sqlhelper();
+    $opecode = $nc->connect();
+    if($opecode!=0){
+        $err->{'code'} = 0001;
+        $err->{'info'} = "连接错误";
+        die(json_encode($err));
+    }
+    $result = $nc ->mysql("select * from question_config where keyname = 'currentquestionid' limit 1");
+    $row = mysql_fetch_array($result);
+    $cid = $row['value'];
+    
+    $result = $nc ->mysql("select * from question where id = '$cid' limit 1");
+    $row = mysql_fetch_array($result);
+    $peoplelimit = $row['peoplelimit'];
+    $sort = $row['sort'];
+    $addscore = $row['addscore'];
+    $minusscore = $row['minusscore'];
+    
+    $result = $nc ->mysql("select * from question_buffer where questionid = '$cid' and state = 'joined' limit $peoplelimit");
+    $peopleJoined = mysql_num_rows($result);
+    
+    $result = $nc ->mysql("select * from question_buffer where questionid = '$cid' and (state = 'done' or state = 'timeout') limit $peoplelimit");
+    $peopleDone = mysql_num_rows($result);
+    
+    
+    $err->{'code'} = 0000;
+    $err->{'info'} = "操作成功";
+    $err->{'currentquestionid'} = $cid;
+    $err->{'peoplelimit'} = $peoplelimit;
+    $err->{'sort'} = $sort;
+    $err->{'addscore'} = $addscore;
+    $err->{'minusscore'} = $minusscore;
+    $err->{'peoplejoined'} = $peopleJoined;
+    $err->{'peopledone'} = $peopleDone;
     die(json_encode($err));
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -498,7 +542,8 @@ function register($name,$tel){
         die(json_encode($err));
     }
     $now = date("Y-m-d H:i:s");
-    $result = $nc->mysql("insert into question_people (name,tel,achievetime) values('$name','$tel','$now')");
+    $ts =  floor(microtime()*1000);
+    $result = $nc->mysql("insert into question_people (name,tel,achievetime,achievets) values('$name','$tel','$now','$ts')");
     if(!$result){
         $err->{'code'} = 0002;
         $err->{'info'} = "登记时出现了错误,请重试或联系科创社工作人员";
@@ -583,7 +628,8 @@ function checkidc($idc){
     $result = $nc->mysql("select id,state,choose from question_buffer where questionid='$currentquestionid' and peopleid='$peopleid' limit 1");
     if(mysql_num_rows($result)<=0){
         $now = date("Y-m-d H:i:s");
-        $result = $nc->mysql("insert into question_buffer(peopleid,questionid,time,state) values ('$peopleid','$currentquestionid','$now','waiting')");
+        $ts =  floor(microtime()*1000);
+        $result = $nc->mysql("insert into question_buffer(peopleid,questionid,time,state,ts) values ('$peopleid','$currentquestionid','$now','waiting','$ts')");
         if(!$result){
             $err->{'code'} = 0002;
             $err->{'info'} = "连接出错啦~重新试试吧".mysql_error();

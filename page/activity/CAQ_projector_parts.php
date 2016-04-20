@@ -64,7 +64,7 @@ function showquestion(){
                         die();
                     }
                     $index=0;
-                    $result = $nc->mysql("select * from question_people where isbanned=0 order by score ,achievetime");
+                    $result = $nc->mysql("select * from question_people where isbanned=0 order by score desc,achievetime");
                     while($row = mysql_fetch_array($result)){
                         $index++;
                 ?>
@@ -150,7 +150,7 @@ function showquestion(){
             
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="div-projector-info-block">
-                    <h2 style="padding:10px;">
+                    <h2 style="padding:10px;font-family:'微软雅黑','黑体','Arial'">
                     <?php 
                         $question = $row['question'];
                         echo "$question";
@@ -235,7 +235,7 @@ function showkey(){
                         die();
                     }
                     $index=0;
-                    $result = $nc->mysql("select * from question_people where isbanned=0 order by score ,achievetime");
+                    $result = $nc->mysql("select * from question_people where isbanned=0 order by score desc,achievetime,achievets");
                     while($row = mysql_fetch_array($result)){
                         $index++;
                 ?>
@@ -321,7 +321,7 @@ function showkey(){
             
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="div-projector-info-block">
-                    <h2 style="padding:10px;">
+                    <h2 style="padding:10px;font-family:'微软雅黑','黑体','Arial'">
                     <?php 
                         $question = $row['question'];
                         echo "$question";
@@ -461,6 +461,60 @@ function showidc(){
 
 
 
+<?php
+function showsponser(){
+    ?>
+<div class="container-fluid" style="background-color:#C63D3D">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <br>
+            
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="div-projector-info-block">
+                    <center>
+                        <div class="col-md-12 col-sm-12 col-xs-12"><h2 style="font-size:72px;color:#C63D3D;font-family:'微软雅黑','黑体','Arial'";>
+                            验证码即将出现在这里~</h2></div>
+                        <div class="col-md-12 col-sm-12 col-xs-12 div-projector-info-block-tips">验证码</div>
+                        <br style="clear:both">
+                    </center>
+                </div>
+            </div>
+            <br style="clear:both"><br style="clear:both">
+            <center>
+                <img src="/page/img/caq_sponser_projector.png" class="img-responsive" alt="Responsive image">
+            </center>
+            <br style="clear:both"><br style="clear:both">
+            <br style="clear:both"><br style="clear:both">
+            <br style="clear:both"><br style="clear:both">
+            <br style="clear:both"><br style="clear:both">
+            <br style="clear:both"><br style="clear:both">
+            <br style="clear:both"><br style="clear:both">
+            <br style="clear:both"><br style="clear:both">
+            <br style="clear:both"><br style="clear:both">
+            <br style="clear:both"><br style="clear:both">
+        </div>
+    </div>
+</div>
+<?php
+}
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <?php
 function showprize(){
@@ -483,7 +537,7 @@ function showprize(){
                     $index=0;
                     $limitsum = 1000;
                     $currentsum = 0;
-                    $result = $nc->mysql("select score,name from question_people where isbanned=0 order by score,achievetime");
+                    $result = $nc->mysql("select score,name from question_people where isbanned=0 order by ranking");
                     while($row = mysql_fetch_array($result)){
                         if($currentsum+$row['score']<=$limitsum){
                             $currentsum=$currentsum+$row['score'];

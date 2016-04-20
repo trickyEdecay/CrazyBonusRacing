@@ -46,9 +46,9 @@ function showidc(){
     $achievetime = $row['achievetime'];
 ?>
 <div class="col-md-12 col-sm-12 col-xs-12">
-    <img src="/page/img/banner_quanmindafengqiang.png" class="img-responsive" style="margin-top:15px;" alt="Responsive image">
+    <img src="/page/img/banner_quanmindafengqiang_ad.jpg" class="img-responsive" style="margin-top:15px;" alt="Responsive image">
     <center>
-        <p style="color:#BEBEBE;margin-top:8px;">本活动赞助商⎡创益凡职业坊⎦↑</p>
+        <p style="color:#BEBEBE;margin-top:8px;">本活动赞助商[中国移动]+[创益凡]</p>
         <br>
         <div class="panel panel-default">
           <!-- Default panel contents -->
@@ -76,28 +76,32 @@ function showidc(){
         <script>
         $(document).ready(function(){
             $("#refresh").click(function(){
+                $("#refresh").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;刷新中");
                 scanstate("idc");
             });
             
             $("#goAnswer").click(function(){
-                $("#goAnswer").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;正在进入中,稍安勿躁");
-                $.ajax({
-                    url: "<?php echo PAGE_PATH;?>php/CAQ_function.php",
-                    type: "POST",
-                    data:{
-                        'what':'checkidc',
-                        'idc':$('#idcInput').val()
-                    },
-                    success: function(data,status){
-                        data = JSON.parse(data);
-                        if(data.code == 0000){
-                            $("#logintips").html(data.info);
-                        }else{
-                            $("#logintips").html(data.info);
-                            $("#goAnswer").html("进入疯狂抢答");
+                if($("#goAnswer").html()=="进入疯狂抢答"){
+                    $("#goAnswer").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;正在进入中,稍安勿躁");
+                    $.ajax({
+                        url: "<?php echo PAGE_PATH;?>php/CAQ_function.php",
+                        type: "POST",
+                        data:{
+                            'what':'checkidc',
+                            'idc':$('#idcInput').val()
+                        },
+                        success: function(data,status){
+                            data = JSON.parse(data);
+                            if(data.code == 0000){
+                                $("#logintips").html(data.info);
+                            }else{
+                                $("#logintips").html(data.info);
+                                $("#goAnswer").html("进入疯狂抢答");
+                            }
                         }
-                    }
-                });
+                    });
+                
+            }
             });
         });
         </script>
@@ -259,6 +263,7 @@ function showanswer(){
     
     <script>
     function submitanswer(choose){
+        clearInterval(timer1);
         $("#answerbuttongroup").css("display","none");
         $("#processinganimation").css("display","inline");
         

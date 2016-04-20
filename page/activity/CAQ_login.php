@@ -33,49 +33,56 @@ if(is_array($_GET)&&count($_GET)>0){
         });
 
         function login(){
-            $.ajax({
-                url: "<?php echo PAGE_PATH;?>php/CAQ_function.php",
-                type: "POST",
-                data:{
-                    'what':'login',
-                    'name':$('#usrnameInput').val(),
-                    'tel':$('#telInput').val()
-                },
-                success: function(data,status){
-                    data = JSON.parse(data);
-                    if(data.code == 0000){
-                        window.location.href = "CAQ_mobile.php";
-                    }else{
-                        $("#logintips").html(data.info);
+            if($("#loginbtn").html()=="进入疯狂抢答"){
+                $("#loginbtn").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;努力为你加载中~爱你哟~");
+                $.ajax({
+                    url: "<?php echo PAGE_PATH;?>php/CAQ_function.php",
+                    type: "POST",
+                    data:{
+                        'what':'login',
+                        'name':$('#usrnameInput').val(),
+                        'tel':$('#telInput').val()
+                    },
+                    success: function(data,status){
+                        data = JSON.parse(data);
+                        if(data.code == 0000){
+                            window.location.href = "CAQ_mobile.php";
+                        }else{
+                            $("#logintips").html(data.info);
+                        }
                     }
-                }
-            });
+                });
+            }
         }
         
         function register(){
-            $.ajax({
-                url: "<?php echo PAGE_PATH;?>php/CAQ_function.php",
-                type: "POST",
-                data:{
-                    'what':'register',
-                    'name':$('#usrnameInput').val(),
-                    'tel':$('#telInput').val()
-                },
-                success: function(data,status){
-                    data = JSON.parse(data);
-                    if(data.code == 0000){
-                        window.location.href = "CAQ_mobile.php";
-                    }else{
-                        $("#logintips").html(data.info);
+            if($("#registerbtn").html()=="登记并进入疯狂抢答"){
+                $("#registerbtn").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;努力为你加载中~爱你哟~");
+                $.ajax({
+                    url: "<?php echo PAGE_PATH;?>php/CAQ_function.php",
+                    type: "POST",
+                    data:{
+                        'what':'register',
+                        'name':$('#usrnameInput').val(),
+                        'tel':$('#telInput').val()
+                    },
+                    success: function(data,status){
+                        data = JSON.parse(data);
+                        if(data.code == 0000){
+                            window.location.href = "CAQ_mobile.php";
+                        }else{
+                            $("#logintips").html(data.info);
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     </script>
 </head>
 
 <body  style="background-color:#eee">
-    <img src="/page/img/banner_quanmindafengqiang.png" class="img-responsive" alt="Responsive image">
+    <img src="http://cdlku.img44.wal8.com/img44/517420_20150507182110/143099413858.png" class="img-responsive" alt="Responsive image" />
+<!--    <img src="/page/img/banner_quanmindafengqiang.png" class="img-responsive" alt="Responsive image">-->
     <div class='container mainContainer'>
         <div class="col-md-12 col-sm-12 col-xs-12 div_mainblock">
             <center>
@@ -107,11 +114,11 @@ if(is_array($_GET)&&count($_GET)>0){
                 $row = mysql_fetch_array($result);
                 if($row['value'] == 'true'){
                 ?>
-                <button class="div-caq-button col-md-12 col-sm-12 col-xs-12 " onclick="register()">登记并进入疯狂抢答</button>
+                <button class="div-caq-button col-md-12 col-sm-12 col-xs-12 " onclick="register()" id="registerbtn">登记并进入疯狂抢答</button>
                 <?php
                 }else{
                 ?>
-                <button class="div-caq-button col-md-12 col-sm-12 col-xs-12 " onclick="login()">进入疯狂抢答</button>
+                <button class="div-caq-button col-md-12 col-sm-12 col-xs-12 " onclick="login()" id="loginbtn">进入疯狂抢答</button>
                 <?php
                 }
                 ?>

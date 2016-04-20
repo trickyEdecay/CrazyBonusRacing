@@ -89,7 +89,8 @@ require_once(ROOT_PATH.PLUG_PATH.'/php/encrypt.php');
         });
     }
         
-    function togglereging(){
+        
+    function showprize(){
         $.ajax({
             url: "<?php echo PAGE_PATH;?>php/CAQ_function.php",
             type: "POST",

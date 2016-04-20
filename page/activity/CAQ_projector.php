@@ -12,7 +12,6 @@ require_once(ROOT_PATH.PLUG_PATH.'/php/encrypt.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
     <link rel="stylesheet/less" href="<?php echo constant("CSS_PATH")?>caq.less">
-    <link rel="stylesheet/less" href="<?php echo constant("CSS_PATH")?>test.less">
     <?php echo LESS_DEFINE; ?>
     <?php echo constant( 'JQuery_DEFINE');echo constant( 'BOOTSTRAP_DEFINE');?>
     
@@ -35,8 +34,7 @@ require_once(ROOT_PATH.PLUG_PATH.'/php/encrypt.php');
     }
     </script>
 </head>
-
-<body id="maincontainer" style="background-color:#fafafa">
+<body id="maincontainer" style="background-color:#ddd">
     
 </body>
 
