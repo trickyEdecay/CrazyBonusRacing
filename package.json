@@ -1,0 +1,21 @@
+{
+  "name": "crazy-bonus-racing",
+  "version": "1.0.0",
+  "description": "这是科创社专用的活动系统，每年都让他得到应有的发育吧~",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trickyEdecay/CrazyBonusRacing.git"
+  },
+  "author": "trickyEdecay",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/trickyEdecay/CrazyBonusRacing/issues"
+  },
+  "homepage": "https://github.com/trickyEdecay/CrazyBonusRacing#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
+}
