@@ -1,0 +1,675 @@
+@font-family: "思源黑体","微软雅黑","黑体","Arial";
+@main-color: #C63D3D; //主要背景色
+@light-red: #FF4E4E; //浅红色
+
+
+html,body{
+    margin: 0 auto;
+    background-color:@main-color;
+    background-image: url(bgp-gezi.png);
+    font-family: @font-family;
+    text-align: center;
+}
+
+@idccontainer-radius: 150px;
+.div-idccontainer{
+    position: fixed;
+    display: inline-block;
+    width:150px;
+    height:150px;
+    border-radius: @idccontainer-radius;
+    background-color:#fff;
+    left:50%;
+    top:50px;
+    margin-left: -75px; //设置为宽度的一半以居中,不要使用right:0来居中,否则不能做动画
+    
+    overflow: hidden;
+    
+    border: 5px solid #982E2E;
+    
+    font-size: 96px;
+    line-height: 150px;
+}
+
+.div-idccontainer-animateball-1{
+    background-color:#982E2E;
+    display: inline-block;
+    position:absolute;
+    border-radius: @idccontainer-radius;
+
+    -webkit-animation-name: idccontainer-animateball-an-1;
+    -webkit-animation-duration: 1.3s;
+    -webkit-animation-timing-function: ease;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-play-state: running;
+}
+
+.div-idccontainer-animateball-2{
+    background-color:#fff;
+    display: inline-block;
+    position:absolute;
+    border-radius: @idccontainer-radius;
+
+    -webkit-animation-name: idccontainer-animateball-an-2;
+    -webkit-animation-duration: 1.3s;
+    -webkit-animation-timing-function: ease;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-play-state: running;
+}
+
+@-webkit-keyframes idccontainer-animateball-an-1{
+    0% {
+        width:0;
+        height:0;
+        left:50%;
+        top:50%;
+    
+    }
+    35% {
+        width:0;
+        height:0;
+        left:50%;
+        top:50%;
+    
+    }
+    65% {
+        width:100%;
+        height:100%;
+        left:0%;
+        top:0%;
+    }
+    100% {
+        width:100%;
+        height:100%;
+        left:0%;
+        top:0%;
+    }
+}
+
+
+@-webkit-keyframes idccontainer-animateball-an-2{
+    0% {
+        width:0;
+        height:0;
+        left:50%;
+        top:50%;
+    
+    }
+    68% {
+        width:0;
+        height:0;
+        left:50%;
+        top:50%;
+    
+    }
+    92% {
+        width:100%;
+        height:100%;
+        left:0%;
+        top:0%;
+    }
+    100% {
+        width:100%;
+        height:100%;
+        left:0%;
+        top:0%;
+    }
+}
+
+.img-ad{
+    position:fixed;
+    margin:auto;
+    left:0px;
+    right:0px;
+    top:250px;
+    height:500px;
+}
+
+.h-idc{
+    color: #C63D3D;
+    
+    display: none;
+    
+    font-size: inherit;
+    font-weight: bolder;
+    line-height: inherit;
+    margin:0;
+    
+    -webkit-animation-duration: 0.5s;
+}
+.div-rankinglist-container {
+    display: none;
+    position:absolute;
+    width: 250px;
+    min-height: 600px;
+    height: 95%;
+    left:20px;
+    top:20px;
+    background-color:#fff;
+    
+}
+
+@rankinglist-up-height: 150px;
+.div-rankinglist-up {
+    display:block;
+    position: absolute;
+    height: 150px;
+    width:100%;
+    background-color:@light-red;
+    
+    overflow: hidden;
+}
+.div-rankinglist-down{
+    display: block;
+    position: absolute;
+    top:@rankinglist-up-height;
+    width:100%;
+    min-height: 450px;
+    
+    padding-top: 40px;
+    
+    overflow:hidden;
+}
+
+
+.img-rankinglist-logo{
+    width:200px;
+    display: block;
+    position: absolute;
+    top:60px;
+    right:0px;
+    left: 0px;
+    margin:0 auto;
+}
+
+.img-lightsweep{
+    width:600px;
+    display: block;
+    position: absolute;
+    top:-80px;
+    left: -175px;
+    margin:0 auto;
+}
+
+.img-rankinglist-title{
+    width:200px;
+    display: block;
+    position: absolute;
+    top:(@rankinglist-up-height - 19);
+    right:0px;
+    left: 0px;
+    margin:0 auto;
+}
+
+
+.div-listitem-container{
+    display: block;
+    position: relative;
+    height:30px;
+    width:100%;
+    
+    margin-bottom: 10px;
+    
+    font-family: @font-family;
+    font-weight: 900;
+}
+
+.div-rankinglist-index{
+    display: block;
+    position: absolute;
+    left:10px;
+    height:25px;
+    width:25px;
+    line-height: 25px;
+    border-radius: 25px;
+    text-align: center;
+    font-family: @font-family;
+    font-weight:900;
+    color:#fff;
+}
+
+.div-rankinglist-index-1{
+    background-color:#FFBA35;
+    .div-rankinglist-index;
+}
+
+.div-rankinglist-index-2{
+    background-color:#C2C2C2;
+    .div-rankinglist-index;
+}
+.div-rankinglist-index-3{
+    background-color:#FF9833;
+    .div-rankinglist-index;
+}
+.div-rankinglist-index-n{
+    background-color:#C63D3D;
+    .div-rankinglist-index;
+}
+.img-rankinglist-changeicon{
+    position: absolute;
+    left:40px;
+    top:2px;
+}
+
+
+.div-ranklinglist-playername{
+    position: absolute;
+    left:65px;
+    color:#555;
+}
+
+.div-ranklinglist-scorecontainer{
+    position: absolute;
+    right:15px;
+}
+
+.span-rankinglist-score{
+    color:#C63D3D;
+}
+.span-rankinglist-fen{
+    color:#878787;
+}
+
+
+.div-question-container{
+    display:none;
+    position: absolute;
+    left:350px;
+    top:90px;
+    min-width:900px;
+    width:65%;
+    height:150px;
+    
+    overflow: hidden;
+    
+    background-color:#fff;
+}
+
+.div-question-index-container{
+    display:block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-top: 150px solid @light-red;
+    border-right: 0px solid transparent; 
+}
+
+.div-question-index{
+    font-family: @font-family;
+    font-weight: 900;
+    font-size: 36px;
+    color:#fff;
+    
+    display: block;
+    position:absolute;
+    top:2px;
+    left:2px;
+}
+
+.div-question-content{
+    display: block;
+    position:absolute;
+    top:30px;
+    left:65px;
+    height:100%;
+    margin-right: 40px;
+    
+    
+    text-align: left;
+    font-family: @font-family;
+    font-weight: 900;
+    font-size: 32px;
+    color:#333;
+    opacity: 0;
+}
+
+.div-answer-container{
+    display: block;
+    position: absolute;
+    top:240px;
+    left:350px;
+    min-width:900px;
+    width:65%;
+    height:400px;
+    
+    overflow: hidden;
+}
+
+.div-answer-item-container{
+    display: none;
+    position: relative;
+    height:60px;
+    width:100%;
+    margin-top: 20px;
+    
+    background-color:#fff;
+}
+
+.div-answer-selector-bg{
+    display: block;
+    position: absolute;
+    background-color: @light-red;
+    width:60px;
+    height: 100%;
+    
+    top:0;
+    left: 0;
+}
+
+.div-answer-selector{
+    display: block;
+    position: absolute;
+    
+    font-family: @font-family;
+    font-weight: 900;
+    font-size: 36px;
+    color: #fff;
+    width:60px;
+    height: 100%;
+    line-height: 60px;
+    
+    top:0;
+    left: 0;
+}
+
+.div-answer-content{
+    position: absolute;
+    margin-left: 90px;
+    text-align: left;
+    
+    font-family: @font-family;
+    font-weight: 500;
+    font-size: 28px;
+    color: #333;
+    line-height: 60px;
+}
+
+.div-questionproperty-container{
+    display: block;
+    position: absolute;
+    top:40px;
+    left:350px;
+    min-width:900px;
+    width:65%;
+    height:30px;
+    text-align: right;
+}
+
+.div-questionproperty-item-container{
+    display:none;
+    position:relative;
+    
+    width:110px;
+    height:40px;
+    
+    border-radius: 50px;
+    
+    background-color: #fff;
+    
+    overflow: hidden;
+}
+
+.img-questionproperty-item-icon{
+    position: absolute;
+    left:15px;
+    top:7px;
+}
+.div-questionproperty-item-number{
+    position:absolute;
+    left:30px;
+    width:80px;
+    
+    font-family: @font-family;
+    font-weight: 900;
+    font-size: 30px;
+    text-align: center;
+    line-height: 40px;
+}
+
+.div-questionproperty-item-number-red{
+    color:@main-color;
+    .div-questionproperty-item-number;
+}
+
+.div-questionproperty-item-number-green{
+    color:#287E34;
+    .div-questionproperty-item-number;
+}
+
+.div-questionproperty-item-number-black{
+    color:#333;
+    .div-questionproperty-item-number;
+}
+
+.div-mask{
+    left:0;
+    top:0;
+    position: fixed;
+    display: block;
+    background-color:#fff;
+}
+
+.div-honor-background-white{
+    display: block;
+    position: fixed;
+    left: 0;
+    top:50%;
+    width: 100%;
+    height: 100%;
+    
+    background-color: #fff;
+    overflow: scroll;
+}
+
+
+.div-honor-background{
+    display: block;
+    position: fixed;
+    left: 0;
+    top:0;
+    width: 100%;
+    height: 100%;
+    
+    background-color: @main-color;
+    background-image: url(bgp-gezi.png);
+}
+
+.div-topthree-container{
+    display: block;
+    position: fixed;
+    left: 0;
+    top:0;
+    width: 100%;
+    height: 100%;
+}
+
+.div-top-1-container{
+    display: block;
+    position: absolute;
+    left:50%;
+    top:50%;
+    
+    margin-left: -100px;
+    margin-top: -190px;
+    
+    width:200px;
+}
+
+.img-honor-1-lightsweep{
+    display: block;
+    position: absolute;
+    left: -200px;
+    top:-200px;
+    
+    width:600px;
+}
+
+.img-honor-1-bg{
+    display: block;
+    position: absolute;
+    left: 0;
+    top:0;
+    
+}
+
+.img-honor-1{
+    display: block;
+    position: absolute;
+    left: 50%;
+    top:50px;
+    
+    
+    margin-left: -75px;
+    
+    width:150px;
+}
+
+.div-honor-top-1-info-container{
+    display: block;
+    position: absolute;
+    left:0;
+    top:230px;
+    
+    text-align: center;
+    
+    width:100%;
+}
+
+.h-top-1-name{
+    font-family: @font-family;
+    font-weight: 900;
+    font-size: 60px;
+    color:#fff;
+    margin:10px;
+}
+.h-top-1-score{
+    font-family: @font-family;
+    font-weight: 900;
+    font-size: 30px;
+    color:#fff;
+    margin:10px;
+}
+
+
+.div-top-2-container{
+    display: block;
+    position: absolute;
+    left:25%;
+    top:50%;
+    
+    margin-left: -75px;
+    margin-top: -175px;
+    
+    width:150px;
+}
+
+.img-honor-2-3{
+    display: block;
+    position: absolute;
+    left: 50%;
+    top:50px;
+    
+    
+    margin-left: -50px;
+    
+    width:100px;
+}
+
+.div-honor-top-2-3-info-container{
+    display: block;
+    position: absolute;
+    left:0;
+    top:180px;
+    
+    text-align: center;
+    
+    width:100%;
+}
+
+.h-top-2-3-name{
+    font-family: @font-family;
+    font-weight: 900;
+    font-size: 40px;
+    color:#fff;
+    margin:10px;
+}
+.h-top-2-3-score{
+    font-family: @font-family;
+    font-weight: 900;
+    font-size: 20px;
+    color:#fff;
+    margin:10px;
+}
+
+
+.div-top-3-container{
+    display: block;
+    position: absolute;
+    left:75%;
+    top:50%;
+    
+    margin-left: -75px;
+    margin-top: -175px;
+    
+    width:150px;
+}
+
+.div-honor-topn-container{
+    display: inline-block;
+    width:15%;
+    height:50px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding:10px;
+    margin:10px;
+}
+
+.div-honor-topn-index{
+    display: block;
+    float: left;
+    width:40px;
+    height:40px;
+    line-height: 40px;
+    border-radius: 40px;
+    margin-top:5px;
+    color:#fff;
+    background-color: @main-color;
+    font-size: 16px;
+}
+
+.div-honor-topn-playername{
+    display: inline-block;
+    width:50%;
+    height:40px;
+    line-height: 40px;
+    margin-top: 5px;
+    border-radius: 15px;
+    color:#333;
+    font-size: 20px;
+    font-weight: 900;
+    font-family: @font-family;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.div-honor-topn-score{
+    display: block;
+    float: right;
+    width:auto;
+    height:40px;
+    line-height: 40px;
+    margin-top: 5px;
+    border-radius: 15px;
+    color:@main-color;
+    font-size: 20px;
+    font-weight: 900;
+    font-family: @font-family;
+    text-align: right;
+}
+
+.sec-prize{
+    display: none;
+}

@@ -1,0 +1,18 @@
+<IFModule mod_rewrite.c>
+ErrorDocument 404 /page/error.php
+RewriteEngine On
+RewriteRule ^/?$ /page/index.php [L] 
+#移动主页
+
+#后台管理页面
+RewriteRule ^/?glkcsadmini/?$ /page/glkcsadmini/index.php [L]  
+#后台主页
+RewriteRule ^/?glkcsadmini/?weixin/?editor/?$ /page/glkcsadmini/weixin/editor/index.php [L]  
+#微信页面
+RewriteRule ^/?glkcsadmini/?weixin/?([a-zA-Z]+)$ /page/glkcsadmini/weixin/$1.php [L]  
+#微信页面
+
+RewriteRule ^/?([a-zA-Z]+)$ /page/$1.php [L]  
+#直辖页面
+
+</IFModule>

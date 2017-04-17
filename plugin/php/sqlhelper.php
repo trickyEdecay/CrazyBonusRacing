@@ -16,7 +16,6 @@ class sqlhelper{
 		error_reporting($this->errorReportingLevel);
 		$this->link = @mysql_connect($this->host,$this->sqlaccount,$this->databasePwd);
 		if(!$this->link){
-            echo mysql_error();
 			return 1; //--网络错误1	
 		}else{
 			if(!mysql_select_db($this->databaseName,$this->link)){

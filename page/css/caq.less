@@ -1,63 +1,16 @@
 @color: #4D926F;
 @fontfamily: "微软雅黑","黑体","Arial";
-
-.div-input-border{
-    background-color:#fff;
-    border-radius:30px;
-    border: 1px #eee solid;
-    padding:5px 10px;
-    position:relative;
-    text-align: left;
-    width : 200px;
-    margin:5px;
-    
-    font-family:@fontfamily;
+html,body,h1{
+    font-family: @fontfamily;
 }
 
-.div-input-border input{
-    border:0;
-    background:none;
-    width:85%;
-    position: absolute;
-    left:40px;
-    z-index: 2;
-    outline:none;
-    
-    font-family:@fontfamily;
-}
 
-.div-caq-button{
-    margin:5px;
-    padding:10px;
-    border:0;
-    border-radius: 50px;
-    background-color:#C63D3D;
-    color:#fff;
-    
-    font-family:@fontfamily;
-}
-
-.div-caq-button:focus,
-.div-caq-button:hover
-{
-    background-color:#EB4848;
-}
-
-.div-caq-button:active
-{
-    background-color:#AD3636;
-}
 
 .p-bottom-extras{
     color:#7F7F7F;
         
     font-family:@fontfamily;
 }
-.p-error{
-    color:red;
-    font-family: @fontfamily;
-}
-
 .div-top-block{
     background-color: #FFF;
     border-radius: 0 0 10px 10px;
@@ -101,7 +54,8 @@
 
 .div-projector-info-block{
     background-color: #FFF;
-    border-radius: 10px;
+    border-radius: 200px;
+    border: 5px solid #880606;
     padding:10px;
 }
 
@@ -213,4 +167,98 @@
     background-color: #C63D3D;
     border-radius: 5px;
     height:5px;
+}
+
+#bs-example-navbar-collapse-1 p span{
+    font-family: PingFang SC,Hiragino Sans GB,"思源黑体",Microsoft Yahei,WenQuanYi Micro Hei,sans-serif;
+    font-size:14px;
+    color:#c63d3d;
+    font-weight: 900;
+}
+
+
+
+
+.cttooltip {
+  position: absolute;
+  z-index: 1;
+  padding: 5px;
+  background: rgba(0, 0, 0, 0.8);
+  opacity: 1;
+  border-radius: 3px;
+  text-align: center;
+  pointer-events: none;
+  color: white;
+  transition: opacity .1s ease-out;
+}
+.tooltips-value{
+    font-size: 20px;
+}
+
+.cttooltip-hidden{
+  opacity: 0;
+}
+
+.ct-chart {
+  position: relative;
+  height:250px;
+}
+
+.ct-chart .ct-point {
+  stroke-width: 10px;
+}
+
+.ct-chart .ct-line {
+  stroke-width: 3px;
+}
+
+.ct-chart .ct-series .ct-series-a .ct-point {
+  stroke: #bbb;
+}
+
+.ct-chart .ct-series .ct-series-a .ct-line {
+  stroke: #bbb;
+}
+
+.ct-chart .ct-series .ct-series-b .ct-point {
+  stroke: #F69C84;
+}
+
+.ct-chart .ct-series .ct-series-b .ct-line {
+  stroke: #F69C84;
+}
+    
+.ct-chart .ct-series .ct-series-c .ct-point {
+  stroke: #F04E21;
+}
+
+.ct-chart .ct-series .ct-series-c .ct-line {
+  stroke: #F04E21;
+}
+
+.ct-chart .ct-blured .ct-point,
+.ct-chart .ct-blured .ct-line {
+  stroke-opacity: 0.2;
+}
+
+
+.span-indicator-orange{
+    color:#F04E21;
+    
+    font-size: 12px;
+    text-align: top;
+}
+
+.span-indicator-lightorange{
+    color:#F69C84;
+    
+    font-size: 12px;
+    text-align: top;
+}
+
+.span-indicator-gray{
+    color:#bbb;
+    
+    font-size: 12px;
+    text-align: top;
 }

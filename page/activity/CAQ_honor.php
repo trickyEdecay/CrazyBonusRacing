@@ -34,18 +34,26 @@ require_once(ROOT_PATH.PLUG_PATH.'/php/encrypt.php');
                     $index=0;
                     $limitsum = 1000;
                     $currentsum = 0;
-                    $result = $nc->mysql("select score,name from question_people where isbanned=0 order by ranking");
+                    $prize = 0;
+                    $year = date("Y");
+                    $result = $nc->mysql("select score,name from question_people where isbanned=0 and lastactiveyear='$year' order by ranking");
                     while($row = mysql_fetch_array($result)){
                         if($currentsum+$row['score']<=$limitsum){
                             $currentsum=$currentsum+$row['score'];
+                            $prize =$row['score'];
                         }else{
-                            break;
+                            if($currentsum<$limitsum){
+                                $prize=$limitsum-$currentsum;
+                                $currentsum=$limitsum;
+                            }else{
+                                break;
+                            }
                         }
                         $index++;
                 ?>
                 <div class="div-top-row">
                     <div style="position:relative;height:45px;">
-                        <div class="div-top-index-circle"><div class="div-top-index-number"><?php echo $index;?></div></div><span class="div-top-name">&nbsp;&nbsp;<?php echo $row['name']." - {$row['score']} 元";?></span>
+                        <div class="div-top-index-circle"><div class="div-top-index-number"><?php echo $index;?></div></div><span class="div-top-name">&nbsp;&nbsp;<?php echo $row['name']." - {$prize} 元";?></span>
                         <br style="clear:both">
                     </div>
                 </div>

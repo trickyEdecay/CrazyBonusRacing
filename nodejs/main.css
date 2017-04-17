@@ -1,0 +1,106 @@
+html,body{
+    font-family: "微软雅黑","黑体","Arial";
+    margin:0;
+    background-color: #efefef;
+}
+
+.div-toptitle{
+    width: 100%;
+    height:40px;
+    background-color: #555;
+    color:#fff;
+    line-height: 40px;
+    text-align: center;
+}
+
+input{
+    padding: 10px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+.div-bottomconatiner{
+    display: block;
+    position: absolute;
+    bottom: 0px;
+    width:100%;
+    height:40px;
+    padding:0 0 5px 0;
+}
+.div-bottom-left{
+    margin-right: 140px;
+}
+.div-bottom-right{
+    width:120px;
+    float:right;
+}
+
+#yourname,#outgoingChatMessage{
+    width:100%;
+    margin: 0px 10px 5px;
+}
+
+#submitbtn{
+    width:100px;
+    height:40px;
+    margin: 0 10px 0 0;
+    border-radius: 10px;
+    background-color: forestgreen;
+    color:#fff;
+    border: 0;
+}
+
+#submitbtn:focus,
+#submitbtn:hover{
+    background-color:#33cc33;
+}
+
+#submitbtn:active{
+    background-color:#114411;
+}
+
+.div-content{
+    padding:20px;
+}
+
+
+.div-sms-container-center{
+    text-align: center;
+    margin:10px;
+}
+
+.div-sms-container-left{
+    text-align: left;
+    margin:10px;
+}
+
+.div-sms-container-right{
+    text-align: right;
+    margin:10px;
+}
+
+.div-sms{
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #fff;
+    color:#333;
+    border-radius: 5px;
+}
+
+.div-sms-me{
+    display: inline-block;
+    padding: 5px 10px;
+    background-color:#66cc88;
+    color:#333;
+    border-radius: 5px;
+}
+
+.div-chatinfo{
+    font-size: 12px;
+    display: inline-block;
+    padding: 3px 8px;
+    background-color: #ccc;
+    color:#fff;
+    border-radius: 5px;
+}

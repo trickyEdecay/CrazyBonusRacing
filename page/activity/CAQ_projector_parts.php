@@ -64,7 +64,8 @@ function showquestion(){
                         die();
                     }
                     $index=0;
-                    $result = $nc->mysql("select * from question_people where isbanned=0 order by score desc,achievetime");
+                    $year = date("Y");
+                    $result = $nc->mysql("select * from question_people where isbanned=0 and lastactiveyear='$year' order by score desc,achievetime");
                     while($row = mysql_fetch_array($result)){
                         $index++;
                 ?>
@@ -235,7 +236,8 @@ function showkey(){
                         die();
                     }
                     $index=0;
-                    $result = $nc->mysql("select * from question_people where isbanned=0 order by score desc,achievetime,achievets");
+                    $year = date("Y");
+                    $result = $nc->mysql("select * from question_people where isbanned=0 and lastactiveyear='$year' order by score desc,achievetime,achievets");
                     while($row = mysql_fetch_array($result)){
                         $index++;
                 ?>
@@ -464,7 +466,7 @@ function showidc(){
 <?php
 function showsponser(){
     ?>
-<div class="container-fluid" style="background-color:#C63D3D">
+<div class="container-fluid" style="background-color:#C63D3D;background-image: url(../img/bgp-gezi.png);">
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <br>
@@ -537,7 +539,8 @@ function showprize(){
                     $index=0;
                     $limitsum = 1000;
                     $currentsum = 0;
-                    $result = $nc->mysql("select score,name from question_people where isbanned=0 order by ranking");
+                    $year = date("Y");
+                    $result = $nc->mysql("select score,name from question_people where isbanned=0 and lastactiveyear='$year' order by ranking");
                     while($row = mysql_fetch_array($result)){
                         if($currentsum+$row['score']<=$limitsum){
                             $currentsum=$currentsum+$row['score'];
