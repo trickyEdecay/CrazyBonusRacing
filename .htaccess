@@ -1,3 +1,11 @@
 Options +FollowSymLinks
 RewriteEngine On
+
+#如果文件存在，不重定向
+RewriteCond %{REQUEST_FILENAME} !-f
+
+#如果文件夹存在，不重定向
+RewriteCond %{REQUEST_FILENAME} !-d
+
+#所有请求统一转发到这个链接中
 RewriteRule ^(.*)$ index.php [NC,L]
