@@ -1,0 +1,63 @@
+@yellowOfSIA: #FFB90D;
+@fontface : "微软雅黑","黑体";
+
+body,html,.mainContainer{
+    background-color:@yellowOfSIA;
+    text-align: center;
+    height:100%;
+}
+.div_mainblock{
+    display: block;
+    background-color: #fff;  
+    min-height: 100%;
+    padding-left:0;
+    padding-right: 0;
+    font-family: @fontface;
+}
+
+/*color package*/
+@comfortableblack : #444;
+@color-coffee : #77552c;
+.color-black{
+    background-color:#000;
+}
+.color-comfortableblack{
+    background-color:@comfortableblack;
+}
+.color-coffee{
+    background-color: @color-coffee;
+}
+.color-lightcoffee{
+    background-color: lighten(@color-coffee,20%);
+}
+.color-white{
+    background-color:#fff;   
+}
+.color-white-gray-20{
+    background-color:#efefef;   
+}
+
+
+.font-yellow{
+    color: @yellowOfSIA;
+}
+
+.font-comfortableblack{
+    color: @comfortableblack;
+}
+.font-lightcomfortableblack{
+    color: lighten(@comfortableblack,20%);
+}
+.font-coffee{
+    color: @color-coffee;
+}
+.font-lightcoffee{
+    color: lighten(@color-coffee,20%);
+}
+.font-yellow{
+    color: @yellowOfSIA;
+}
+.font-lightyellow{
+    color: lighten(@yellowOfSIA,20%);
+}
+/*end of color package*/
