@@ -15,9 +15,17 @@ require_once(ROOT_PATH.PLUG_PATH.'/php/encrypt.php');
     <title></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
-    <link rel="stylesheet/less" href="<?php echo constant("CSS_PATH")?>test.less">
-    <?php echo LESS_DEFINE; ?>
-    <?php echo constant( 'JQuery_DEFINE');echo constant( 'BOOTSTRAP_DEFINE');?>
+
+    <!-- build:js /assets/js/admin/question.js -->
+    <script src="/front/assets/js/jquery-1.12.4.js"></script>
+    <script src="/front/assets/js/bootstrap.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:css /assets/css/admin/question.css -->
+    <link href="/front/assets/style/bootstrap.css" rel="stylesheet">
+    <link href="/front/assets/style/test.less" rel="stylesheet">
+    <!-- endbuild -->
+
     <script>
         $(document).ready(function(){
             clearAllInput();
