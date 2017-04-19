@@ -5,4 +5,4 @@ node_modules/
 /rev/
 #暂时忽略两个输出用的
 /assets/
-/pages/*
+/pages/
