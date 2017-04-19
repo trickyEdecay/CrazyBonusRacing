@@ -3,13 +3,14 @@ var uglify = require("gulp-uglify");
 var htmlmin = require("gulp-htmlmin");
 var filter = require('gulp-filter');
 var useref = require("gulp-useref");
+var revReplace = require('gulp-rev-replace');
 var rev = require('gulp-rev');
 var revCollector = require('gulp-rev-collector');
 var through = require('through2');
 var less = require('gulp-less');
 // var gutil = require('gulp-util');
 // var rename = require("gulp-rename");
-// var replace = require('gulp-replace');
+var replace = require('gulp-replace');
 // var changed = require('gulp-changed');
 var del = del = require('del');
 // var gulpif = require('gulp-if');
@@ -70,8 +71,8 @@ gulp.task("build:scripts",function(){
 
 gulp.task("build:styles",function(){
     return gulp.src(paths.src.style)
-        .pipe(less())
         .pipe(rev())
+        .pipe(less())
         .pipe(gulp.dest(paths.dist.css))
         .pipe(rev.manifest())
         .pipe(gulp.dest(paths.rev.css));
@@ -83,14 +84,17 @@ gulp.task("build:img",function(){
 });
 
 gulp.task("build:pages",function(){
-    return gulp.src([].concat(paths.rev.all).concat(paths.src.pages))
-        .pipe(revCollector({
-                replaceReved: true
-            }))
+    var manifest = gulp.src(paths.rev.all);
+
+    return gulp.src(paths.src.pages)
+        .pipe(revReplace({
+            manifest: manifest,
+            replaceInExtensions: ['.js', '.css', '.html', '.hbs','.php']
+        }))
         .pipe(devRevUrls('\/front','http://localhost/CrazyBonusRacing'))
+        .pipe(replace(/assets\/style/g, 'assets\/css'))
         .pipe(gulp.dest(paths.dist.pages));
 });
-
 
 gulp.task('clean:assets',function(){
     del([paths.dist.assets+'/*']);
@@ -107,6 +111,7 @@ gulp.task("build:production",function(){
     return gulp.src(paths.src.pages,{cwd:"./"})
         .pipe(useref({
             searchPath: "./"
+
         }))
         .pipe(jsFilter)
         .pipe(uglify())
