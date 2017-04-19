@@ -1,7 +1,16 @@
 {
-  "website_prefix": "CrazyBonusRacing",
+
+  "base_dir": "CrazyBonusRacing",
+
+  "debug": true,
+
   "db_host":"",
+
   "db_usr":"",
+
   "db_pwd":"",
-  "db_table":""
+
+  "db_table":"",
+
+  "cdn_host": "localhost/CrazyBonusRacing"
 }
