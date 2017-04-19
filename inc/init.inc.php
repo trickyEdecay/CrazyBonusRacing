@@ -22,7 +22,10 @@ define("CONFIG","/config");
 $config_json = json_decode(file_get_contents(ROOT.CONFIG."/config.json"),true);
 
 #网站目录前缀
-define("ROOT_PREFIX","/".$config_json["website_prefix"]);
+define("ROOT_PREFIX","/".$config_json["base_dir"]);
+
+#是否为调试模式
+define("DEBUG_MODE","/".$config_json["debug"]);
 
 #添加插件目录到搜索变量中
 set_include_path(get_include_path().PATH_SEPARATOR.ROOT.VENDOR);
