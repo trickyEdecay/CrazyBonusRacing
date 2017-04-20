@@ -18,6 +18,9 @@ define("PAGES","/pages");
 #config 目录
 define("CONFIG","/config");
 
+#api 目录
+define("API","/api");
+
 #读取 config.json
 $config_json = json_decode(file_get_contents(ROOT.CONFIG."/config.json"),true);
 

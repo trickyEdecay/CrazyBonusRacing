@@ -4,9 +4,6 @@
  * Date: 2017/4/18
  * Time: 1:54
  */
-
-require_once(ROOT_PATH.PLUG_PATH.'/php/sqlhelper.php');
-require_once(ROOT_PATH.PLUG_PATH.'/php/encrypt.php');
 ?>
 <!DOCTYPE html>
 <html>
@@ -52,7 +49,7 @@ require_once(ROOT_PATH.PLUG_PATH.'/php/encrypt.php');
 
         function submitQuestion(){
             $.ajax({
-                url: "<?php echo PAGE_PATH;?>php/CAQ_function.php",
+                url: "<?php echo ROOT_PREFIX.API;?>/CAQ_function",
                 type: "POST",
                 data:{
                     'what':'submit',
@@ -83,13 +80,14 @@ require_once(ROOT_PATH.PLUG_PATH.'/php/encrypt.php');
 
         function getModifyInfo(index){
             $.ajax({
-                url: "<?php echo PAGE_PATH;?>php/CAQ_function.php",
+                url: "<?php echo ROOT_PREFIX.API;?>/CAQ_function",
                 type: "POST",
                 data:{
                     'what':'getModifyInfo',
                     'id':index
                 },
                 success: function(data,status){
+                    console.log(data);
                     data = JSON.parse(data);
                     if(data.code == 0000){
                         $('#questionInput').val(data.question);
@@ -117,7 +115,7 @@ require_once(ROOT_PATH.PLUG_PATH.'/php/encrypt.php');
 
         function deleteid(index){
             $.ajax({
-                url: "<?php echo PAGE_PATH;?>php/CAQ_function.php",
+                url: "<?php echo ROOT_PREFIX.API;?>/CAQ_function",
                 type: "POST",
                 data:{
                     'what':'deleteid',

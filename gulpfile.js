@@ -91,7 +91,7 @@ gulp.task("build:pages",function(){
             manifest: manifest,
             replaceInExtensions: ['.js', '.css', '.html', '.hbs','.php']
         }))
-        .pipe(devRevUrls('\/front','http://localhost/CrazyBonusRacing'))
+        .pipe(devRevUrls('\/front',config.local_host))
         .pipe(replace(/assets\/style/g, 'assets\/css'))
         .pipe(gulp.dest(paths.dist.pages));
 });
@@ -122,7 +122,7 @@ gulp.task("build:production",function(){
         .pipe(gulp.dest("./"))
         .pipe(cssFilter.restore)
         .pipe(phpFilter)
-        .pipe(devRevUrls('','http://localhost/CrazyBonusRacing'))
+        .pipe(devRevUrls('',config.cdn_host))
         .pipe(gulp.dest(paths.dist.pages));
 });
 
