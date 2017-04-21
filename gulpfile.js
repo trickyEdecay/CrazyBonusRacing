@@ -25,7 +25,8 @@ var paths = {
         assets: "front/assets",
         js: "front/assets/js/*.js",
         style: ["front/assets/style/*.css","front/assets/style/*.less"],
-        img: "front/assets/img/*.*"
+        img: "front/assets/img/*.*",
+        font: "front/assets/font/*.*"
     },
     dist:{
         pages: "pages/",
@@ -33,6 +34,7 @@ var paths = {
         js: "assets/js",
         css: "assets/css",
         img: "assets/img",
+        font: "assets/font/*.*"
     },
     rev:{
         all: "rev/**/*.json",
@@ -46,7 +48,7 @@ gulp.task("build",function(){
 
     if(debug){
         //开发模式下
-        return runSequence("clean:assets","clean:pages","build:scripts","build:styles","build:pages","watch");
+        return runSequence("clean:assets","build:img","build:font","clean:pages","build:scripts","build:styles","build:pages","watch");
     }else{
         //产品模式下
         return runSequence("clean:assets","clean:pages","build:production");
@@ -81,6 +83,10 @@ gulp.task("build:styles",function(){
 gulp.task("build:img",function(){
     return gulp.src(paths.src.img)
         .pipe(gulp.dest(paths.dist.img));
+});
+gulp.task("build:font",function(){
+    return gulp.src(paths.src.font)
+        .pipe(gulp.dest(paths.dist.font));
 });
 
 gulp.task("build:pages",function(){

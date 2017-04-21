@@ -20,7 +20,6 @@
 
     <!-- build:css /assets/css/admin/question.css -->
     <link href="/front/assets/style/bootstrap.css" rel="stylesheet">
-    <link href="/front/assets/style/test.less" rel="stylesheet">
     <!-- endbuild -->
 
     <script>

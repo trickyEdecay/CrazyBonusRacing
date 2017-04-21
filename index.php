@@ -7,8 +7,8 @@ require_once ("inc/init.inc.php");
 $klein = new \Klein\Klein();
 
 # cbradmin/question
-$klein->respond('GET', ROOT_PREFIX.ADMIN_PREFIX."/question", function () {
-    require_once (PAGES."/admin/question.php");
+$klein->respond('GET', ROOT_PREFIX.ADMIN_PREFIX."/[:action]", function ($request) {
+    require_once (PAGES."/admin/".$request->action.".php");
     die();
 });
 
