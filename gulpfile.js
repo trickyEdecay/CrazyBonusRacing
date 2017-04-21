@@ -34,7 +34,7 @@ var paths = {
         js: "assets/js",
         css: "assets/css",
         img: "assets/img",
-        font: "assets/font/*.*"
+        font: "assets/font"
     },
     rev:{
         all: "rev/**/*.json",
