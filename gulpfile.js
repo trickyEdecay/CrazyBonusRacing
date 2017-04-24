@@ -26,7 +26,7 @@ var paths = {
         js: "front/assets/js/**/*.js",
         style: ["front/assets/style/**/*.css","front/assets/style/**/*.less"],
         img: "front/assets/img/**/*.*",
-        font: "front/assets/font/**/*.*"
+        font: "front/assets/fonts/**/*.*"
     },
     dist:{
         pages: "pages/",
@@ -34,7 +34,7 @@ var paths = {
         js: "assets/js",
         css: "assets/css",
         img: "assets/img",
-        font: "assets/font"
+        font: "assets/fonts"
     },
     rev:{
         all: "rev/**/*.json",
