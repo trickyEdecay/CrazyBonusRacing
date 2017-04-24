@@ -1,5 +1,7 @@
 <?php //用来处理知识问答竞赛?>
 <?php
+require_once ("checkString.php");
+require_once ("encrypt.php");
 ini_set("error_reporting","E_ALL & ~E_NOTICE");
 ?>
 <?php
