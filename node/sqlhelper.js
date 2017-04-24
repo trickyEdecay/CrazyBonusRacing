@@ -1,11 +1,11 @@
 var sys = require('sys');
-  
 var mysql = require('mysql');
+var config = require('../config/config.json');
 var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'kkvip',
-  password : 'kkvipkkvip',
-  database : '667332'
+  host     : config.db_host,
+  user     : config.db_usr,
+  password : config.db_pwd,
+  database : config.db_table
 });
 
 
