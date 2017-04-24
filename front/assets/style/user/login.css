@@ -1,0 +1,82 @@
+body{
+    background-color:#eee;
+}
+
+noscript div{
+    padding:10px;
+    background-color: #ffb90d;
+    color: #fff;
+    font-family: "微软雅黑","黑体","Arial";
+    
+    border-radius: 5px;
+    
+}
+.div-browser-dectect-info{
+    display: none;
+    padding:10px;
+    background-color: #ffb90d;
+    color: #fff;
+    font-family: "微软雅黑","黑体","Arial";
+    font-size: 12px;
+    letter-spacing: 1.2;
+    line-height: 100px;
+    border-radius: 5px;
+}
+.div-input-border{
+    background-color:#fff;
+    border-radius:30px;
+    border: 1px #eee solid;
+    padding:10px 10px;
+    position:relative;
+    text-align: left;
+    width : 200px;
+    margin:7px 0;
+    
+    font-family:"微软雅黑","黑体","Arial";
+}
+
+.div-input-border input{
+    border:0;
+    background:none;
+    width:85%;
+    position: absolute;
+    left:40px;
+    z-index: 2;
+    outline:none;
+    
+    font-family:"微软雅黑","黑体","Arial";
+}
+
+
+.div-caq-button{
+    margin:10px 0;
+    padding:10px;
+    border:0;
+    border-radius: 50px;
+    background-color:#C63D3D;
+    color:#fff;
+    
+    font-family:"微软雅黑","黑体","Arial";
+}
+
+.div-caq-button:focus,
+.div-caq-button:hover
+{
+    background-color:#EB4848;
+}
+
+.div-caq-button:active
+{
+    background-color:#AD3636;
+}
+
+
+.p-error{
+    color:red;
+    font-family: "微软雅黑","黑体","Arial";
+}
+
+.p-bottom-extras{
+    color:#7F7F7F;
+    font-family:"微软雅黑","黑体","Arial";
+}
