@@ -21,7 +21,7 @@ var debug = config.debug;
 
 var paths = {
     src: {
-        pages: ["front/**/*.php"],
+        pages: ["front/**/*.php","front/**/*.html"],
         assets: "front/assets",
         js: "front/assets/js/**/*.js",
         style: ["front/assets/style/**/*.css","front/assets/style/**/*.less"],
