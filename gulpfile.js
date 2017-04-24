@@ -23,10 +23,10 @@ var paths = {
     src: {
         pages: ["front/**/*.php"],
         assets: "front/assets",
-        js: "front/assets/js/*.js",
-        style: ["front/assets/style/*.css","front/assets/style/*.less"],
-        img: "front/assets/img/*.*",
-        font: "front/assets/font/*.*"
+        js: "front/assets/js/**/*.js",
+        style: ["front/assets/style/**/*.css","front/assets/style/**/*.less"],
+        img: "front/assets/img/**/*.*",
+        font: "front/assets/font/**/*.*"
     },
     dist:{
         pages: "pages/",
