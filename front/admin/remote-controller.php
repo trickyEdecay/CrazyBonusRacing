@@ -11,6 +11,7 @@
     <!-- build:js /assets/js/admin/controller.js -->
     <script src="/front/assets/js/jquery-1.12.4.js"></script>
     <script src="/front/assets/js/bootstrap.js"></script>
+    <script src="/front/assets/js/socket.io-1-7-3.js"></script>
     <!-- endbuild -->
 
     <!-- build:css /assets/css/admin/controller.css -->
