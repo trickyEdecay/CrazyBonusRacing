@@ -113,7 +113,7 @@ if(is_array($_GET)&&count($_GET)>0){
                 if($("#loginbtn").html()=="进入疯狂抢答" && !isWeiXin()){
                     $("#loginbtn").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;努力为你加载中~爱你哟~");
                     $.ajax({
-                        url: "<?php echo PAGE_PATH;?>php/CAQ_function.php",
+                        url: "<?php echo ROOT_PREFIX.API;?>/CAQ_function",
                         type: "POST",
                         data:{
                             'what':'login',
@@ -123,7 +123,7 @@ if(is_array($_GET)&&count($_GET)>0){
                         success: function(data,status){
                             data = JSON.parse(data);
                             if(data.code == 0000){
-                                window.location.href = "CAQ_mobile.php";
+                                window.location.href = "<?php echo ROOT_PREFIX;?>/main";
                             }else{
                                 $("#logintips").html(data.info);
                                 $("#loginbtn").html("进入疯狂抢答");
@@ -137,7 +137,7 @@ if(is_array($_GET)&&count($_GET)>0){
                 if($("#registerbtn").html()=="登记并进入疯狂抢答" && !isWeiXin()){
                     $("#registerbtn").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;努力为你加载中~爱你哟~");
                     $.ajax({
-                        url: "<?php echo PAGE_PATH;?>php/CAQ_function.php",
+                        url: "<?php echo ROOT_PREFIX.API;?>/CAQ_function",
                         type: "POST",
                         data:{
                             'what':'register',
@@ -147,7 +147,7 @@ if(is_array($_GET)&&count($_GET)>0){
                         success: function(data,status){
                             data = JSON.parse(data);
                             if(data.code == 0000){
-                                window.location.href = "CAQ_mobile.php";
+                                window.location.href = "<?php echo ROOT_PREFIX;?>/main";
                             }else{
                                 $("#logintips").html(data.info);
                                 $("#loginbtn").html("登记并进入疯狂抢答");
