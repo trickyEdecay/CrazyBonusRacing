@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>全民答疯抢</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+
+    <!-- build:js /assets/js/projector/projector.js -->
+    <script src="/front/assets/js/jquery-1.12.4.js"></script>
+    <script src="/front/assets/js/jquery.easing.compatibility.1.4.1.js"></script>
+    <script src="/front/assets/js/jquery.animateNumber.min.js"></script>
+    <script src="/front/assets/js/socket.io-1-7-3.js"></script>
+    <script src="/front/assets/js/jquery-transit-0-9-12.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:css /assets/css/projector/projector.css -->
+    <link href="/front/assets/style/font-awesome.css" rel="stylesheet">
+    <link href="/front/assets/style/animate-3-5-2.css" rel="stylesheet">
+    <link href="/front/assets/style/csshake-1.5.1.css" rel="stylesheet">
+    <link href="/front/assets/style/projector/projector.less" rel="stylesheet">
+    <!-- endbuild -->
+
+    <script>
+        var pagestate = "sponsor"; //记录网页状态
+        var idcode = "000000"; //记录验证码
+        var questionpack = {}; //用于记录问题的所有内容
+        var ranklinglistpack = {}; //用于记录问题的所有内容
+        var honorpack = {}; //用于记录最终排行榜的数据
+        
+        
+        
+            
+            
+        var iosocket = io.connect("ws://localhost:8080");
+
+        iosocket.on('connect', function () {
+            console.log("连接成功!");
+
+            //当服务器服务器推送这个事件的时候显示 赞助商页面
+            iosocket.on('showsponsor', function(data) {
+                console.log('showingsponsor');
+                ranklinglistpack = data.rankinglistpack;
+                bindRankinglistData();
+                showsponsor();
+            });
+
+            //当服务器服务器推送这个事件的时候显示 验证码页面
+            iosocket.on('showidc', function(data) {
+                console.log('showingidc');
+                idcpack = data;
+                idcode = idcpack.idc;
+                showidc();
+            });
+            
+            
+
+            iosocket.on('showquestion', function(data) {
+                console.log('showingquestion');
+                questionpack = data;
+                bindQuestionData();
+                showquestion();
+            });
+
+            iosocket.on('showkey', function(data) {
+                console.log('showingkey');
+                showkey();
+                
+                setTimeout(getRankinglist,1200);
+            });
+
+            iosocket.on('showhonor', function(data) {
+                console.log('showinghonor');
+                honorpack = data;
+                showhonor();
+            });
+            
+            function getRankinglist(){
+                iosocket.emit('getrankinglist','empty',function(data){
+                    console.log('getrankinglist');
+                    ranklinglistpack = data;
+                    bindRankinglistData();
+                });
+            }
+            
+
+        });
+
+        //绑定排行榜数据
+        function bindRankinglistData(){
+            var listdatalength = ranklinglistpack.people.length;
+            for(var i=1;i<=listdatalength;i++){
+                var people = ranklinglistpack.people[i-1];
+                $("#rankinglist-playername-"+i).html(people.name);
+                
+                
+                
+                $("#rankinglist-score-"+i).prop('number',$("#rankinglist-score-"+i).html()).animateNumber(
+                  {
+                    number: people.score,
+                    easing: 'easeInQuad'
+                  }
+                );
+//                $("#rankinglist-score-"+i).html(people.score);
+                
+                
+                
+                
+                $("#rankingicon-"+i).attr("src",getRankingIcon(i,people.oldranking));
+
+            }
+        }
+
+        //取得排行榜上的小图标
+        function getRankingIcon(currentranking,oldranking){
+            currentranking = parseInt(currentranking);
+            oldranking = parseInt(oldranking);
+            if(currentranking<oldranking){
+                return "caq_rankinglist_up.png";
+            }else if(currentranking==oldranking){
+                return "caq_rankinglist_keep.png";
+            }else if(currentranking>oldranking){
+                return "caq_rankinglist_down.png";
+            }
+        }
+
+
+
+        //把所有问题数据与html绑定
+        function bindQuestionData(){
+            $("#limitpeople").html(questionpack.peoplelimit);
+            $("#addscore").html("+"+questionpack.addscore);
+            $("#minusscore").html("-"+questionpack.minusscore);
+            $("#question-index").html(questionpack.sort);
+            $("#question-content").html(questionpack.question);
+            $("#answer-a").html(questionpack.answera);
+            $("#answer-b").html(questionpack.answerb);
+            $("#answer-c").html(questionpack.answerc);
+            $("#answer-d").html(questionpack.answerd);
+
+            var correctanswer = questionpack.correctanswer.toLowerCase();
+            $("#answer-"+correctanswer).html(questionpack.answera);
+            $("#answer-a").html(questionpack["answer"+correctanswer]);
+
+        }
+
+
+
+        //显示赞助商页面
+        function showsponsor(){
+            //更改网页的状态
+            pagestate = "sponsor";
+
+            $(".div-mask").css("width","100%");
+            $(".div-mask").css("left","0");
+            $(".div-mask").css("top","0");
+            $(".div-mask").css("margin-left","0px");
+            $(".div-mask").css("border-radius","0px");
+            $(".div-mask").css("height","100%");
+            $(".div-mask").css("opacity","0");
+
+            $(".div-mask").transition({opacity:"1"},function(){
+                //重置网页上已经被动画修改过的所有东西
+                $(".h-idc").html("");
+                $(".sec-prize").css("display","none");
+                $(".div-idccontainer-animateball-1").css("display","inline-block");
+                $(".div-idccontainer-animateball-2").css("display","inline-block");
+                $(".h-idc").css("display","none");
+                $(".img-ad").css("opacity","0");
+                $(".div-idccontainer").css("width","150px");
+                $(".div-idccontainer").css("height","150px");
+                $(".div-idccontainer").css("margin-left","-75px");
+                $(".div-idccontainer").css("left","50%");
+                $(".div-idccontainer").css("top","50px");
+                $(".div-idccontainer").css("font-size","96px");
+                $(".div-idccontainer").css("line-height","150px");
+                $(".h-idc").removeClass("zoomIn");
+                $(".h-idc").removeClass("animated");
+                $(".div-idccontainer-animateball-2").unbind("webkitAnimationIteration");
+
+                $(".div-rankinglist-container").css("display","none");
+                $(".div-rankinglist-container").removeClass("animated");
+                $(".div-rankinglist-container").removeClass("fadeInLeft");
+
+                $(".div-question-container").css("display","none");
+
+                $("#limitpeoplecontainer").css("display","none");
+                $("#addscorecontainer").css("display","none");
+                $("#minusscorecontainer").css("display","none");
+                $("#addscorecontainer").removeClass("animated");
+                $("#addscorecontainer").removeClass("tada");
+
+                $("#answer-container-a").css("display","none");
+                $("#answer-container-a").removeClass("animated");
+                $("#answer-container-a").removeClass("fadeInDown");
+                $("#answer-container-b").css("display","none");
+                $("#answer-container-b").removeClass("animated");
+                $("#answer-container-b").removeClass("fadeInDown");
+                $("#answer-container-c").css("display","none");
+                $("#answer-container-c").removeClass("animated");
+                $("#answer-container-c").removeClass("fadeInDown");
+                $("#answer-container-d").css("display","none");
+                $("#answer-container-d").removeClass("animated");
+                $("#answer-container-d").removeClass("fadeInDown");
+
+                $("#answer-bg-a").css("width","60px");
+                $("#answer-bg-a").css("background-color","#C63D3D");
+                $("#answer-bg-b").css("width","60px");
+                $("#answer-bg-b").css("background-color","#C63D3D");
+                $("#answer-bg-c").css("width","60px");
+                $("#answer-bg-c").css("background-color","#C63D3D");
+                $("#answer-bg-d").css("width","60px");
+                $("#answer-bg-d").css("background-color","#C63D3D");
+
+                $("#answer-a").css("color","#333");
+                $("#answer-b").css("color","#333");
+                $("#answer-c").css("color","#333");
+                $("#answer-d").css("color","#333");
+
+                $(".div-mask").transition({width:"150px",height:"150px","border-radius":"100%",top:"50px",left:"50%","margin-left":"-75px",opacity:"0"});
+                $(".img-ad").transition({opacity:"1",delay:300});
+            });
+
+        }
+
+
+
+
+
+        //显示验证码
+        function showidc(){
+            if(pagestate != "sponsor"){
+                console.log("必须是赞助商页面才能切换成验证码页面");
+                return;
+            }
+            //更改网页的状态
+            pagestate = "idc";
+
+            $(".h-idc").html(idcode);
+
+            //过度动画
+            $(".div-idccontainer-animateball-2").on("webkitAnimationIteration",function(){
+                $(".div-idccontainer-animateball-1").css("display","none");
+                $(".div-idccontainer-animateball-2").css("display","none");
+                $(".div-idccontainer").transition({width:"600px","margin-left":"-300px"},function(){
+                    $(".h-idc").css("display","inline-block");
+                    $("#idc").addClass("animated zoomIn");
+                });
+
+            });
+            //过度动画--完
+        }
+
+        function showquestion(){
+
+            if(pagestate != "idc"){
+                console.log("必须是验证码页面才能切换成问题页面");
+                return;
+            }
+            //更改网页的状态
+            pagestate = "showingquestion";
+
+
+            //过度动画
+            $(".div-idccontainer").transition({left:"350px",top:"20px",width:"150px",height:"50px","margin-left":"0","font-size":"30px","line-height":"50px",delay:300});
+            $(".img-ad").transition({opacity:"0"});
+            $(".div-rankinglist-container").css("display","block");
+            $(".div-rankinglist-container").addClass("animated fadeInLeft");
+
+            $(".div-question-container").css("width","0");
+            $(".div-question-container").css("min-width","0");
+            $(".div-question-container").css("display","block");
+            $(".div-question-container").transition({"min-width":"900px","width":"65%",delay:400},function(){
+                $("#question-content").transition({"opacity":"1"},function(){
+                    $(".div-question-index-container").transition({"border-right-width":"80px",delay:500});
+                });
+            });
+
+            $("#limitpeoplecontainer").css("width","50px");
+            $("#limitpeoplecontainer").css("opacity","0");
+            $("#limitpeoplecontainer").css("display","inline-block");
+            $("#limitpeoplecontainer").transition({opacity:"1",delay:1300}).transition({width:"110px"},function(){
+                $("#addscorecontainer").css("width","0px");
+                $("#addscorecontainer").css("margin-left","0px");
+                $("#addscorecontainer").css("opacity","0");
+                $("#addscorecontainer").css("display","inline-block");
+                $("#addscorecontainer").transition({opacity:"1",width:"50px","margin-left":"10px",delay:200}).transition({width:"110px"});
+
+                $("#minusscorecontainer").css("width","0px");
+                $("#minusscorecontainer").css("opacity","0");
+                $("#minusscorecontainer").css("margin-left","0px");
+                $("#minusscorecontainer").css("display","inline-block");
+                $("#minusscorecontainer").transition({opacity:"1",width:"50px","margin-left":"10px",delay:1000}).transition({width:"110px"},function(){
+                    $("#addscorecontainer").addClass("animated tada");
+                });
+            });
+
+
+            $("#answer-container-a").css("display","block");
+            $("#answer-container-a").css("-webkit-animation-delay","1.0s");
+            $("#answer-container-a").addClass("animated fadeInDown");
+            $("#answer-container-b").css("display","block");
+            $("#answer-container-b").css("-webkit-animation-delay","1.1s");
+            $("#answer-container-b").addClass("animated fadeInDown");
+            $("#answer-container-c").css("display","block");
+            $("#answer-container-c").css("-webkit-animation-delay","1.2s");
+            $("#answer-container-c").addClass("animated fadeInDown");
+            $("#answer-container-d").css("display","block");
+            $("#answer-container-d").css("-webkit-animation-delay","1.3s");
+            $("#answer-container-d").addClass("animated fadeInDown");
+
+            //过度动画--完
+        }
+
+
+        function showkey(){
+            if(pagestate != "showingquestion"){
+                console.log("必须是问题页面才能切换成答案页面");
+                return;
+            }
+            //更改网页的状态
+            pagestate = "showingkey";
+
+            //过度动画
+            var correctanswer = questionpack.correctanswer.toLowerCase();
+            $("#answer-bg-"+correctanswer).transition({width:"100%","background-color":"#46985E"},"cubic-bezier(0,0,0.75,1)");
+            $("#answer-"+correctanswer).transition({"color":"#fff"});
+            //过度动画--完
+        }
+
+
+        function bindingHonorData(){
+            $(".div-honor-background-white").html("");
+            //绑定一二三名的数据
+            $("#top1-name").html(honorpack.people[0].name);
+            $("#top1-score").html("¥"+honorpack.people[0].score);
+            $("#top2-name").html(honorpack.people[1].name);
+            $("#top2-score").html("¥"+honorpack.people[1].score);
+            $("#top3-name").html(honorpack.people[2].name);
+            $("#top3-score").html("¥"+honorpack.people[2].score);
+
+            for(var i=3;i<honorpack.people.length;i++){
+                var $topntemplate = "<div class=\"div-honor-topn-container\">"+
+                                    "<div class=\"div-honor-topn-index\">"+(i+1)+"</div>"+
+                                    "<div class=\"div-honor-topn-playername\">"+honorpack.people[i].name+"</div>"+
+                                    "<div class=\"div-honor-topn-score\">¥"+honorpack.people[i].score+"</div>"+
+                                "</div>";
+                $(".div-honor-background-white").append($topntemplate);
+            }
+
+        }
+
+
+
+
+        //显示最终排行榜
+        function showhonor(){
+
+
+
+            $(".div-mask").css("width","100%");
+            $(".div-mask").css("left","0");
+            $(".div-mask").css("top","0");
+            $(".div-mask").css("margin-left","0px");
+            $(".div-mask").css("border-radius","0px");
+            $(".div-mask").css("height","100%");
+            $(".div-mask").css("opacity","0");
+
+            $('#top1-score').unbind('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend');
+            $("#top1-name").removeClass("animated zoomInDown");
+            $("#top2-name").removeClass("animated zoomInDown");
+            $("#top3-name").removeClass("animated zoomInDown");
+            $("#top1-score").removeClass("animated zoomInUp");
+            $("#top2-score").removeClass("animated zoomInUp");
+            $("#top3-score").removeClass("animated zoomInUp");
+            $(".img-honor-1").removeClass("animated tada");
+
+            $(".div-mask").transition({opacity:"1"},function(){
+
+                bindingHonorData();
+                $(".sec-prize").css("display","block");
+                $(".div-honor-background").css("top","0");
+                $(".div-topthree-container").css("height","100%");
+                $(".img-honor-1-lightsweep").css("opacity","0");
+                $(".img-honor-1-lightsweep").css("width","0");
+                $(".img-honor-1-lightsweep").css("left","0");
+                $(".img-honor-1-bg").css("opacity","0");
+                $(".img-honor-1").css("opacity","0");
+                $(".img-honor-1").css("width","0");
+                $(".img-honor-1").css("margin-left","0");
+                $("#top1-name").css("display","none");
+                $("#top1-score").css("display","none");
+
+                $("#img-honor-2").css("opacity","0");
+                $("#img-honor-2").css("width","0");
+                $("#img-honor-2").css("margin-left","0");
+                $("#top2-name").css("display","none");
+                $("#top2-score").css("display","none");
+
+                $("#img-honor-3").css("opacity","0");
+                $("#img-honor-3").css("margin-left","0");
+                $("#img-honor-3").css("width","0");
+                $("#top3-name").css("display","none");
+                $("#top3-score").css("display","none");
+
+                $(".div-mask").transition({height:"0px",top:"100%",opacity:"0"},function(){
+                    $("#img-honor-3").transition({opacity:"1",width:"100px","margin-left":"-50px"},function(){
+                        $("#top3-name").css("display","block");
+                        $("#top3-name").css("display","block");
+                        $("#top3-score").css("display","block");
+                        $("#top3-name").addClass("animated zoomInDown");
+                        $("#top3-score").addClass("animated zoomInUp");
+                    });
+
+
+                    $("#img-honor-2").transition({opacity:"1",width:"100px","margin-left":"-50px",delay:1000},function(){
+                        $("#top2-name").css("display","block");
+                        $("#top2-name").css("display","block");
+                        $("#top2-score").css("display","block");
+                        $("#top2-name").addClass("animated zoomInDown");
+                        $("#top2-score").addClass("animated zoomInUp");
+                    });
+
+                    $(".img-honor-1-bg").transition({opacity:"1",delay:2500});
+                    $(".img-honor-1").transition({opacity:"1",width:"150px","margin-left":"-75px",delay:2800},function(){
+                        $("#top1-name").css("display","block");
+                        $("#top1-name").css("display","block");
+                        $("#top1-score").css("display","block");
+                        $("#top1-name").addClass("animated zoomInDown");
+                        $("#top1-score").addClass("animated zoomInUp");
+                        $('#top1-score').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+                            $(".img-honor-1").addClass("animated tada");
+                            $(".div-topthree-container").transition({height:"50%",delay:5000},"cubic-bezier(0,0,0.75,1)");
+                            $(".div-honor-background").transition({top:"-50%",delay:5000},"cubic-bezier(0,0,0.75,1)");
+                        });
+                    });
+                    $(".img-honor-1-lightsweep").transition({opacity:"0.7",width:"600px",left:"-200px",delay:3500});
+                });
+            });
+        }
+            
+        
+    </script>
+</head>
+
+<body>
+    
+    <!--sec-main是整个投影幕上同一种背景的容器-->
+    <section class="sec-main">
+        
+        <!--验证码页面内容-->
+        <div class="div-idccontainer">
+            <div class="div-idccontainer-animateball-1"></div>
+            <div class="div-idccontainer-animateball-2"></div>
+            <h2 id="idc" class="h-idc">123456</h2>
+        </div>
+        <img class="img-ad" src="/front/assets/img/temp-ad.png">
+        
+        <!--题目页面内容-->
+        <div class="div-rankinglist-container" id="rankinglistblock">
+            <div class="div-rankinglist-up">
+                <img src="/front/assets/img/caq_lightsweep.png" class="img-lightsweep">
+                <img src="/front/assets/img/caq_logo_white.png" class="img-rankinglist-logo">
+            </div>
+            <div class="div-rankinglist-down">
+                
+                
+                <div class="div-listitem-container">
+                    <div class="div-rankinglist-index-1">1</div>
+                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-1">
+                    <div class="div-ranklinglist-playername" id="rankinglist-playername-1"></div>
+                    <div class="div-ranklinglist-scorecontainer">
+                        <span class="span-rankinglist-score" id="rankinglist-score-1"></span>
+                        <span class="span-rankinglist-fen">分</span>
+                    </div>
+                </div>
+                
+                <div class="div-listitem-container">
+                    <div class="div-rankinglist-index-2">2</div>
+                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-2">
+                    <div class="div-ranklinglist-playername" id="rankinglist-playername-2"></div>
+                    <div class="div-ranklinglist-scorecontainer">
+                        <span class="span-rankinglist-score" id="rankinglist-score-2"></span>
+                        <span class="span-rankinglist-fen">分</span>
+                    </div>
+                </div>
+                
+                <div class="div-listitem-container">
+                    <div class="div-rankinglist-index-3">3</div>
+                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-3">
+                    <div class="div-ranklinglist-playername" id="rankinglist-playername-3"></div>
+                    <div class="div-ranklinglist-scorecontainer">
+                        <span class="span-rankinglist-score" id="rankinglist-score-3"></span>
+                        <span class="span-rankinglist-fen">分</span>
+                    </div>
+                </div>
+                
+                <div class="div-listitem-container">
+                    <div class="div-rankinglist-index-n">4</div>
+                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-4">
+                    <div class="div-ranklinglist-playername" id="rankinglist-playername-4"></div>
+                    <div class="div-ranklinglist-scorecontainer">
+                        <span class="span-rankinglist-score" id="rankinglist-score-4"></span>
+                        <span class="span-rankinglist-fen">分</span>
+                    </div>
+                </div>
+                
+                <div class="div-listitem-container">
+                    <div class="div-rankinglist-index-n">5</div>
+                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-5">
+                    <div class="div-ranklinglist-playername" id="rankinglist-playername-5"></div>
+                    <div class="div-ranklinglist-scorecontainer">
+                        <span class="span-rankinglist-score" id="rankinglist-score-5"></span>
+                        <span class="span-rankinglist-fen">分</span>
+                    </div>
+                </div>
+                
+                <div class="div-listitem-container">
+                    <div class="div-rankinglist-index-n">6</div>
+                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-6">
+                    <div class="div-ranklinglist-playername" id="rankinglist-playername-6"></div>
+                    <div class="div-ranklinglist-scorecontainer">
+                        <span class="span-rankinglist-score" id="rankinglist-score-6"></span>
+                        <span class="span-rankinglist-fen">分</span>
+                    </div>
+                </div>
+                
+                <div class="div-listitem-container">
+                    <div class="div-rankinglist-index-n">7</div>
+                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-7">
+                    <div class="div-ranklinglist-playername" id="rankinglist-playername-7"></div>
+                    <div class="div-ranklinglist-scorecontainer">
+                        <span class="span-rankinglist-score" id="rankinglist-score-7"></span>
+                        <span class="span-rankinglist-fen">分</span>
+                    </div>
+                </div>
+                
+                <div class="div-listitem-container">
+                    <div class="div-rankinglist-index-n">8</div>
+                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-8">
+                    <div class="div-ranklinglist-playername" id="rankinglist-playername-8"></div>
+                    <div class="div-ranklinglist-scorecontainer">
+                        <span class="span-rankinglist-score" id="rankinglist-score-8"></span>
+                        <span class="span-rankinglist-fen">分</span>
+                    </div>
+                </div>
+                
+                <div class="div-listitem-container">
+                    <div class="div-rankinglist-index-n">9</div>
+                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-9">
+                    <div class="div-ranklinglist-playername" id="rankinglist-playername-9"></div>
+                    <div class="div-ranklinglist-scorecontainer">
+                        <span class="span-rankinglist-score" id="rankinglist-score-9"></span>
+                        <span class="span-rankinglist-fen">分</span>
+                    </div>
+                </div>
+                
+                <div class="div-listitem-container">
+                    <div class="div-rankinglist-index-n">10</div>
+                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-10">
+                    <div class="div-ranklinglist-playername" id="rankinglist-playername-10"></div>
+                    <div class="div-ranklinglist-scorecontainer">
+                        <span class="span-rankinglist-score" id="rankinglist-score-10"></span>
+                        <span class="span-rankinglist-fen">分</span>
+                    </div>
+                </div>
+                
+                <div class="div-listitem-container">
+                    <div class="div-rankinglist-index-n">11</div>
+                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-11">
+                    <div class="div-ranklinglist-playername" id="rankinglist-playername-11"></div>
+                    <div class="div-ranklinglist-scorecontainer">
+                        <span class="span-rankinglist-score" id="rankinglist-score-11"></span>
+                        <span class="span-rankinglist-fen">分</span>
+                    </div>
+                </div>
+                
+                <div class="div-listitem-container">
+                    <div class="div-rankinglist-index-n">12</div>
+                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-12">
+                    <div class="div-ranklinglist-playername" id="rankinglist-playername-12"></div>
+                    <div class="div-ranklinglist-scorecontainer">
+                        <span class="span-rankinglist-score" id="rankinglist-score-12"></span>
+                        <span class="span-rankinglist-fen">分</span>
+                    </div>
+                </div>
+                
+                <div class="div-listitem-container">
+                    <div class="div-rankinglist-index-n">13</div>
+                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-13">
+                    <div class="div-ranklinglist-playername" id="rankinglist-playername-13"></div>
+                    <div class="div-ranklinglist-scorecontainer">
+                        <span class="span-rankinglist-score" id="rankinglist-score-13"></span>
+                        <span class="span-rankinglist-fen">分</span>
+                    </div>
+                </div>
+                
+                <div class="div-listitem-container">
+                    <div class="div-rankinglist-index-n">14</div>
+                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-14">
+                    <div class="div-ranklinglist-playername" id="rankinglist-playername-14"></div>
+                    <div class="div-ranklinglist-scorecontainer">
+                        <span class="span-rankinglist-score" id="rankinglist-score-14"></span>
+                        <span class="span-rankinglist-fen">分</span>
+                    </div>
+                </div>
+                
+                <div class="div-listitem-container">
+                    <div class="div-rankinglist-index-n">15</div>
+                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-15">
+                    <div class="div-ranklinglist-playername" id="rankinglist-playername-15"></div>
+                    <div class="div-ranklinglist-scorecontainer">
+                        <span class="span-rankinglist-score" id="rankinglist-score-15"></span>
+                        <span class="span-rankinglist-fen">分</span>
+                    </div>
+                </div>
+                
+            </div>
+            <img src="/front/assets/img/caq_rankinglist_title.png" class="img-rankinglist-title">
+        </div>
+        
+        <div class="div-questionproperty-container">
+            <div class="div-questionproperty-item-container" id="limitpeoplecontainer">
+                <img src="/front/assets/img/caq_peoplelimiticon.png" class="img-questionproperty-item-icon">
+                <div class="div-questionproperty-item-number-black" id="limitpeople">300</div>
+            </div>
+            
+            <div class="div-questionproperty-item-container" id="addscorecontainer">
+                <img src="/front/assets/img/caq_correcticon.png" class="img-questionproperty-item-icon">
+                <div class="div-questionproperty-item-number-green" id="addscore">+30</div>
+            </div>
+            
+            <div class="div-questionproperty-item-container" id="minusscorecontainer">
+                <img src="/front/assets/img/caq_wrongicon.png" class="img-questionproperty-item-icon">
+                <div class="div-questionproperty-item-number-red" id="minusscore">-30</div>
+            </div>
+        </div>
+        
+        <div class="div-question-container">
+            <div class="div-question-index-container"></div>
+            <div class="div-question-index" id="question-index">30</div>
+            <div class="div-question-content" id="question-content">这是一个测试文本一二三四五六七八九十这是一个测试文本一二三四五六七八九十这是一个测试文本一二</div>
+        </div>
+        
+        <div class="div-answer-container">
+            
+            <div class="div-answer-item-container" id="answer-container-a">
+                <div class="div-answer-selector-bg" id="answer-bg-a">
+                    <div class="div-answer-selector">A</div>
+                </div>
+                <div class="div-answer-content" id="answer-a">一二三四五六七八九十一二三四五六七八九十</div>
+            </div>
+            
+            <div class="div-answer-item-container" id="answer-container-b">
+                <div class="div-answer-selector-bg" id="answer-bg-b">
+                    <div class="div-answer-selector">B</div>
+                </div>
+                <div class="div-answer-content" id="answer-b">一二三四五六七八九十一二三四五六七八九十</div>
+            </div>
+            
+            <div class="div-answer-item-container" id="answer-container-c">
+                <div class="div-answer-selector-bg" id="answer-bg-c">
+                    <div class="div-answer-selector">C</div>
+                </div>
+                <div class="div-answer-content" id="answer-c">一二三四五六七八九十一二三四五六七八九十</div>
+            </div>
+            
+            <div class="div-answer-item-container" id="answer-container-d">
+                <div class="div-answer-selector-bg" id="answer-bg-d">
+                    <div class="div-answer-selector">D</div>
+                </div>
+                <div class="div-answer-content" id="answer-d">一二三四五六七八九十一二三四五六七八九十</div>
+            </div>
+            
+        </div>
+        
+    </section>
+    
+    
+    <!--sec-prize是投影幕上用来显示最终排行的容器-->
+    <section class="sec-prize">
+        <div class="div-honor-background-white">
+            <div class="div-honor-topn-container">
+                <div class="div-honor-topn-index">4</div>
+                <div class="div-honor-topn-playername">啊啊啊</div>
+                <div class="div-honor-topn-score">¥60</div>
+            </div>
+        </div>
+        <div class="div-honor-background"></div>
+        <div class="div-topthree-container">
+            
+            
+            <div class="div-top-1-container">
+                <img src="/front/assets/img/caq_honor_lightsweep.png" class="img-honor-1-lightsweep">
+                <img src="/front/assets/img/caq_honor_1_bg.png" class="img-honor-1-bg">
+                <img src="/front/assets/img/caq_goldcup.png"  class="img-honor-1">
+                <div class="div-honor-top-1-info-container">
+                    <h1 class="h-top-1-name" id="top1-name">啊啊啊</h1>
+                    <h1 class="h-top-1-score" id="top1-score">¥157</h1>
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            <div class="div-top-2-container">
+                <img src="/front/assets/img/caq_honor_2.png" class="img-honor-2-3" id="img-honor-2">
+                <div class="div-honor-top-2-3-info-container">
+                    <h1 class="h-top-2-3-name" id="top2-name">啊啊啊</h1>
+                    <h1 class="h-top-2-3-score" id="top2-score">¥140</h1>
+                </div>
+            </div>
+            
+            
+            <div class="div-top-3-container">
+                <img src="/front/assets/img/caq_honor_3.png" class="img-honor-2-3" id="img-honor-3">
+                <div class="div-honor-top-2-3-info-container">
+                    <h1 class="h-top-2-3-name" id="top3-name">啊啊啊</h1>
+                    <h1 class="h-top-2-3-score" id="top3-score">¥140</h1>
+                </div>
+            </div>
+            
+            
+            
+        </div>
+    </section>
+    
+    <div class="div-mask"></div>
+</body>
+
+</html>
