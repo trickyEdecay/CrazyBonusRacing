@@ -183,11 +183,11 @@
     function showsponsor(id){
         $("#opepanel-questionid").html(id);
         $.ajax({
-            url: "<?php echo ROOT_PREFIX.API;?>/CAQ_function",
+            url: "<?php echo ROOT_PREFIX.API;?>/remote-control",
             type: "POST",
             data:{
-                'what':'showsponser',
-                'questionid':id
+                'what':'showSponsor',
+                'questionId':id
             },
             success: function(data,status){
                 data = JSON.parse(data);
