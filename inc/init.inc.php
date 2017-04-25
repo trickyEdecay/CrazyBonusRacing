@@ -33,6 +33,9 @@ define("DEBUG_MODE","/".$config_json["debug"]);
 #添加插件目录到搜索变量中
 set_include_path(get_include_path().PATH_SEPARATOR.ROOT.VENDOR);
 
+#添加model目录到搜索变量中
+set_include_path(get_include_path().PATH_SEPARATOR.ROOT."/model");
+
 #注册自动加载类的方法，新建对象的时候会调用这个函数
 spl_autoload_register(function ($class_name) {
     $class_name= str_replace("\\","/",$class_name).".php";
@@ -54,3 +57,7 @@ define("DB_PWD",$config_json["db_pwd"]);
 
 #所使用的数据库名
 define("DB_TABLE",$config_json["db_table"]);
+
+
+#当前年份
+define("YEAR",date("Y"));
