@@ -13,6 +13,11 @@ $klein->respond('GET', ROOT_PREFIX."/[:action]", function ($request) {
     die();
 });
 
+$klein->respond('GET', ROOT_PREFIX."/", function ($request) {
+    require_once (PAGES."/user/main.php");
+    die();
+});
+
 # cbradmin/question
 $klein->respond('GET', ROOT_PREFIX.ADMIN_PREFIX."/[:action]", function ($request) {
     require_once (PAGES."/admin/".$request->action.".php");
