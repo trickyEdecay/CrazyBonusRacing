@@ -42,4 +42,44 @@ class player extends sqlihelper {
         return $en_rankingListPack;
     }
 
+    /**
+     * 重置分数低于0的人的分数到0分。
+     */
+    public function belowResetZero(){
+        $this->mysql("update `{$this->_tableName}` set `score`=0 where `score`<0");
+    }
+
+
+    /**
+     * 计算整个表的人名次排序
+     */
+    public function rank(){
+        $year = YEAR;
+
+        $this->mysql("set @ranking=0");
+        $this->mysql("update 
+            (
+              select id,ranking,@ranking:=@ranking+1 as temprank from `{$this->_tableName}` 
+              where lastactiveyear='{$year}' order by score desc,achievetime asc,achievets asc
+            ) 
+            temp,`{$this->_tableName}` set `{$this->_tableName}`.ranking = temp.temprank ,
+            `{$this->_tableName}`.oldranking = temp.ranking 
+            where `{$this->_tableName}`.id = temp.id"
+        );
+
+    }
+
+    /**
+     * 记录每个人的历史得分和历史排名
+     */
+    public function recordHistoryRankAndScore(){
+        $year = YEAR;
+        //记录历史分数和历史排名
+        $this ->mysql("update `{$this->_tableName}` set 
+            historyscore = concat(IFNULL(historyscore,''),concat(score,',')) ,
+            historyranking = concat(IFNULL(historyranking,''),concat(ranking,',')) 
+            where lastactiveyear='{$year}'"
+        );
+    }
+
 }

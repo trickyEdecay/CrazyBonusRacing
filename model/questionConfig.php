@@ -9,24 +9,50 @@ class questionConfig extends sqlihelper{
 
     private $_tableName = "question_config";
 
+    private $questionPack;
+
     public function setConfig($key,$value){
-        $this->bindingQuery("update `{$this->_tableName}` set `value` = ? where `keyname` = ?",
+        $this->bindingQuery("update `{$this->_tableName}` set `value` = ? where `keyname` = ? limit 1",
             "ss",$value,$key);
+    }
+
+    public function getConfig($key){
+        $this->result = $this->bindingQuery("select value from `{$this->_tableName}` where `keyname` = ? limit 1",
+            "s",$key);
+        return $this->result->fetch_assoc()['value'];
     }
 
     public function setCurrentQuestionId($questionId){
         $this->setConfig("currentquestionid",$questionId);
     }
+
+    public function setIsReging($isReging){
+        $this->setConfig("isreging",$isReging);
+    }
+
     public function setIsAnswering($isAnswering){
         $isAnswering = $isAnswering ? "true" : "false";
         $this->setConfig("isanswering",$isAnswering);
     }
+
     public function setAnswerState($answerState){
         $this->setConfig("answerstate",$answerState);
     }
+
+    public function getAnswerState(){
+        return $this->getConfig("answerstate");
+    }
+
     public function setQuestionPack($questionPack){
         $this->setConfig("questionpack",$questionPack);
     }
+
+    public function getQuestionPack(){
+        $this->questionPack = $this->getConfig("questionpack");
+        $this->questionPack = json_decode($this->questionPack,true);
+        return $this->questionPack;
+    }
+
     public function setRankingListPack($rankingListPack){
         $this->setConfig("rankinglistpack",$rankingListPack);
     }
@@ -57,9 +83,9 @@ class questionConfig extends sqlihelper{
 }
 
 class AnswerState{
-    const sponsor = "showingsponsor";
+    const sponsor = "showingSponsor";
     const captcha = "showingCaptcha";
     const question = "showingQuestion";
     const solution = "showingSolution";
-    const rankingList = "showingrankingList";
+    const winners = "showingWinners";
 }

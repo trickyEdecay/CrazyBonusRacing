@@ -36,10 +36,10 @@
         var id=$("#opepanel-questionid").html();
         $("[sign-data='questionsign']").html("");
         $.ajax({
-            url: "<?php echo ROOT_PREFIX.API;?>/CAQ_function",
+            url: "<?php echo ROOT_PREFIX.API;?>/remote-control",
             type: "POST",
             data:{
-                'what':'getAdminInfoPack',
+                'what':'getQuestionStatus',
                 'questionid':id
             },
             success: function(data,status){
@@ -84,17 +84,16 @@
         $("[sign-data='showsponsorbtn']").attr("disabled",false);
     }
         
-    function showidc(){
+    function showCaptcha(){
         disableallbtn();
         $("#showidcbtn").attr("disabled",true);
         $("#showidcbtn").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;显示验证码");
         var id=$("#opepanel-questionid").html();
         $.ajax({
-            url: "<?php echo ROOT_PREFIX.API;?>/CAQ_function",
+            url: "<?php echo ROOT_PREFIX.API;?>/remote-control",
             type: "POST",
             data:{
-                'what':'changequestionto',
-                'questionid':id
+                'what':'showCaptcha'
             },
             success: function(data,status){
                 data = JSON.parse(data);
@@ -119,11 +118,10 @@
         $("#showquestionbtn").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;显示题目");
         var id=$("#opepanel-questionid").html();
         $.ajax({
-            url: "<?php echo ROOT_PREFIX.API;?>/CAQ_function",
+            url: "<?php echo ROOT_PREFIX.API;?>/remote-control",
             type: "POST",
             data:{
-                'what':'showquestion',
-                'questionid':id
+                'what':'showQuestion'
             },
             success: function(data,status){
                 data = JSON.parse(data);
@@ -159,11 +157,10 @@
         $("#showkeybtn").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;显示答案+结算分数");
         var id=$("#opepanel-questionid").html();
         $.ajax({
-            url: "<?php echo ROOT_PREFIX.API;?>/CAQ_function",
+            url: "<?php echo ROOT_PREFIX.API;?>/remote-control",
             type: "POST",
             data:{
-                'what':'showkey',
-                'questionid':id
+                'what':'showSolution'
             },
             success: function(data,status){
                 data = JSON.parse(data);
@@ -206,12 +203,12 @@
     }
         
         
-    function showprize(){
+    function showWinners(){
         $.ajax({
-            url: "<?php echo ROOT_PREFIX.API;?>/CAQ_function",
+            url: "<?php echo ROOT_PREFIX.API;?>/remote-control",
             type: "POST",
             data:{
-                'what':'showprize',
+                'what':'showWinners',
             },
             success: function(data,status){
                 data = JSON.parse(data);
@@ -226,13 +223,13 @@
     }
         
         
-    function togglereging(changeto){
+    function toggleReging(changeTo){
         $.ajax({
-            url: "<?php echo ROOT_PREFIX.API;?>/CAQ_function",
+            url: "<?php echo ROOT_PREFIX.API;?>/remote-control",
             type: "POST",
             data:{
-                'what':'togglereging',
-                'changeto':changeto
+                'what':'toggleReging',
+                'changeTo':changeTo
             },
             success: function(data,status){
                 data = JSON.parse(data);
@@ -298,7 +295,7 @@
         ?>
         
         <br style="clear:both">
-        <button class="col-md-3 col-sm-12 col-xs-12 btn btn-default btn-lg" onclick="showprize()">显示获奖名单</button>
+        <button class="col-md-3 col-sm-12 col-xs-12 btn btn-default btn-lg" onclick="showWinners()">显示获奖名单</button>
         
         <br style="clear:both">
         <br style="clear:both">
@@ -307,11 +304,11 @@
         $row = mysql_fetch_array($result);
         if($row['value']=='true'){
         ?>
-            <button class="col-md-3 col-sm-12 col-xs-12 btn btn-default btn-lg" onclick="togglereging('false')">关闭注册</button>
+            <button class="col-md-3 col-sm-12 col-xs-12 btn btn-default btn-lg" onclick="toggleReging(false)">关闭注册</button>
         <?php
         }else{
         ?>
-            <button class="col-md-3 col-sm-12 col-xs-12 btn btn-default btn-lg" onclick="togglereging('true')">开放注册</button>
+            <button class="col-md-3 col-sm-12 col-xs-12 btn btn-default btn-lg" onclick="toggleReging(true)">开放注册</button>
         <?php
         }
         ?>
@@ -348,7 +345,7 @@
                     <br style="clear:both">
                     <p id="Operatetips"></p>
                     <br style="clear:both">
-                    <button type="button" id="showidcbtn" class="btn btn-default btn-lg navbar-btn col-md-3 col-sm-12 col-xs-12" onclick="showidc()">显示验证码</button>
+                    <button type="button" id="showidcbtn" class="btn btn-default btn-lg navbar-btn col-md-3 col-sm-12 col-xs-12" onclick="showCaptcha()">显示验证码</button>
                     <br style="clear:both">
                     <button type="button" id="showquestionbtn" class="btn btn-default btn-lg navbar-btn col-md-3 col-sm-12 col-xs-12" onclick="showquestion()">显示题目</button>
                     <br style="clear:both">
