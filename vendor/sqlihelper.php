@@ -61,6 +61,11 @@ class sqlihelper{
 	
 	//执行一条mysql
 	public function mysql($sql){
+
+        if(is_null($this->_mysqli)){
+            throw new Exception("mysqli is null now");
+        }
+
 		$this->result = $this->_mysqli->query($sql);
         $this->stmterrno = $this->_mysqli->errno;
 		return $this->result;
@@ -86,6 +91,11 @@ class sqlihelper{
      * @internal param mixed $bindingvar 变量（多个）
      */
     public function bindingQuery(){
+
+        if(is_null($this->_mysqli)){
+            throw new Exception("mysqli is null now");
+        }
+
         $argcount = func_num_args();         //输出参数个数
         if($argcount<3){
             throw new Exception("参数个数不能少于三个");
@@ -110,9 +120,9 @@ class sqlihelper{
         }
         $this->stmterrno = $stmt->errno;
         $this->stmterr = $stmt->error;
-        $result = $stmt->get_result();
+        $this->result = $stmt->get_result();
         
-        return $result;
+        return $this->result;
     }
     
     public function isSuccess(){
