@@ -61,9 +61,9 @@ class sqlihelper{
 	
 	//执行一条mysql
 	public function mysql($sql){
-		$result = $this->_mysqli->query($sql);
+		$this->result = $this->_mysqli->query($sql);
         $this->stmterrno = $this->_mysqli->errno;
-		return $result;
+		return $this->result;
 	}
     
     //获取错误编号
