@@ -356,6 +356,7 @@ function getQuestionPack(){
     $responsePack ->{'peoplelimit'} = $questionPack['peoplelimit'];
     $responsePack ->{'addscore'} = $questionPack['addscore'];
     $responsePack ->{'minusscore'} = $questionPack['minusscore'];
+    $responsePack ->{'question'} = $questionPack['question'];
     $responsePack ->{'availabletime'} = $questionPack['availabletime'];
     $responsePack ->{'answera'} = $questionPack['answera'];
     $responsePack ->{'answerb'} = $questionPack['answerb'];
