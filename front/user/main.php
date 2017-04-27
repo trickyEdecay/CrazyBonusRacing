@@ -331,7 +331,7 @@ if($err->{'code'}!=0000){
                         $("#ban-info").css("display","block");
                     }
                     
-                    if(idcpanelpack.active >=2){
+                    if(idcpanelpack.active >2){
                         $("#active-info").css("display","block");
                     }
                     
@@ -505,7 +505,7 @@ if($err->{'code'}!=0000){
                     $("#refresh").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;刷新中");
                     $("#refresh").attr("disabled",true);
                     var idcpanelpack = {};
-                    getDataFromServer("getIdcPanelPack",function(idcpanelpack){
+                    getDataFromServer("getProfile",function(idcpanelpack){
                         if(idcpanelpack.err != 0000){
                             $("#checkidctips").html(idcpanelpack.errinfo);
                             $("#refresh").attr("disabled",false);
