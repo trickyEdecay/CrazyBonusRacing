@@ -34,6 +34,10 @@ class questionConfig extends sqlihelper{
         $this->setConfig("isreging",$isReging);
     }
 
+    public function getIsReging(){
+         return $this->getConfig("isreging");
+    }
+
     public function setIsAnswering($isAnswering){
         $isAnswering = $isAnswering ? "true" : "false";
         $this->setConfig("isanswering",$isAnswering);

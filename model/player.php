@@ -12,6 +12,8 @@ class player extends sqlihelper {
 
     private $year = YEAR;
 
+    private $defaultRanking = 66;
+
     /**
      * @var stdClass 排行榜数据包
      */
@@ -114,21 +116,79 @@ class player extends sqlihelper {
 
 
     public function isOldHand($peopleId){
-        $this->mysql("select `participateyears` from `question_people` where `id` = {$peopleId} limit 1");
+        $this->mysql("select `id` from `question_player_history` where `player-id` = {$peopleId} limit 1");
         if($this->result->num_rows <=0){
-            return false;
-        }
-        $participateYears = $this->result->fetch_assoc()['participateyears'];
-        if(strlen($participateYears)<=5){
             return false;
         }else{
             return true;
         }
-
     }
 
 
     public function getProfilePack($peopleId){
         return $this->getInfo($peopleId,"oldranking,ranking,score,rightcount,wrongcount,achievetime,isbanned,active");
+    }
+
+    public function isPlayerExist($name,$tel){
+        $this->bindingQuery("select * from question_people where name=? and tel=? limit 1",
+        "ss",
+        $name,$tel
+        );
+        if($this->result->num_rows <= 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public function refreshRandomKey($name,$tel,$randomKey = ''){
+        if($randomKey == ''){
+            $randomKey =uniqid();
+        }
+        $this->mysql("update `question_people`
+                      set 
+                      `randomkey`='{$randomKey}'
+                      where `name`='{$name}' and `tel`='{$tel}'
+        ");
+    }
+
+    public function resetPlayer($name,$tel,$now,$ts){
+        $this->mysql("update `question_people` 
+                      set
+                      `rightcount`='0',
+                      `wrongcount`='0',
+                      `score`='0',
+                      `ranking`='{$this->defaultRanking}',
+                      `oldranking`='{$this->defaultRanking}',
+                      `achievetime`='{$now}',
+                      `achievets`='{$ts}',
+                      `wrongidccount`='0',
+                      `isbanned`='0',
+                      `rightids`='',
+                      `wrongids`='',
+                      `active`='1',
+                      `activeminusscore`='0',
+                      `lastactiveyear`='{$this->year}',
+                      `historyscore`='0',
+                      `historyranking`='{$this->defaultRanking}'
+                      WHERE 
+                      `name` = '{$name}' and `tel` = '{$tel}' limit 1
+        ");
+    }
+
+    public function createNewPlayer($name,$tel,$now,$ts){
+        $this->mysql("insert into question_people 
+              (`name`,`tel`,`achievetime`,`achievets`,`participateyears`,`lastactiveyear`,
+              `ranking`,`oldranking`,`historyscore`,`historyranking`,
+              `rightcount`,`wrongcount`,`score`,`wrongidccount`,`isbanned`,
+              `rightids`,`wrongids`,`active`,`activeminusscore`
+              ) 
+              values
+              ('{$name}','{$tel}','{$now}','{$ts}','{$this->year}','{$this->year}',
+              '{$this->defaultRanking}','{$this->defaultRanking}',0,'{$this->defaultRanking}',
+              0,0,0,0,0,
+              '','',1,0
+              )
+        ");
     }
 }

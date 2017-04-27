@@ -113,7 +113,7 @@ if(is_array($_GET)&&count($_GET)>0){
                 if($("#loginbtn").html()=="进入疯狂抢答" && !isWeiXin()){
                     $("#loginbtn").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;努力为你加载中~爱你哟~");
                     $.ajax({
-                        url: "<?php echo ROOT_PREFIX.API;?>/CAQ_function",
+                        url: "<?php echo ROOT_PREFIX.API;?>/login",
                         type: "POST",
                         data:{
                             'what':'login',
@@ -137,7 +137,7 @@ if(is_array($_GET)&&count($_GET)>0){
                 if($("#registerbtn").html()=="登记并进入疯狂抢答" && !isWeiXin()){
                     $("#registerbtn").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;努力为你加载中~爱你哟~");
                     $.ajax({
-                        url: "<?php echo ROOT_PREFIX.API;?>/CAQ_function",
+                        url: "<?php echo ROOT_PREFIX.API;?>/login",
                         type: "POST",
                         data:{
                             'what':'register',
