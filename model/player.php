@@ -160,7 +160,7 @@ class player extends sqlihelper {
                       `score`='0',
                       `ranking`='{$this->defaultRanking}',
                       `oldranking`='{$this->defaultRanking}',
-                      `achievetime`='{$now}',
+                      `achievetime`= now(6),
                       `achievets`='{$ts}',
                       `wrongidccount`='0',
                       `isbanned`='0',
@@ -184,7 +184,7 @@ class player extends sqlihelper {
               `rightids`,`wrongids`,`active`,`activeminusscore`
               ) 
               values
-              ('{$name}','{$tel}','{$now}','{$ts}','{$this->year}','{$this->year}',
+              ('{$name}','{$tel}',now(6),'{$ts}','{$this->year}','{$this->year}',
               '{$this->defaultRanking}','{$this->defaultRanking}',0,'{$this->defaultRanking}',
               0,0,0,0,0,
               '','',1,0
