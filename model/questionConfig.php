@@ -26,6 +26,10 @@ class questionConfig extends sqlihelper{
         $this->setConfig("currentquestionid",$questionId);
     }
 
+    public function getCurrentQuestionId(){
+        return $this->getConfig("currentquestionid");
+    }
+
     public function setIsReging($isReging){
         $this->setConfig("isreging",$isReging);
     }
@@ -33,6 +37,11 @@ class questionConfig extends sqlihelper{
     public function setIsAnswering($isAnswering){
         $isAnswering = $isAnswering ? "true" : "false";
         $this->setConfig("isanswering",$isAnswering);
+    }
+
+    public function getIsAnswering(){
+        $isAnswering = $this->getConfig("isanswering");
+        return $isAnswering == "true" ? true : false;
     }
 
     public function setAnswerState($answerState){
@@ -79,6 +88,9 @@ class questionConfig extends sqlihelper{
             $captcha = $this->generateCaptcha();
         }
         $this->setConfig("idc",$captcha);
+    }
+    public function getCaptcha(){
+        return $this->getConfig("idc");
     }
 }
 

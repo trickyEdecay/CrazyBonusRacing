@@ -61,7 +61,7 @@ if($err->{'code'}!=0000){
                 <button class="btn-refresh" id="refresh"><i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;刷新</button>
             </div>
             <br>
-            <div class="div-alert-info" id="ban-info"><span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;&nbsp;很抱歉,您已经连续输入三次错误的验证码,您的账号已经被封禁,请向现场工作人员求助,带来不便敬请谅解</div>
+            <div class="div-alert-info" id="ban-info"><span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;&nbsp;很抱歉,您已经连续输入五次错误的验证码,您的账号已经被封禁,请向现场工作人员求助,带来不便敬请谅解</div>
             
             <div class="div-alert-info" id="active-info"><span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;&nbsp;很抱歉,您的行为被系统断定为消极比赛,如果您没有积极参与比赛,将被扣除一定分数</div>
             
@@ -148,7 +148,7 @@ if($err->{'code'}!=0000){
                 <div id="answerbuttongroup">
                     
                     <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="div-answer-answer-block" onclick="submitanswer('A')">
+                        <div class="div-answer-answer-block" onclick="submitSolution('A')">
                             <span id="answer-a"></span>
                             <br style="clear:both">
                         </div>
@@ -157,7 +157,7 @@ if($err->{'code'}!=0000){
                     <br style="clear:both">
                     
                     <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="div-answer-answer-block" onclick="submitanswer('B')">
+                        <div class="div-answer-answer-block" onclick="submitSolution('B')">
                             <span id="answer-b"></span>
                             <br style="clear:both">
                         </div>
@@ -166,7 +166,7 @@ if($err->{'code'}!=0000){
                     <br style="clear:both">
                     
                     <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="div-answer-answer-block" onclick="submitanswer('C')">
+                        <div class="div-answer-answer-block" onclick="submitSolution('C')">
                             <span id="answer-c"></span>
                             <br style="clear:both">
                         </div>
@@ -175,7 +175,7 @@ if($err->{'code'}!=0000){
                     <br style="clear:both">
                     
                     <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="div-answer-answer-block" onclick="submitanswer('D')">
+                        <div class="div-answer-answer-block" onclick="submitSolution('D')">
                             <span id="answer-d"></span>
                             <br style="clear:both">
                         </div>
@@ -277,7 +277,7 @@ if($err->{'code'}!=0000){
                 result.err = 1000;
                 result.errinfo = "QAQ为什么服务器要和我分手!!";
                 $.ajax({
-                    url: "<?php echo ROOT_PREFIX.API;?>/CAQ_mobile_parts",
+                    url: "<?php echo ROOT_PREFIX.API;?>/mobile",
                     type: "POST",
                     data:{
                         'what':what
@@ -301,7 +301,7 @@ if($err->{'code'}!=0000){
                 
                 
                 var idcpanelpack = {};
-                getDataFromServer("getIdcPanelPack",function(idcpanelpack){
+                getDataFromServer("getProfile",function(idcpanelpack){
                     if(idcpanelpack.err != 0000){
                         $("#checkidctips").html(idcpanelpack.errinfo);
                         $("#idcpanel").css("display","block");
@@ -395,7 +395,7 @@ if($err->{'code'}!=0000){
                 
                 
                 var answerpanelpack = {};
-                getDataFromServer("getAnswerPanelPack",function(answerpanelpack){
+                getDataFromServer("getQuestionPack",function(answerpanelpack){
                     if(answerpanelpack.err != 0000){
                         $("#checkidctips").html(answerpanelpack.errinfo);
                         $("#answerpanel").css("display","block");
@@ -477,10 +477,10 @@ if($err->{'code'}!=0000){
                 
                 //判断是不是老玩家
                 $.ajax({
-                    url: "<?php echo ROOT_PREFIX.API;?>/CAQ_function",
+                    url: "<?php echo ROOT_PREFIX.API;?>/mobile",
                     type: "POST",
                     data:{
-                        'what':'whetheroldcomer'
+                        'what':'isOldHand'
                     },
                     error:function(){
                         
@@ -488,7 +488,7 @@ if($err->{'code'}!=0000){
                     success: function(data,status){
                         result = JSON.parse(data);
                         if(result.code == 0000){
-                            if(result.isoldcomer == "true" && getCookie("oldComercopythat")!="true"){
+                            if(result.isOldHand == true && getCookie("oldComercopythat")!="true"){
                                 $("#oldcomertip").css("display","block");
                             }
                         }
@@ -590,16 +590,17 @@ if($err->{'code'}!=0000){
                     if($("#goAnswer").html()=="进入疯狂抢答"){
                         $("#goAnswer").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;正在进入中,稍安勿躁");
                         $.ajax({
-                            url: "<?php echo ROOT_PREFIX.API;?>/CAQ_function",
+                            url: "<?php echo ROOT_PREFIX.API;?>/mobile",
                             type: "POST",
                             data:{
-                                'what':'checkidc',
-                                'idc':$('#idcInput').val()
+                                'what':'checkCaptcha',
+                                'captcha':$('#idcInput').val()
                             },
                             success: function(data,status){
                                 data = JSON.parse(data);
                                 if(data.code == 0000){
                                     $("#checkidctips").html(data.info);
+                                    $("#goAnswer").html("进入疯狂抢答");
                                 }else{
                                     $("#checkidctips").html(data.info);
                                     $("#goAnswer").html("进入疯狂抢答");
@@ -633,11 +634,11 @@ if($err->{'code'}!=0000){
                     scanstate('infopage','err::你没有在规定的时间内作答~');
 
                     $.ajax({
-                        url: "<?php echo ROOT_PREFIX.API;?>/CAQ_function",
+                        url: "<?php echo ROOT_PREFIX.API;?>/mobile",
                         type: "POST",
                         data:{
-                            'what':'submitanswertimeout',
-                            'questionid':questionid
+                            'what':'iveBeenTimeout',
+                            'questionId':questionid
                         },
                         success: function(data,status){
 
@@ -651,17 +652,17 @@ if($err->{'code'}!=0000){
             
             
             
-            function submitanswer(choose){
+            function submitSolution(choose){
                 clearInterval(timer1);
                 $("#answerbuttongroup").css("display","none");
                 $("#processinganimation").css("display","inline");
                 $.ajax({
-                    url: "<?php echo ROOT_PREFIX.API;?>/CAQ_function",
+                    url: "<?php echo ROOT_PREFIX.API;?>/mobile",
                     type: "POST",
                     data:{
-                        'what':'submitanswer',
+                        'what':'submitSolution',
                         'choose':choose,
-                        'questionid':questionid
+                        'questionId':questionid
                     },
                     success: function(data,status){
                         data = JSON.parse(data);

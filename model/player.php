@@ -82,4 +82,53 @@ class player extends sqlihelper {
         );
     }
 
+    /**
+     * 用户提交错误的验证码执行这个操作
+     * @param $peopleId 用户id
+     */
+    public function submitWrongCaptcha($peopleId){
+        $this->mysql("update `question_people` set `wrongidccount`=`wrongidccount`+1 where `id`='{$peopleId}' limit 1");
+        $this->mysql("update `question_people` set `isbanned`=1 where `wrongidccount`>=5 and `id`='{$peopleId}' limit 1");
+    }
+
+
+    /**
+     * 清除消极作答（即没有输入验证码进入答题）的记录
+     * @param $peopleId 用户id
+     */
+    public function clearPassiveRecord($peopleId){
+        $this->bindingQuery("update `question_people` set `active`= 0 where `id`=?",
+        "i",$peopleId
+        );
+    }
+
+
+    public function getInfo($peopleId,$columns = "*"){
+        $this->result = $this->mysql("select {$columns} from `question_people` where `id`='{$peopleId}' limit 1");
+        return $this->result->fetch_assoc();
+    }
+
+    public function getRandomKey($peopleId){
+        return $this->getInfo($peopleId,"`randomkey`")['randomkey'];
+    }
+
+
+    public function isOldHand($peopleId){
+        $this->mysql("select `participateyears` from `question_people` where `id` = {$peopleId} limit 1");
+        if($this->result->num_rows <=0){
+            return false;
+        }
+        $participateYears = $this->result->fetch_assoc()['participateyears'];
+        if(strlen($participateYears)<=5){
+            return false;
+        }else{
+            return true;
+        }
+
+    }
+
+
+    public function getProfilePack($peopleId){
+        return $this->getInfo($peopleId,"oldranking,ranking,score,rightcount,wrongcount,achievetime,isbanned,active");
+    }
 }

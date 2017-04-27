@@ -18,4 +18,20 @@ class CaptchaDelay extends sqlihelper {
         $fullTime = $row['time'];
         $this->mysql("update question_idcinputtime set delay=unix_timestamp(idcinputtime)-unix_timestamp('{$fullTime}') where questionid = '{$questionId}'");
     }
+
+    /**
+     * 记录输入验证码的时间，如果不存在记录则插入，存在则不插入。
+     * @param $peopleId 用户id
+     * @param $questionId 问题id
+     * @param $now 当前时间
+     */
+    public function recordInputTime($peopleId, $questionId, $now){
+        $this->result = $this->mysql("insert into `question_idcinputtime` 
+          (`peopleid`,`questionid`,`idcinputtime`,`delay`) 
+          select * from (select {$peopleId},{$questionId},'{$now}',0) as tmp
+          where not exists(
+            select `peopleid`,`questionid` from `question_idcinputtime` where `peopleid` = {$peopleId} and `questionid` = {$questionId}
+          )"
+        );
+    }
 }
