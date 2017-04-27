@@ -37,7 +37,7 @@ class questionBuffer extends sqlihelper {
         $state = QuestionBufferState::Waiting;
         $this->result = $this->mysql("insert into `question_buffer` 
             (`peopleid`,`questionid`,`time`,`state`,`ts`)
-            select * from (select {$peopleId},{$questionId},'{$now}','{$state}',{$ts}) as tmp
+            select * from (select {$peopleId},{$questionId},'now(6)','{$state}',{$ts}) as tmp
             where not exists(
               select `peopleid`,`questionid` from `question_buffer` where `peopleid` = {$peopleId} and `questionid` = {$questionId} limit 1
             )"
