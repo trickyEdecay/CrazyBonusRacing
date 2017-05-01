@@ -1,4 +1,11 @@
 <?php
+//验证在线,如果在线直接跳转到登录后的页面
+require_once("login.php");
+$err = getLoginState();
+$err= json_decode($err,true);
+if($err['code']==0000){
+    die("<script>location.href='main'</script>");
+}
 
 if(isset($_GET["tip"])){
     $tips=$_GET["tip"];//存在
