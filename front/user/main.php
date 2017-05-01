@@ -1,10 +1,12 @@
 <?php
 //验证在线
-require_once(ROOT.API."/CAQ_function.php");
-$err = checkCAQlogin();
-if($err->{'code'}!=0000){
-    $tip = $err->{'info'};
-    die("<script>window.location.href=\"login?tip=$tip\"</script>");
+require_once("login.php");
+$err = getLoginState();
+$err= json_decode($err,true);
+if($err['code']!=0000){
+    $tip = $err['info'];
+    require_once (PAGES."/user/login.php");
+    die();
 }
 ?>
 

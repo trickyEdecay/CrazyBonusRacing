@@ -1,12 +1,11 @@
 <?php
-if(is_array($_GET)&&count($_GET)>0){ 
-    if(isset($_GET["tip"])){ 
-        $tips=$_GET["tip"];//存在 
-    }else{
-        $tips="";
-    }
+
+if(isset($_GET["tip"])){
+    $tips=$_GET["tip"];//存在
+}elseif(isset($tip)){
+    $tips = $tip;
 }else{
-    $tips="";
+    $tips = "";
 }
 
 ?>
@@ -98,6 +97,7 @@ if(is_array($_GET)&&count($_GET)>0){
                 <button class="submit_btn" tabindex="3" data-submit-type="login">进入疯狂抢答</button>
                 <?php
             }
+            $db_questionConfig->close();
             ?>
 
             <p id="loginTips"><?php echo $tips;?></p>
