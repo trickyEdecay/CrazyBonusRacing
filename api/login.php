@@ -72,7 +72,7 @@ function checkCAQlogin(){
 
 //检查登录状态
 function getLoginState(){
-    session_start();
+    if(!session_id()) session_start();
     $errPack = new errorpack();
     if(isset($_COOKIE['auth'])){ //先判断cookie存在与否
         list($peopleId, $name,$randomKey) = explode(':', $_COOKIE['auth']);
