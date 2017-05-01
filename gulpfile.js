@@ -74,6 +74,7 @@ gulp.task("build:scripts",function(){
 gulp.task("build:styles",function(){
     return gulp.src(paths.src.style)
         .pipe(rev())
+        .pipe(devCssUrls('\/front',"/"+config.base_dir))
         .pipe(less())
         .pipe(gulp.dest(paths.dist.css))
         .pipe(rev.manifest())
@@ -97,7 +98,7 @@ gulp.task("build:pages",function(){
             manifest: manifest,
             replaceInExtensions: ['.js', '.css', '.html', '.hbs','.php']
         }))
-        .pipe(devRevUrls('\/front',config.local_host))
+        .pipe(devRevUrls('\/front',"/"+config.base_dir))
         .pipe(replace(/assets\/style/g, 'assets\/css'))
         .pipe(gulp.dest(paths.dist.pages));
 });
@@ -408,27 +409,27 @@ function devRevUrls(reg,replacement){
 }
 //
 //开发环境中使用这个来 替换 css中的 url
-// function devCssUrls(){
-//     return through.obj(function (file, enc, cb) {
-//         var mutable = [];
-//         mutable.push(file);
-//         mutable.forEach(function (f){
-//             if (!f.isNull()) {
-//                 var src = f.contents.toString('utf8');
-//                 var r ={
-//                     regexp : new RegExp('/src(.*)(\)','g'),
-//                     replacement: 'http://localhost/CrazyBonusRacing'+'$1$2'
-//
-//                 };
-//                 src = src.replace(r.regexp, r.replacement);
-// //            console.log("'"+'(url.*\()/src(.*)(\))'.replace(/[\-\[\]\{\}\(\)\*\+\?\.\^\$\|\/\\]/g, "\\$&")+"'");
-//                 f.contents = new Buffer(src);
-//             }
-//             this.push(f);
-//         },this);
-//         cb();
-//     });
-// }
+function devCssUrls(reg,replacement){
+    return through.obj(function (file, enc, cb) {
+        var mutable = [];
+        mutable.push(file);
+        mutable.forEach(function (f){
+            if (!f.isNull()) {
+                var src = f.contents.toString('utf8');
+                var r ={
+                    regexp : new RegExp('\(url\.\*\\(\.\*\)'+reg+'\(\.\*\)','g'),
+                    replacement: '$1'+replacement+'$2'
+
+                };
+                src = src.replace(r.regexp, r.replacement);
+           // console.log("'"+'(url.*\()/src(.*)(\))'.replace(/[\-\[\]\{\}\(\)\*\+\?\.\^\$\|\/\\]/g, "\\$&")+"'");
+                f.contents = new Buffer(src);
+            }
+            this.push(f);
+        },this);
+        cb();
+    });
+}
 //
 // //生产环境中使用这个来 替换 css中的 url
 // function buildCssUrls(){
