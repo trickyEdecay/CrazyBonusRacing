@@ -19,143 +19,168 @@ if(is_array($_GET)&&count($_GET)>0){
 
         <!-- build:js /assets/js/user/login.js -->
         <script src="/front/assets/js/jquery-1.12.4.js"></script>
-        <script src="/front/assets/js/bootstrap.js"></script>
         <!-- endbuild -->
 
         <!-- build:css /assets/css/user/login.css -->
-        <link href="/front/assets/style/bootstrap.css" rel="stylesheet">
         <link href="/front/assets/style/font-awesome.css" rel="stylesheet">
         <link href="/front/assets/style/user/login.css" rel="stylesheet">
         <!-- endbuild -->
     </head>
 
-    <body  style="background-color:#eee">
-        <center>
-            <img src="/front/assets/img/banner_quanmindafengqiang.png" class="img-responsive" alt="Responsive image">
-        </center>
-        <div class='container'>
-            <div class="col-md-12 col-sm-12 col-xs-12 div_mainblock">
-                <br>
-                <br>
-                <div class="div-browser-dectect-info" id="browser-detect-info">
-                    <span class="glyphicon glyphicon-exclamation-sign">&nbsp;请勿在微信浏览器中直接操作本网页<br><br>点击右上角的按钮->&nbsp;<strong>"在浏览器中打开"<strong></span>
+    <body>
+        <div class="top_warn" id="wechatDetected">
+            <div class="warp">
+                <div class="icon">
+                    <span class="fa fa-exclamation-circle"></span>
                 </div>
-                <noscript>
-                    <div>我们检测到你的浏览器没有开启&nbsp;<strong>Javascript</strong>&nbsp;的功能,请尝试在浏览器设置中开启，以免影响参赛效果，如需帮助可以向现场工作人员求助。</div>
-                </noscript>
-                <center>
-                    <br>
-                    <div class="div-input-border col-md-12 col-sm-12 col-xs-12 ">
-                        <input id="usrnameInput" placeholder="请输入你的姓名">
-                        <span class="glyphicon glyphicon-user" style="color:#787878"></span>
-                        <br style="clear:both">
-                    </div>
-                    <br>
-                    <br>
-                    <div class="div-input-border col-md-12 col-sm-12 col-xs-12 ">
-                        <input id="telInput" placeholder="请输入你的联系方式">
-                        <span class="glyphicon glyphicon-phone" style="color:#787878"></span>
-                        <br style="clear:both">
-                    </div>
-                    <br>
-                    <br>
-
-                    <?php
-                    $nc = new sqlhelper();
-                    $opecode = $nc->connect();
-                    if($opecode!=0){
-
-                    }
-                    $result = $nc->mysql("select * from question_config where keyname='isreging' limit 1");
-                    $row = mysql_fetch_array($result);
-                    if($row['value'] == 'true'){
-                    ?>
-                    <button class="div-caq-button col-md-12 col-sm-12 col-xs-12 " onclick="register()" id="registerbtn">登记并进入疯狂抢答</button>
-                    <?php
-                    }else{
-                    ?>
-                    <button class="div-caq-button col-md-12 col-sm-12 col-xs-12 " onclick="login()" id="loginbtn">进入疯狂抢答</button>
-                    <?php
-                    }
-                    ?>
-                    
-                    <p id="logintips" class="p-error"><?php echo $tips;?></p>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <p class="p-bottom-extras">科创社·科技部 技术提供</p>
-                </center>
+                <div class="content">
+                    请勿在微信浏览器中直接操作本网页<br>点击右上角的按钮->&nbsp;<strong>"在浏览器中打开"</strong>
+                </div>
             </div>
         </div>
+        <div class="top_warn" id="cookieDisabledDetected">
+            <div class="warp">
+                <div class="icon">
+                    <span class="fa fa-times-circle">
+                </div>
+                <div class="content">
+                    你的浏览器没有开启 <strong>cookie</strong> 功能哦，请尝试在浏览器设置中打开并刷新页面，以免影响参赛效果，如需帮助可以向现场工作人员求助。
+                </div>
+            </div>
+        </div>
+        <noscript>
+            <div class="warp">
+                <div class="icon">
+                    <span class="fa fa-times-circle">
+                </div>
+                <div class="content">
+                    我们检测到你的浏览器没有开启&nbsp;<strong>Javascript</strong>&nbsp;的功能,请尝试在浏览器设置中打开并刷新页面，以免影响参赛效果，如需帮助可以向现场工作人员求助。
+                </div>
+            </div>
+        </noscript>
+        <header>
+            <img id="logo" src="/front/assets/img/logo_withshadow.png">
+        </header>
+        <form id="login_form">
+            <div class="inner">
+            <div class="input_group">
+                <label for="player_name"><span data-for="icon" class="login_icon_player"></label>
+                <div class="input_container">
+                    <input id="player_name" placeholder="请输入你的姓名" type="text" tabindex="1">
+                </div>
+                <div class="bottom_line">
+                    <div class="red_bottom_line"></div>
+                </div>
+            </div>
+            <div class="input_group">
+                <label for="player_tel"><span data-for="icon" class="login_icon_tel"></span></label>
+                <div class="input_container">
+                    <input id="player_tel" placeholder="请输入你的联系方式" type="tel" tabindex="2">
+                </div>
+                <div class="bottom_line">
+                    <div class="red_bottom_line"></div>
+                </div>
+            </div>
+            </div>
 
+            <?php
+            $db_questionConfig = new questionConfig();
+            if(!$db_questionConfig->connect()){
+                $tips = "看似您的网络有问题哦";
+            }
+            $isReging = $db_questionConfig->getIsReging();
+            if($isReging == 'true'){
+                ?>
+                <button class="submit_btn" tabindex="3" data-submit-type="register">登记并进入疯狂抢答</button>
+                <?php
+            }else{
+                ?>
+                <button class="submit_btn" tabindex="3" data-submit-type="login">进入疯狂抢答</button>
+                <?php
+            }
+            ?>
 
-
+            <p id="loginTips"><?php echo $tips;?></p>
+        </form>
         <script>
-            //判断微信浏览器
-            function isWeiXin(){
-                var ua = window.navigator.userAgent.toLowerCase();
-                if(ua.match(/MicroMessenger/i) == 'micromessenger'){
-                    return true;
-                }else{
-                    return false;
+            $(function(){
+
+                //添加动画元素
+                var $loginInput = $(".input_container>input");
+                $loginInput.focus(function(){
+                   $(this).parent().parent().find(".red_bottom_line").addClass("active");
+                   $(this).parent().parent().find("[data-for='icon']").addClass("active");
+               });
+                $loginInput.blur(function(){
+                   $(this).parent().parent().find(".red_bottom_line").removeClass("active");
+                   $(this).parent().parent().find("[data-for='icon']").removeClass("active");
+               });
+
+                $loginInput.keydown(function(){
+                    $("#loginTips").html("");
+                });
+
+                //判断微信浏览器
+                function isWeiXin(){
+                    var ua = window.navigator.userAgent.toLowerCase();
+                    if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+                        return true;
+                    }else{
+                        return false;
+                    }
                 }
-            }
 
-            if(isWeiXin()){
-                document.getElementById("browser-detect-info").style.cssText = "display:block";
-            }
+                if(isWeiXin()){
+                    $("#wechatDetected").css("display","block");
+                }
 
-            function login(){
-                if($("#loginbtn").html()=="进入疯狂抢答" && !isWeiXin()){
-                    $("#loginbtn").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;努力为你加载中~爱你哟~");
-                    $.ajax({
-                        url: "<?php echo ROOT_PREFIX.API;?>/login",
-                        type: "POST",
-                        data:{
-                            'what':'login',
-                            'name':$('#usrnameInput').val(),
-                            'tel':$('#telInput').val()
-                        },
-                        success: function(data,status){
-                            data = JSON.parse(data);
-                            if(data.code == 0000){
-                                window.location.href = "<?php echo ROOT_PREFIX;?>/main";
-                            }else{
-                                $("#logintips").html(data.info);
-                                $("#loginbtn").html("进入疯狂抢答");
+                if(!navigator.cookieEnabled){
+                    $("#cookieDisabledDetected").css("display","block");
+                }
+
+
+                //登录 or 注册
+                var $loginForm = $("#login_form");
+
+                $loginForm.find("button").click(function(){
+                    $loginForm.submit();
+                });
+
+                $loginForm.submit(function(e){
+                    e.preventDefault();
+                    var $submitButton = $loginForm.find("button");
+                    var btnText = $submitButton.html();
+                    var submitType = $submitButton.attr("data-submit-type");
+
+                    if(isWeiXin()){
+                        $("#loginTips").html("本页面仅允许在第三方浏览器中打开哦");
+                        return;
+                    }
+
+                    if(btnText.indexOf("进入疯狂抢答") >= 0){
+                        $submitButton.html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;努力为你加载中~爱你哟~");
+                        $.ajax({
+                            url: "<?php echo ROOT_PREFIX.API;?>/login",
+                            type: "POST",
+                            data:{
+                                'what':submitType,
+                                'name':$('#player_name').val(),
+                                'tel':$('#player_tel').val()
+                            },
+                            success: function(data,status){
+                                data = JSON.parse(data);
+                                if(data.code == 0000){
+                                    window.location.href = "<?php echo ROOT_PREFIX;?>/main";
+                                }else{
+                                    $("#loginTips").html(data.info);
+                                    $submitButton.html(btnText);
+                                }
                             }
-                        }
-                    });
-                }
-            }
+                        });
+                    }
+                });
 
-            function register(){
-                if($("#registerbtn").html()=="登记并进入疯狂抢答" && !isWeiXin()){
-                    $("#registerbtn").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;努力为你加载中~爱你哟~");
-                    $.ajax({
-                        url: "<?php echo ROOT_PREFIX.API;?>/login",
-                        type: "POST",
-                        data:{
-                            'what':'register',
-                            'name':$('#usrnameInput').val(),
-                            'tel':$('#telInput').val()
-                        },
-                        success: function(data,status){
-                            data = JSON.parse(data);
-                            if(data.code == 0000){
-                                window.location.href = "<?php echo ROOT_PREFIX;?>/main";
-                            }else{
-                                $("#logintips").html(data.info);
-                                $("#loginbtn").html("登记并进入疯狂抢答");
-                            }
-                        }
-                    });
-                }
-            }
+            });
         </script>
 
     </body>
