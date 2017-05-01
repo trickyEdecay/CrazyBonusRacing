@@ -33,6 +33,9 @@ define("DEBUG_MODE","/".$config_json["debug"]);
 #添加插件目录到搜索变量中
 set_include_path(get_include_path().PATH_SEPARATOR.ROOT.VENDOR);
 
+#添加api目录到搜索变量中
+set_include_path(get_include_path().PATH_SEPARATOR.ROOT.API);
+
 #添加model目录到搜索变量中
 set_include_path(get_include_path().PATH_SEPARATOR.ROOT."/model");
 

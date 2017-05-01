@@ -14,7 +14,7 @@ $klein->respond('GET', ROOT_PREFIX."/[:action]", function ($request) {
 });
 
 $klein->respond('GET', ROOT_PREFIX."/", function ($request) {
-    require_once (PAGES."/user/main.php");
+    require_once (PAGES."/user/login.php");
     die();
 });
 
