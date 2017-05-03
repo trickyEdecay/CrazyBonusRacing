@@ -13,7 +13,7 @@ var less = require('gulp-less');
 var replace = require('gulp-replace');
 // var changed = require('gulp-changed');
 var del = del = require('del');
-// var gulpif = require('gulp-if');
+var gulpif = require('gulp-if');
 var runSequence = require('run-sequence');
 var config = require('./config/config.json');
 
@@ -92,13 +92,12 @@ gulp.task("build:font",function(){
 
 gulp.task("build:pages",function(){
     var manifest = gulp.src(paths.rev.all);
-
     return gulp.src(paths.src.pages)
         .pipe(revReplace({
             manifest: manifest,
             replaceInExtensions: ['.js', '.css', '.html', '.hbs','.php']
         }))
-        .pipe(devRevUrls('\/front',"/"+config.base_dir))
+        .pipe(devRevUrls('\/front',config.base_dir))
         .pipe(replace(/assets\/style/g, 'assets\/css'))
         .pipe(gulp.dest(paths.dist.pages));
 });
@@ -389,10 +388,19 @@ gulp.task("build:production",function(){
 function devRevUrls(reg,replacement){
     return through.obj(function (file, enc, cb) {
         var mutable = [];
+        var originReplacement = replacement;
         mutable.push(file);
         mutable.forEach(function (f){
             if (!f.isNull()) {
                 var src = f.contents.toString('utf8');
+
+                //用这个来替换node部分的链接，以保证node部分没有端口号的静态资源请求
+                if(f.history[0].indexOf("\\front\\projector")>=0){
+                    replacement = "//localhost"+replacement;
+                }else{
+                    replacement = originReplacement;
+                }
+
                 var r ={
                     regexp : new RegExp('\(<link\|<img\|<a\|<script\)\(\.\*\)\(href\|src\)\(="\)'+reg+'\(\.\*\)\(>\)','g'),
                     replacement: '$1$2$3$4'+replacement+'$5$6'
@@ -412,10 +420,19 @@ function devRevUrls(reg,replacement){
 function devCssUrls(reg,replacement){
     return through.obj(function (file, enc, cb) {
         var mutable = [];
+        var originReplacement = replacement;
         mutable.push(file);
         mutable.forEach(function (f){
             if (!f.isNull()) {
                 var src = f.contents.toString('utf8');
+
+                //用这个来替换node部分的链接，以保证node部分没有端口号的静态资源请求
+                if(f.history[0].indexOf("\\style\\projector")>=0){
+                    replacement = "//localhost"+replacement;
+                }else{
+                    replacement = originReplacement;
+                }
+
                 var r ={
                     regexp : new RegExp('\(url\.\*\\(\.\*\)'+reg+'\(\.\*\)','g'),
                     replacement: '$1'+replacement+'$2'

@@ -25,7 +25,7 @@ define("API","/api");
 $config_json = json_decode(file_get_contents(ROOT.CONFIG."/config.json"),true);
 
 #网站目录前缀
-define("ROOT_PREFIX","/".$config_json["base_dir"]);
+define("ROOT_PREFIX",$config_json["base_dir"]);
 
 #是否为调试模式
 define("DEBUG_MODE","/".$config_json["debug"]);
