@@ -67,7 +67,7 @@ function checkCAQlogin(){
     $db_player->close();
     $errPack->code = 0000;
     $errPack->info = "验证成功";
-    die($errPack->parsePack());
+    return $errPack->parsePack();
 }
 
 //检查登录状态
