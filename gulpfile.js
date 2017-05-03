@@ -74,7 +74,7 @@ gulp.task("build:scripts",function(){
 gulp.task("build:styles",function(){
     return gulp.src(paths.src.style)
         .pipe(rev())
-        .pipe(devCssUrls('\/front',"/"+config.base_dir))
+        .pipe(devCssUrls('\/front',config.base_dir))
         .pipe(less())
         .pipe(gulp.dest(paths.dist.css))
         .pipe(rev.manifest())
