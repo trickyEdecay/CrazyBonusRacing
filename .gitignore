@@ -6,3 +6,4 @@ node_modules/
 #暂时忽略两个输出用的
 /assets/*
 /pages/*
+/config/config.json

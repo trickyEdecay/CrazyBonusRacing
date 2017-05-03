@@ -1,0 +1,20 @@
+{
+
+  "base_dir": "全民答疯抢相对于web根目录文件夹的路径",
+
+  "debug": true,
+
+  "db_host":"数据库地址",
+
+  "db_usr":"数据库账号",
+
+  "db_pwd":"数据库密码",
+
+  "db_table":"数据库用到了哪个库",
+
+  "cdn_host": "cdn地址",
+
+  "local_host": "本地地址，用于调试",
+
+  "node_port": 8080
+}
