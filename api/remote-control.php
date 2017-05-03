@@ -252,6 +252,12 @@ function showSolution(){
     //重置分数低于0 的为0分。
     $db_player->belowResetZero();
 
+    //计算出各个选项选择的人数及答题的人数存数据库，用于显示统计数据
+    $db_questionConfig->computeQuestionStatistics($questionPack);
+
+    //计算这次答题里面手速最快的和第一个答对的人，并存到数据库里面
+    $db_questionConfig->computeBalancePlayerInfo($questionPack);
+
     //进行分数排名存数据库
     $db_player->rank();
 

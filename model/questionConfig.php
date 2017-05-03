@@ -65,6 +65,24 @@ class questionConfig extends sqlihelper{
         $this->questionPack = json_decode($this->questionPack,true);
         return $this->questionPack;
     }
+    public function setQuestionStatistics($A,$B,$C,$D,$playerCount){
+        $questionStatisticsPack = new stdClass();
+        $questionStatisticsPack->{'A'} = $A;
+        $questionStatisticsPack->{'B'} = $B;
+        $questionStatisticsPack->{'C'} = $C;
+        $questionStatisticsPack->{'D'} = $D;
+        $questionStatisticsPack->{'playerCount'} = $playerCount;
+        $en_questionStatisticsPack = json_encode($questionStatisticsPack);
+        $this->setConfig("questionStatistics",$en_questionStatisticsPack);
+    }
+
+    public function setBalancePlayersPack($fastPlayerName,$firstCorrectPlayerName){
+        $BalancePlayerInfo = new stdClass();
+        $BalancePlayerInfo->{'fast'} = $fastPlayerName;
+        $BalancePlayerInfo->{'firstCorrect'} = $firstCorrectPlayerName;
+        $en_BalancePlayerInfo = json_encode($BalancePlayerInfo,JSON_UNESCAPED_UNICODE);
+        $this->setConfig("balancePlayersPack",$en_BalancePlayerInfo);
+    }
 
     public function setRankingListPack($rankingListPack){
         $this->setConfig("rankinglistpack",$rankingListPack);
@@ -95,6 +113,38 @@ class questionConfig extends sqlihelper{
     }
     public function getCaptcha(){
         return $this->getConfig("idc");
+    }
+
+
+    public function computeQuestionStatistics($questionPack){
+        $questionId = $questionPack['currentquestionid'];
+        $this->mysql("select `id` from `question_buffer` where `questionid` = '{$questionId}' and `choose` = 'A' and `state` = 'done'");
+        $selectA = $this->result->num_rows;
+        $this->mysql("select `id` from `question_buffer` where `questionid` = '{$questionId}' and `choose` = 'B' and `state` = 'done'");
+        $selectB = $this->result->num_rows;
+        $this->mysql("select `id` from `question_buffer` where `questionid` = '{$questionId}' and `choose` = 'C' and `state` = 'done'");
+        $selectC = $this->result->num_rows;
+        $this->mysql("select `id` from `question_buffer` where `questionid` = '{$questionId}' and `choose` = 'D' and `state` = 'done'");
+        $selectD = $this->result->num_rows;
+        $this->mysql("select `id` from `question_buffer` where `questionid` = '{$questionId}' and `state` = 'done'");
+        $playerCount = $this->result->num_rows;
+        $this->setQuestionStatistics($selectA,$selectB,$selectC,$selectD,$playerCount);
+
+    }
+
+    public function computeBalancePlayerInfo($questionPack){
+        $questionId = $questionPack['currentquestionid'];
+        $correctSolution = $questionPack['correctanswer'];
+        $this->mysql("select `peopleid` from `question_buffer` where `questionid` = '{$questionId}' order by 'time' asc limit 1");
+        $fastPlayerId = $this->result->fetch_assoc()['peopleid'];
+        $this->mysql("select `name` from `question_people` where `id` = '{$fastPlayerId}' limit 1");
+        $fastPlayerName = $this->result->fetch_assoc()['name'];
+        $this->mysql("select `peopleid` from `question_buffer` where `questionid` = '{$questionId}' and `choose` = '{$correctSolution}' order by 'time' asc limit 1");
+        $firstCorrectPlayerId = $this->result->fetch_assoc()['peopleid'];
+        $this->mysql("select `name` from `question_people` where `id` = '{$firstCorrectPlayerId}' limit 1");
+        $firstCorrectPlayerName = $this->result->fetch_assoc()['name'];
+        $this->setBalancePlayersPack($fastPlayerName,$firstCorrectPlayerName);
+
     }
 }
 

@@ -131,7 +131,20 @@ socketio.listen(server).on('connection', function (socket) {
     
     socket.on('showkey',function(msg){
         console.log('Request for ShowKey');
-        socket.broadcast.emit('showkey', msg);
+        //2017新增，用于请求一些答题统计信息
+        mysql.query("select * from question_config where keyname='questionStatistics' limit 1",function(rows){
+            var questionStatisticsPack = {};
+            questionStatisticsPack = JSON.parse(rows[0].value);
+            mysql.query("select * from question_config where keyname='balancePlayersPack' limit 1",function(rows) {
+                var balancePlayersPack;
+                var responsePack = {};
+                balancePlayersPack = JSON.parse(rows[0].value);
+                responsePack["questionStatisticsPack"] = questionStatisticsPack;
+                responsePack["balancePlayersPack"] = balancePlayersPack;
+                socket.broadcast.emit('showkey', responsePack);
+            });
+
+        });
     });
     
     socket.on('showhonor',function(msg){

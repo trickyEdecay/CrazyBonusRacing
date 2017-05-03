@@ -27,6 +27,8 @@
         var questionpack = {}; //用于记录问题的所有内容
         var ranklinglistpack = {}; //用于记录问题的所有内容
         var honorpack = {}; //用于记录最终排行榜的数据
+        var balancePlayersPack = {}; //记录了结算过后一些特殊荣誉玩家
+        var questionStatisticsPack = {}; //记录结算后题目的答题状况
         
         
         
@@ -64,8 +66,11 @@
 
             iosocket.on('showkey', function(data) {
                 console.log('showingkey');
+                var responsePack = data;
+                questionStatisticsPack = responsePack['questionStatisticsPack'];
+                balancePlayersPack = responsePack['balancePlayersPack'];
                 showkey();
-                
+
                 setTimeout(getRankinglist,1200);
             });
 
@@ -643,28 +648,30 @@
         </div>
         
         <div class="div-answer-container">
-            
+
+
+
             <div class="div-answer-item-container" id="answer-container-a">
                 <div class="div-answer-selector-bg" id="answer-bg-a">
                     <div class="div-answer-selector">A</div>
                 </div>
                 <div class="div-answer-content" id="answer-a">一二三四五六七八九十一二三四五六七八九十</div>
             </div>
-            
+
             <div class="div-answer-item-container" id="answer-container-b">
                 <div class="div-answer-selector-bg" id="answer-bg-b">
                     <div class="div-answer-selector">B</div>
                 </div>
                 <div class="div-answer-content" id="answer-b">一二三四五六七八九十一二三四五六七八九十</div>
             </div>
-            
+
             <div class="div-answer-item-container" id="answer-container-c">
                 <div class="div-answer-selector-bg" id="answer-bg-c">
                     <div class="div-answer-selector">C</div>
                 </div>
                 <div class="div-answer-content" id="answer-c">一二三四五六七八九十一二三四五六七八九十</div>
             </div>
-            
+
             <div class="div-answer-item-container" id="answer-container-d">
                 <div class="div-answer-selector-bg" id="answer-bg-d">
                     <div class="div-answer-selector">D</div>
