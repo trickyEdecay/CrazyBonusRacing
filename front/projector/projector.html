@@ -111,7 +111,7 @@
                 
                 
                 
-                $("#rankingicon-"+i).attr("src",getRankingIcon(i,people.oldranking));
+                $("#rankingicon-"+i).attr("data-type",getRankingIcon(i,people.oldranking));
 
             }
         }
@@ -121,11 +121,11 @@
             currentranking = parseInt(currentranking);
             oldranking = parseInt(oldranking);
             if(currentranking<oldranking){
-                return "/front/assets/img/caq_rankinglist_up.png";
+                return "up";
             }else if(currentranking==oldranking){
-                return "/front/assets/img/caq_rankinglist_keep.png";
+                return "keep";
             }else if(currentranking>oldranking){
-                return "/front/assets/img/caq_rankinglist_down.png";
+                return "down";
             }
         }
 
@@ -497,7 +497,7 @@
                 
                 <div class="div-listitem-container">
                     <div class="div-rankinglist-index-1">1</div>
-                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-1">
+                    <div class="rankinglist-icon" id="rankingicon-1" data-type="up"></div>
                     <div class="div-ranklinglist-playername" id="rankinglist-playername-1"></div>
                     <div class="div-ranklinglist-scorecontainer">
                         <span class="span-rankinglist-score" id="rankinglist-score-1"></span>
@@ -507,7 +507,7 @@
                 
                 <div class="div-listitem-container">
                     <div class="div-rankinglist-index-2">2</div>
-                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-2">
+                    <div class="rankinglist-icon" id="rankingicon-2" data-type="up"></div>
                     <div class="div-ranklinglist-playername" id="rankinglist-playername-2"></div>
                     <div class="div-ranklinglist-scorecontainer">
                         <span class="span-rankinglist-score" id="rankinglist-score-2"></span>
@@ -517,7 +517,7 @@
                 
                 <div class="div-listitem-container">
                     <div class="div-rankinglist-index-3">3</div>
-                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-3">
+                    <div class="rankinglist-icon" id="rankingicon-3" data-type="up"></div>
                     <div class="div-ranklinglist-playername" id="rankinglist-playername-3"></div>
                     <div class="div-ranklinglist-scorecontainer">
                         <span class="span-rankinglist-score" id="rankinglist-score-3"></span>
@@ -527,7 +527,7 @@
                 
                 <div class="div-listitem-container">
                     <div class="div-rankinglist-index-n">4</div>
-                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-4">
+                    <div class="rankinglist-icon" id="rankingicon-4" data-type="up"></div>
                     <div class="div-ranklinglist-playername" id="rankinglist-playername-4"></div>
                     <div class="div-ranklinglist-scorecontainer">
                         <span class="span-rankinglist-score" id="rankinglist-score-4"></span>
@@ -537,7 +537,7 @@
                 
                 <div class="div-listitem-container">
                     <div class="div-rankinglist-index-n">5</div>
-                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-5">
+                    <div class="rankinglist-icon" id="rankingicon-5" data-type="up"></div>
                     <div class="div-ranklinglist-playername" id="rankinglist-playername-5"></div>
                     <div class="div-ranklinglist-scorecontainer">
                         <span class="span-rankinglist-score" id="rankinglist-score-5"></span>
@@ -547,7 +547,7 @@
                 
                 <div class="div-listitem-container">
                     <div class="div-rankinglist-index-n">6</div>
-                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-6">
+                    <div class="rankinglist-icon" id="rankingicon-6" data-type="up"></div>
                     <div class="div-ranklinglist-playername" id="rankinglist-playername-6"></div>
                     <div class="div-ranklinglist-scorecontainer">
                         <span class="span-rankinglist-score" id="rankinglist-score-6"></span>
@@ -557,7 +557,7 @@
                 
                 <div class="div-listitem-container">
                     <div class="div-rankinglist-index-n">7</div>
-                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-7">
+                    <div class="rankinglist-icon" id="rankingicon-7" data-type="up"></div>
                     <div class="div-ranklinglist-playername" id="rankinglist-playername-7"></div>
                     <div class="div-ranklinglist-scorecontainer">
                         <span class="span-rankinglist-score" id="rankinglist-score-7"></span>
@@ -567,7 +567,7 @@
                 
                 <div class="div-listitem-container">
                     <div class="div-rankinglist-index-n">8</div>
-                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-8">
+                    <div class="rankinglist-icon" id="rankingicon-8" data-type="up"></div>
                     <div class="div-ranklinglist-playername" id="rankinglist-playername-8"></div>
                     <div class="div-ranklinglist-scorecontainer">
                         <span class="span-rankinglist-score" id="rankinglist-score-8"></span>
@@ -577,7 +577,7 @@
                 
                 <div class="div-listitem-container">
                     <div class="div-rankinglist-index-n">9</div>
-                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-9">
+                    <div class="rankinglist-icon" id="rankingicon-9" data-type="up"></div>
                     <div class="div-ranklinglist-playername" id="rankinglist-playername-9"></div>
                     <div class="div-ranklinglist-scorecontainer">
                         <span class="span-rankinglist-score" id="rankinglist-score-9"></span>
@@ -587,7 +587,7 @@
                 
                 <div class="div-listitem-container">
                     <div class="div-rankinglist-index-n">10</div>
-                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-10">
+                    <div class="rankinglist-icon" id="rankingicon-10" data-type="up"></div>
                     <div class="div-ranklinglist-playername" id="rankinglist-playername-10"></div>
                     <div class="div-ranklinglist-scorecontainer">
                         <span class="span-rankinglist-score" id="rankinglist-score-10"></span>
@@ -597,7 +597,7 @@
                 
                 <div class="div-listitem-container">
                     <div class="div-rankinglist-index-n">11</div>
-                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-11">
+                    <div class="rankinglist-icon" id="rankingicon-11" data-type="up"></div>
                     <div class="div-ranklinglist-playername" id="rankinglist-playername-11"></div>
                     <div class="div-ranklinglist-scorecontainer">
                         <span class="span-rankinglist-score" id="rankinglist-score-11"></span>
@@ -607,7 +607,7 @@
                 
                 <div class="div-listitem-container">
                     <div class="div-rankinglist-index-n">12</div>
-                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-12">
+                    <div class="rankinglist-icon" id="rankingicon-12" data-type="up"></div>
                     <div class="div-ranklinglist-playername" id="rankinglist-playername-12"></div>
                     <div class="div-ranklinglist-scorecontainer">
                         <span class="span-rankinglist-score" id="rankinglist-score-12"></span>
@@ -617,7 +617,7 @@
                 
                 <div class="div-listitem-container">
                     <div class="div-rankinglist-index-n">13</div>
-                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-13">
+                    <div class="rankinglist-icon" id="rankingicon-13" data-type="up"></div>
                     <div class="div-ranklinglist-playername" id="rankinglist-playername-13"></div>
                     <div class="div-ranklinglist-scorecontainer">
                         <span class="span-rankinglist-score" id="rankinglist-score-13"></span>
@@ -627,7 +627,7 @@
                 
                 <div class="div-listitem-container">
                     <div class="div-rankinglist-index-n">14</div>
-                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-14">
+                    <div class="rankinglist-icon" id="rankingicon-14" data-type="up"></div>
                     <div class="div-ranklinglist-playername" id="rankinglist-playername-14"></div>
                     <div class="div-ranklinglist-scorecontainer">
                         <span class="span-rankinglist-score" id="rankinglist-score-14"></span>
@@ -637,7 +637,7 @@
                 
                 <div class="div-listitem-container">
                     <div class="div-rankinglist-index-n">15</div>
-                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingicon-15">
+                    <div class="rankinglist-icon" id="rankingicon-15" data-type="up"></div>
                     <div class="div-ranklinglist-playername" id="rankinglist-playername-15"></div>
                     <div class="div-ranklinglist-scorecontainer">
                         <span class="span-rankinglist-score" id="rankinglist-score-15"></span>

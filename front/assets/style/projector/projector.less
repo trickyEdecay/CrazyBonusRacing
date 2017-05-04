@@ -251,15 +251,31 @@
     background-color:#C63D3D;
 .div-rankinglist-index;
 }
-.img-rankinglist-changeicon{
+
+.rankinglist-icon{
     position: absolute;
     left:40px;
     top:2px;
+    width:20px;
+    height:20px;
+    
+    &[data-type='up']{
+        background-image: url(/front/assets/img/caq_rankinglist_up.png);
+    }
+    &[data-type='keep']{
+        background-image: url(/front/assets/img/caq_rankinglist_keep.png);
+    }
+    &[data-type='down']{
+        background-image: url(/front/assets/img/caq_rankinglist_down.png);
+    }
 }
-
 
 .div-ranklinglist-playername{
     position: absolute;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 118px;
+    overflow: hidden;
     left:65px;
     color:#555;
 }
