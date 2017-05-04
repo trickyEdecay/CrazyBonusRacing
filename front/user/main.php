@@ -83,7 +83,7 @@ if($err['code']!=0000){
 
             <div class="div-profile-form">
                 <div class="div-input-border" style="font-size:20px;">
-                    <input id="idcInput" placeholder="这里输入验证码" style="text-align:center;">
+                    <input id="idcInput" placeholder="这里输入验证码" type="number" style="text-align:center;">
                     <span style="color:#787878"></span>
                     <br style="clear:both">
                 </div>
