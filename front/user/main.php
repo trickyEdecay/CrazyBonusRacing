@@ -246,8 +246,8 @@ if($err['code']!=0000){
         <script>
             
             var questionid = 0;
-            var availabletime = 10;
-            var now = 0;
+            var availabletime = 10; //允许的答题时间
+            var startAnswerTime = 0; //答题的开始时间
             var timer1;
             
             
@@ -419,7 +419,7 @@ if($err['code']!=0000){
                     $("#processinganimation").css("display","none");
                     
                     $("#answerpanel").css("display","block");
-                    now = availabletime;
+                    startAnswerTime = new Date().getTime();
                     timer1 = setInterval('timejudge()',10);
                 });
                 
@@ -629,7 +629,8 @@ if($err['code']!=0000){
             });
 
             function timejudge(){
-                if(now<0){
+                var now = new Date().getTime();
+                if(now-startAnswerTime>=availabletime){
                     $("#answerbuttongroup").css("display","none");
                     $("#processinganimation").css("display","inline");
                     clearInterval(timer1);
@@ -647,8 +648,7 @@ if($err['code']!=0000){
                         }
                     });
                 }
-                now = now - 10;
-                var widthpercent = now/availabletime * 100;
+                var widthpercent = (availabletime-(now-startAnswerTime))/availabletime * 100;
                 $("#timebarvalue").css('width',widthpercent+"%");
             }
             
