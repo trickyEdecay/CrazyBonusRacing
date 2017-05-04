@@ -13,6 +13,8 @@
 
 @idccontainer-radius: 150px;
 .div-idccontainer{
+    transition: all .4s cubic-bezier(.4, 0, .2, 1);
+    opacity:1;
     position: fixed;
     display: inline-block;
     width:150px;
@@ -23,12 +25,16 @@
     top:50px;
     margin-left: -75px; //设置为宽度的一半以居中,不要使用right:0来居中,否则不能做动画
 
-overflow: hidden;
+    overflow: hidden;
 
     border: 5px solid #982E2E;
 
     font-size: 96px;
     line-height: 150px;
+
+    &.hide{
+        opacity:0;
+    }
 }
 
 .div-idccontainer-animateball-1{
@@ -269,9 +275,54 @@ overflow: hidden;
 .span-rankinglist-fen{
     color:#878787;
 }
+.question-honor-container{
+    position: absolute;
+    left:350px;
+    top:44px;
+    min-width:900px;
+    width:65%;
+    height: 170px;
+    text-align: center;
 
+    .question-honor{
+        transition: all .6s cubic-bezier(.4, 0, .2, 1);
+        opacity: 0;
+        display: inline-block;
+        width: 240px;
+        height:100%;
+
+        img{
+            transition: all .8s cubic-bezier(.4, 0, .2, 1);
+            width:0;
+            margin-top:80px;
+        }
+
+
+        h1{
+            transition: all .6s cubic-bezier(.4, 0, .2, 1);
+            color: rgba(255,255,255,0);
+            margin:10px 0 0 0;
+            &:after,&:before{
+                content: '·';
+                margin:0px 12px;
+            }
+        }
+    }
+
+    .question-honor.show{
+        opacity:1;
+        img{
+            width:160px;
+            margin-top:0;
+        }
+        h1{
+            color:#fff;
+        }
+    }
+}
 
 .div-question-container{
+    transition: all .4s cubic-bezier(.4, 0, .2, 1);
     display:none;
     position: absolute;
     left:350px;
@@ -279,10 +330,17 @@ overflow: hidden;
     min-width:900px;
     width:65%;
     height:150px;
+    opacity:1;
 
     overflow: hidden;
 
     background-color:#fff;
+
+    &.hide{
+        width:0;
+        min-width:0;
+        opacity:0;
+    }
 }
 
 .div-question-index-container{
@@ -332,7 +390,7 @@ overflow: hidden;
     left:350px;
     min-width:900px;
     width:65%;
-    height:400px;
+    min-height:400px;
 
     overflow: hidden;
 }
@@ -387,6 +445,8 @@ overflow: hidden;
 }
 
 .div-questionproperty-container{
+    transition: all .4s cubic-bezier(.4, 0, .2, 1);
+    opacity:1;
     display: block;
     position: absolute;
     top:40px;
@@ -395,6 +455,10 @@ overflow: hidden;
     width:65%;
     height:30px;
     text-align: right;
+
+    &.hide{
+        opacity:0;
+    }
 }
 
 .div-questionproperty-item-container{
@@ -672,4 +736,128 @@ overflow: hidden;
 
 .sec-prize{
     display: none;
+}
+
+//一行一行的问题的样式
+.solution{
+    display: none;
+    position: relative;
+    width:100%;
+    margin-top: 10px;
+    -webkit-box-shadow: 0 9px 10px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0 9px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 9px 10px rgba(0,0,0,0.2);
+
+    //这里是结算后的答题状态
+    @bar-title-height: 30px; //百分率显示的高度
+    @bar-height: 10px; //百分率条条的高度
+    .choose-rate-container{
+        height: @bar-title-height;
+        width: 100%;
+        overflow: hidden;
+    }
+    .choose-rate-left{
+        width: calc(~"100% - 90px");
+        height:@bar-height;
+    }
+    .rate-bar{
+        transition: all .6s cubic-bezier(0.15, 0.45, 0, 1) .23s;
+        float: right;
+        width: 0%;
+        height:100%;
+        background: #ffcc00;
+        margin-top: @bar-title-height - @bar-height;
+    }
+    .rate-number{
+        transition: margin-top 0.2s linear,
+                    color 0.3s linear .6s;
+        float: right;
+        width:90px;
+        height:100%;
+        margin-top:@bar-title-height;
+        line-height:@bar-title-height;
+        font-size:20px;
+        background: #ffcc00;
+        color: rgba(98,74,42,0);
+        font-weight:bold;
+        text-align: center;
+    }
+    .rate-number.show{
+        margin-top: 0;
+        color: #624a2a;
+    }
+
+    //这里是问题主体
+    .solution-main{
+        position: relative;
+        height:60px;
+        overflow: hidden;
+        background: #fff;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+
+        &>.selector-bg{
+            transition: all .2s cubic-bezier(0,0,0.75,1);
+            position: absolute;
+            top:0;
+            left:0;
+            background: @light-red;
+            width:60px;
+            height: 100%;
+        }
+
+
+
+        .content-container{
+            position: absolute;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+        }
+
+        .selector{
+            float: left;
+            width:60px;
+            height:100%;
+
+            font-family: @font-family;
+            font-weight: 900;
+            font-size: 36px;
+            color: #fff;
+            line-height: 60px;
+        }
+
+        .content{
+            transition: all .2s cubic-bezier(0,0,0.75,1);
+            margin-left: 90px;
+            text-align: left;
+
+            font-family: @font-family;
+            font-weight: 500;
+            font-size: 28px;
+            color: #333;
+            line-height: 60px;
+        }
+
+
+
+    }
+
+
+}
+
+//正确答案的样子
+.solution.bingo{
+    .solution-main {
+        .selector-bg {
+            background: rgb(70, 152, 94);
+            width: 100%;
+        }
+
+        .content {
+            color: #fff;
+        }
+    }
 }
