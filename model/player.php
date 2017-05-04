@@ -182,7 +182,7 @@ class player extends sqlihelper {
               (`name`,`tel`,`achievetime`,`achievets`,`participateyears`,`lastactiveyear`,
               `ranking`,`oldranking`,`historyscore`,`historyranking`,
               `rightcount`,`wrongcount`,`score`,`wrongidccount`,`isbanned`,
-              `rightids`,`wrongids`,`active`,`activeminusscore`,`reson-for-score`
+              `rightids`,`wrongids`,`active`,`activeminusscore`,`reason-for-score`
               ) 
               values
               ('{$name}','{$tel}',now(6),'{$ts}','{$this->year}','{$this->year}',
