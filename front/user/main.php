@@ -27,46 +27,56 @@ if($err['code']!=0000){
         <!-- build:css /assets/css/user/main.css -->
         <link href="/front/assets/style/bootstrap.css" rel="stylesheet">
         <link href="/front/assets/style/font-awesome.css" rel="stylesheet">
-        <link href="/front/assets/style/user/main.css" rel="stylesheet">
+        <link href="/front/assets/style/user/main.less" rel="stylesheet">
         <!-- endbuild -->
 
     </head>
 
-    <body id="maincontainer" style="background-color:#fafafa">
+    <body id="maincontainer">
         
         <!--等待输入验证码页面-->
-        <section id="idcpanel">
-            <center>
-                <img src="/front/assets/img/banner_quanmindafengqiang_ad.png" class="img-responsive" alt="Responsive image">
-            </center>
-            <div class="div-profile-container">
-                <div class="div-profile-rankcircle" id="rank">
-                0
-                </div>
-                <div class="div-profile-nameline">
-                    <div class="div-profile-name" id="profilename">loading</div>
-                    <img src="/front/assets/img/caq_rankinglist_up.png" class="img-rankinglist-changeicon" id="rankingiconUp">
-                    <img src="/front/assets/img/caq_rankinglist_down.png" class="img-rankinglist-changeicon" id="rankingiconDown">
-                    <img src="/front/assets/img/caq_rankinglist_keep.png" class="img-rankinglist-changeicon" id="rankingiconKeep">
+        <section id="captchaPanel">
+            <header>
+                <img id="logo" src="/front/assets/img/caq_logo_white.png">
+                <br>
+                <img id="ad" src="/front/assets/img/banner_ad.png">
+            </header>
 
-                    <div class="div-profile-score" id="score">0分</div>
-                    <img src="/front/assets/img/caq_mobile_coin.png" class="img-profile-coin" id="rankingicon">
+<!--            个人信息-->
+            <div id="profile">
+                <div class="color-block rank-container">
+                    <h4>排名</h4>
+                    <p id="rank">1</p>
                 </div>
-                <div class="div-profile-secondline">
-                    <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;分数达成时间:
-                    <span id="achievetime">loading..</span>
+                <div class="color-block score-container">
+                    <h4>分数</h4>
+                    <p id="score">1</p>
                 </div>
-                <div class="div-profile-thirdline">
-                    <i class="fa fa-check" aria-hidden="true"></i>&nbsp;准确率:  
-                    <span id="correctrate">100%</span>
+                <div class="name-block">
+                    <h1 id="playerName">loading..</h1>
+                    <div id="ranking-icon" data-type="up"></div>
                 </div>
-                <button class="btn-refresh" id="refresh"><i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;刷新</button>
+                <div class="data-block">
+                    <p>
+                        <i class="fa fa-check" aria-hidden="true"></i>&nbsp;准确率:
+                        <span id="correctRate">100%</span>
+                    </p>
+                    <p>
+                        <i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;分数达成时间:
+                        <span id="achieveTime">loading..</span>
+                    </p>
+                </div>
+                <button class="refresh" id="refresh"><i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;刷新</button>
             </div>
+<!--            个人信息完-->
+
             <br>
             <div class="div-alert-info" id="ban-info"><span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;&nbsp;很抱歉,您已经连续输入五次错误的验证码,您的账号已经被封禁,请向现场工作人员求助,带来不便敬请谅解</div>
             
-            <div class="div-alert-info" id="active-info"><span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;&nbsp;很抱歉,您的行为被系统断定为消极比赛,如果您没有积极参与比赛,将被扣除一定分数</div>
-            
+            <div class="div-alert-info" id="active-info"><span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;&nbsp;哈喽？您还在进行活动吗？如果您一直挂机，系统将扣除您的一定分数哦。</div>
+
+            <br>
+            <br>
             <div class="container" id="oldcomertip" style="display:none;">
                 <div class="alert alert-success" role="alert">
                     <strong>·&nbsp;勇士归来&nbsp;·</strong><br><br>
@@ -76,28 +86,21 @@ if($err['code']!=0000){
                     <button type="button" class="btn btn-success" id="OldComercopythat">我知道啦~</button>
                 </div>
             </div>
-            <br>
-            <br>
-            <br>
-
-
-            <div class="div-profile-form">
-                <div class="div-input-border" style="font-size:20px;">
-                    <input id="idcInput" placeholder="这里输入验证码" type="number" style="text-align:center;">
-                    <span style="color:#787878"></span>
-                    <br style="clear:both">
+<!--            验证码提交表单-->
+            <form id="captcha-form">
+                <div class="input_group">
+                    <input id="captcha" placeholder="请输入验证码" type="number" tabindex="1">
                 </div>
-                <br>
-                <button class="div-caq-button" id="goAnswer">进入疯狂抢答</button>
-            </div>
-            <script>
-            
-            </script>
+                <button class="submit_btn" id="goAnswer" type="submit">进入疯狂抢答</button>
+            </form>
             <p id="checkidctips" class="p-error"></p>
             <br style="clear:both">
             <br>
             <br>
+            <br>
+            <br>
             <p class="p-bottom-extras">科创社·科技部 技术提供</p>
+
         </section>
         
         <!--答题面板-->
@@ -297,7 +300,7 @@ if($err['code']!=0000){
             
             
             function showidcpanel(){
-                $("#idcpanel").css("display","none");
+                $("#captchaPanel").css("display","none");
                 $("#answerpanel").css("display","none");
                 $("#infopanel").css("display","none");
                 
@@ -306,19 +309,18 @@ if($err['code']!=0000){
                 getDataFromServer("getProfile",function(idcpanelpack){
                     if(idcpanelpack.err != 0000){
                         $("#checkidctips").html(idcpanelpack.errinfo);
-                        $("#idcpanel").css("display","block");
+                        $("#captchaPanel").css("display","block");
                         return;
                     }
 
                     //绑定数据
-                    $('#idcInput').val("");
+                    $('#captcha').val("");
 //                    $("#rank").html(idcpanelpack.ranking);
                     $("#answerpanelranking").html(idcpanelpack.ranking);
-                    $("#profilename").html(idcpanelpack.name);
+                    $("#playerName").html(idcpanelpack.name);
                     $("#answerpanelname").html(idcpanelpack.name);
-//                    $("#score").html(idcpanelpack.score+"分");
                     $("#answerpanelscore").html("  (你的总分: "+idcpanelpack.score+" 分)");
-                    $("#achievetime").html(idcpanelpack.achievetime);
+                    $("#achieveTime").html(idcpanelpack.achievetime);
                     changeRankingIcon(idcpanelpack.ranking,idcpanelpack.oldranking);
                     var rightcount = parseInt(idcpanelpack.rightcount);
                     var wrongcount = parseInt(idcpanelpack.wrongcount);
@@ -338,7 +340,7 @@ if($err['code']!=0000){
                     }
                     
                     
-                    $("#idcpanel").css("display","block");
+                    $("#captchaPanel").css("display","block");
                     
                     $('#rank').animateNumber(
                       {
@@ -346,23 +348,21 @@ if($err['code']!=0000){
                         easing: 'easeInQuad'
                       }
                     );
-                    
-                    var score_number_step = $.animateNumber.numberStepFactories.append(' 分');
+
                     $('#score').animateNumber(
                       {
                         number: idcpanelpack.score,
-                        easing: 'easeInQuad',
-                        numberStep: score_number_step
+                        easing: 'easeInQuad'
                       },1000
                     );
                     
                     var percent_number_step = $.animateNumber.numberStepFactories.append('%');
-                    $('#correctrate').prop('number',100).animateNumber(
-                      {
-                        number: correctrate,
-                        easing: 'easeInQuad',
-                        numberStep:percent_number_step
-                      },1800
+                    $('#correctRate').prop('number',$('#correctRate').html().replace("%","")).animateNumber(
+                        {
+                            number: correctrate,
+                            easing: 'easeInQuad',
+                            numberStep:percent_number_step
+                        },1800
                     );
                     
                     
@@ -374,23 +374,17 @@ if($err['code']!=0000){
                 ranking = parseInt(ranking);
                 oldranking = parseInt(oldranking);
                 if(ranking>oldranking){
-                    $("#rankingiconUp").css("display","none");
-                    $("#rankingiconDown").css("display","block");
-                    $("#rankingiconKeep").css("display","none");
+                    $("#ranking-icon").attr("data-type","down");
                 }else if(ranking<oldranking){
-                    $("#rankingiconUp").css("display","block");
-                    $("#rankingiconDown").css("display","none");
-                    $("#rankingiconKeep").css("display","none");
+                    $("#ranking-icon").attr("data-type","up");
                 }else if(ranking==oldranking){
-                    $("#rankingiconUp").css("display","none");
-                    $("#rankingiconDown").css("display","none");
-                    $("#rankingiconKeep").css("display","block");
+                    $("#ranking-icon").attr("data-type","keep");
                 }
             }
             
             
             function showanswerpanel(){
-                $("#idcpanel").css("display","none");
+                $("#captchaPanel").css("display","none");
                 $("#answerpanel").css("display","none");
                 $("#infopanel").css("display","none");
                 
@@ -429,7 +423,7 @@ if($err['code']!=0000){
             
             
             function showinfopanel(appendix){
-                $("#idcpanel").css("display","none");
+                $("#captchaPanel").css("display","none");
                 $("#answerpanel").css("display","none");
                 $("#infopanel").css("display","none");
                 
@@ -517,11 +511,11 @@ if($err['code']!=0000){
                         //绑定数据
 //                        $("#rank").html(idcpanelpack.ranking);
                         $("#answerpanelranking").html(idcpanelpack.ranking);
-                        $("#profilename").html(idcpanelpack.name);
+                        $("#playerName").html(idcpanelpack.name);
                         $("#answerpanelname").html(idcpanelpack.name);
 //                        $("#score").html(idcpanelpack.score+"分");
                         $("#answerpanelscore").html("  (你的总分: "+idcpanelpack.score+" 分)");
-                        $("#achievetime").html(idcpanelpack.achievetime);
+                        $("#achieveTime").html(idcpanelpack.achievetime);
                         changeRankingIcon(idcpanelpack.ranking,idcpanelpack.oldranking);
                         var rightcount = parseInt(idcpanelpack.rightcount);
                         var wrongcount = parseInt(idcpanelpack.wrongcount);
@@ -541,7 +535,7 @@ if($err['code']!=0000){
                             $("#active-info").css("display","block");
                         }
 
-                        $("#idcpanel").css("display","block");
+                        $("#captchaPanel").css("display","block");
                         
                         
                         
@@ -553,17 +547,15 @@ if($err['code']!=0000){
                           }
                         );
 
-                        var score_number_step = $.animateNumber.numberStepFactories.append(' 分');
-                        $('#score').prop('number',$('#score').html().replace("分","")).animateNumber(
+                        $('#score').prop('number',$('#score').html()).animateNumber(
                           {
                             number: idcpanelpack.score,
-                            easing: 'easeInQuad',
-                            numberStep: score_number_step
+                            easing: 'easeInQuad'
                           },1000
                         );
 
                         var percent_number_step = $.animateNumber.numberStepFactories.append('%');
-                        $('#correctrate').prop('number',$('#correctrate').html().replace("%","")).animateNumber(
+                        $('#correctRate').prop('number',$('#correctRate').html().replace("%","")).animateNumber(
                           {
                             number: correctrate,
                             easing: 'easeInQuad',
@@ -581,14 +573,15 @@ if($err['code']!=0000){
                         $("#refresh").html("刷新("+i+"s)");
                         i--;
                         if(i==0){
-                            $("#refresh").html("刷新");
+                            $("#refresh").html("<i class=\"fa fa-refresh\" aria-hidden=\"true\"></i>&nbsp;刷新");
                             $("#refresh").attr("disabled",false);
                             clearInterval(refreshtimer);
                         }
                     }
                 });
 
-                $("#goAnswer").click(function(){
+                $("#goAnswer").click(function(e){
+                    e.preventDefault();
                     if($("#goAnswer").html()=="进入疯狂抢答"){
                         $("#goAnswer").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;正在进入中,稍安勿躁");
                         $.ajax({
@@ -596,7 +589,7 @@ if($err['code']!=0000){
                             type: "POST",
                             data:{
                                 'what':'checkCaptcha',
-                                'captcha':$('#idcInput').val()
+                                'captcha':$('#captcha').val()
                             },
                             success: function(data,status){
                                 data = JSON.parse(data);

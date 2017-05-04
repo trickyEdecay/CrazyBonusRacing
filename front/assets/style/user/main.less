@@ -1,0 +1,392 @@
+html,body{
+    background-color:#fef0f0;
+    text-align: center;
+    font-family:PingFang SC,Hiragino Sans GB,"思源黑体",Microsoft Yahei,WenQuanYi Micro Hei,sans-serif;
+}
+
+::-webkit-input-placeholder
+{
+    color:#bfbfbf;
+}
+
+::-moz-placeholder{
+    color:#bfbfbf;
+}
+:-ms-input-placeholder{
+    color:#bfbfbf;
+}
+
+
+//等待输入验证码页面
+#captchaPanel{
+
+    text-align: center;
+
+    header{
+        display: block;
+        width: 100%;
+        height: 240px;
+        background:#f04d60; /* 一些不支持背景渐变的浏览器 */
+        background:-moz-linear-gradient(0deg, #e93945, #d02d5c);
+        background:-o-linear-gradient(0deg, #e93945, #d02d5c);
+        background:-webkit-linear-gradient(0deg, #e93945, #d02d5c);
+
+        #logo{
+            margin-top: 50px;
+            width: 60%;
+            max-width: 300px;
+        }
+        #ad{
+            margin-top: 15px;
+            width: 50%;
+            max-width: 250px;
+        }
+    }
+
+    #profile{
+        position: relative;
+        display: inline-block;
+        width:90%;
+        height:125px;
+        border-radius: 10px;
+        margin-top:-70px;
+        background: #fff;
+
+        -webkit-box-shadow:  0 9px 38px rgba(185,39,137,.08);
+        -moz-box-shadow:  0 9px 38px rgba(185,39,137,.08);
+        box-shadow:  0 9px 38px rgba(185,39,137,.08);
+
+        .color-block{
+            position: absolute;
+            width:70px;
+            height: 50px;
+            color: #fff;
+
+            border-radius: 5px;
+
+            h4{
+                margin:6px 0 -2px 0;
+                color:rgba(255,255,255,.5);
+                font-family: "思源黑体","Helvetica Neue", Helvetica, Arial, sans-serif;
+                font-weight:normal;
+                font-size:12px;
+            }
+
+            p{
+                margin:0;
+                color:#fff;
+                font-family: "思源黑体","Helvetica Neue", Helvetica, Arial, sans-serif;
+                font-weight:bolder;
+                font-size:25px;
+            }
+        }
+        
+        .rank-container{
+            top:15px;
+            right:100px;
+            background: #ff596e;
+        }
+        .score-container{
+            top:15px;
+            right:15px;
+            background: #ffb400;
+        }
+
+        .name-block{
+            position: absolute;
+            left: 15px;
+            top: 27px;
+            text-align: left;
+
+            #playerName{
+                display: inline-block;
+                font-size:17px;
+                height:18px;
+                line-height:18px;
+                max-width:70px;
+                overflow: hidden;
+                text-overflow:ellipsis;;
+                white-space: nowrap;
+                font-weight:bold;
+                color:#333;
+                margin:1px 0 0 0 ;
+                vertical-align: baseline;
+            }
+
+            #ranking-icon{
+                display: inline-block;
+                height:20px;
+                width:18px;
+
+                &[data-type='up']{
+                    background-image: url(/front/assets/img/caq_rankinglist_up.png);
+                }
+                &[data-type='keep']{
+                    background-image: url(/front/assets/img/caq_rankinglist_keep.png);
+                }
+                &[data-type='down']{
+                    background-image: url(/front/assets/img/caq_rankinglist_down.png);
+                }
+            }
+        }
+
+        .data-block{
+            text-align: left;
+            position: absolute;
+            bottom:15px;
+            left:15px;
+            p{
+                margin:0;
+                font-size:12px;
+                color:#939393;
+            }
+        }
+
+        .refresh{
+            position: absolute;
+            right:15px;
+            bottom:15px;
+            width:70px;
+            height:25px;
+            line-height:25px;
+
+            color:#333;
+            font-size: 10px;
+            font-family: "思源黑体","Helvetica Neue", Helvetica, Arial, sans-serif;
+
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    }
+
+}
+
+#captcha-form{
+    margin-top:60px;
+    margin-left:15%;
+    width: 70%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+    text-align: center;
+
+    .input_group{
+        width: 100%;
+        height: 40px;
+        margin-bottom:20px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        overflow: hidden;
+
+        background: #fff;
+        border:1px solid #ccc;
+        border-radius:20px;
+
+        input{
+            width:100%;
+            line-height:38px;
+            height:38px;
+            border:0;
+            background: transparent;
+            margin-top:1px;
+            outline:0;
+            box-shadow: none;
+
+            text-align: center;
+        }
+
+
+    }
+
+}
+
+
+.submit_btn{
+    display: block;
+    width:100%;
+    height:40px;
+    line-height:40px;
+    margin-top: 5px;
+    border-radius: 20px;
+    border: 0;
+
+    color: #fff;
+    font-size:14px;
+
+    background:#f04d60; /* 一些不支持背景渐变的浏览器 */
+    background:-moz-linear-gradient(0deg, #e93945, #d02d5c);
+    background:-o-linear-gradient(0deg, #e93945, #d02d5c);
+    background:-webkit-linear-gradient(0deg, #e93945, #d02d5c);
+    letter-spacing: .1em;
+    font-weight: lighter;
+
+    -webkit-box-shadow:  0 9px 38px rgba(185,39,137,.4);
+    -moz-box-shadow:  0 9px 38px rgba(185,39,137,.4);
+    box-shadow:  0 9px 38px rgba(185,39,137,.4);
+}
+
+
+.div-caq-button{
+    margin:10px 0;
+    padding:10px;
+    border:0;
+    border-radius: 50px;
+    background-color:#C63D3D;
+    color:#fff;
+    width:70%;
+    
+    font-family:"微软雅黑","黑体","Arial";
+}
+
+.div-caq-button:focus,
+.div-caq-button:hover
+{
+    background-color:#EB4848;
+}
+
+.div-caq-button:active
+{
+    background-color:#AD3636;
+}
+
+.p-bottom-extras{
+    color:#7F7F7F;
+    font-family:"微软雅黑","黑体","Arial";
+}
+
+
+
+
+
+.div-answer-index-circle{
+    position: absolute;
+    color:#FFF;
+    background-color:#C63D3D;
+    border-radius: 100px;
+    height:30px;
+    width:30px;
+}
+
+.div-answer-index-number{
+    color:#FFF;
+    font-family: PingFang SC,Hiragino Sans GB,"思源黑体",Microsoft Yahei,WenQuanYi Micro Hei,sans-serif;
+    font-size:14px;
+    line-height:30px;
+    text-align: center;
+}
+
+.div-answer-mobile-name{
+    font-family: PingFang SC,Hiragino Sans GB,"思源黑体",Microsoft Yahei,WenQuanYi Micro Hei,sans-serif;
+    font-size:20px;
+    color:#676767;
+    line-height:30px;
+}
+
+.div-answer-mobile-score{
+    font-family: PingFang SC,Hiragino Sans GB,"思源黑体",Microsoft Yahei,WenQuanYi Micro Hei,sans-serif;
+    color:#A1A1A1;
+    line-height:30px;
+}
+
+.div-answer-addscore-block{
+    width:36px;
+    height:36px;
+    line-height: 36px;
+    text-align: center;
+    border-radius: 10px;
+    font-family: PingFang SC,Hiragino Sans GB,"思源黑体",Microsoft Yahei,WenQuanYi Micro Hei,sans-serif;
+    font-size: 14px;
+    color:#417505;
+    background: #B2E2BE;
+}
+
+.div-answer-minusscore-block{
+    width:36px;
+    height:36px;
+    line-height: 36px;
+    text-align: center;
+    border-radius: 10px;
+    font-family: PingFang SC,Hiragino Sans GB,"思源黑体",Microsoft Yahei,WenQuanYi Micro Hei,sans-serif;
+    font-size: 14px;
+    color:#D0021B;
+    background: #E2B2B2;
+}
+
+.div-answer-question-block{
+    border-radius: 10px;
+    background-color:#C8C8C8;
+    min-height: 100px;
+    padding: 15px;
+    font-family: PingFang SC,Hiragino Sans GB,"思源黑体",Microsoft Yahei,WenQuanYi Micro Hei,sans-serif;
+    text-align: left;
+}
+
+
+.timebar{
+    display: inline-block;
+    background-color: #fff;
+    border-radius: 5px;
+    height:5px;
+    width:90%;
+    
+}
+.timebaricon{
+    display: inline-block;
+    color:#C63D3D;
+    font-size: 14px;
+    width:5%;
+    line-height: 20px;
+    vertical-align: middle;
+}
+.timebarvalue{
+    background-color: #C63D3D;
+    border-radius: 5px;
+    height:5px;
+}
+
+
+.div-answer-answer-block{
+    font-family: PingFang SC,Hiragino Sans GB,"思源黑体",Microsoft Yahei,WenQuanYi Micro Hei,sans-serif;
+    font-size:14px;
+    color:#FFF;
+    background-color: #C63D3D;
+    border-radius: 50px;
+    padding:5px 20px;
+    text-align: left;
+}
+
+.div-answer-answer-block:hover,
+.div-answer-answer-block:focus{
+    background-color: #E64646;
+}
+
+.div-answer-answer-block:active{
+    background-color: #952D2D;
+}
+
+.div-alert-info{
+    display: none;
+    padding:10px;
+    margin:10px 20px;
+    background-color: #ffb90d;
+    color: #fff;
+    font-family: "微软雅黑","黑体","Arial";
+    font-size: 12px;
+    letter-spacing: 1.2;
+    line-height: 15px;
+    border-radius: 5px;
+}
+
+#infopanel-info,.allinfo{
+    font-family: PingFang SC,Hiragino Sans GB,"思源黑体",Microsoft Yahei,WenQuanYi Micro Hei,sans-serif;
+}
+
+.p-error{
+    font-family: "思源黑体","Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin-top:10px;
+    color: #e93945;
+    font-size: 12px;
+}
