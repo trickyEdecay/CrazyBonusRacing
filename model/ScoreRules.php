@@ -168,6 +168,9 @@ class ScoreRules {
         //要被扣分的人数
         $minusPlayerCount = round($playerCount * $rateOfMinus);
 
+        //如果小于0 需要重置到 1，要不然下面的limit不生效
+        $minusPlayerCount = $minusPlayerCount <= 0 ? 1 : $minusPlayerCount;
+
         //找出在buffer中倒数第n个答错的人的id。
         $result = $sqlihelper->mysql("select id from
                             question_buffer
