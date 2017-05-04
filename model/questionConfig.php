@@ -138,11 +138,20 @@ class questionConfig extends sqlihelper{
         $this->mysql("select `peopleid` from `question_buffer` where `questionid` = '{$questionId}' order by 'time' asc limit 1");
         $fastPlayerId = $this->result->fetch_assoc()['peopleid'];
         $this->mysql("select `name` from `question_people` where `id` = '{$fastPlayerId}' limit 1");
-        $fastPlayerName = $this->result->fetch_assoc()['name'];
+        if($this->result->num_rows <= 0){
+            $fastPlayerName = "::null";
+        }else{
+            $fastPlayerName = $this->result->fetch_assoc()['name'];
+        }
+
         $this->mysql("select `peopleid` from `question_buffer` where `questionid` = '{$questionId}' and `choose` = '{$correctSolution}' order by 'time' asc limit 1");
-        $firstCorrectPlayerId = $this->result->fetch_assoc()['peopleid'];
-        $this->mysql("select `name` from `question_people` where `id` = '{$firstCorrectPlayerId}' limit 1");
-        $firstCorrectPlayerName = $this->result->fetch_assoc()['name'];
+        if($this->result->num_rows <= 0){
+            $firstCorrectPlayerName = "::null";
+        }else{
+            $firstCorrectPlayerId = $this->result->fetch_assoc()['peopleid'];
+            $this->mysql("select `name` from `question_people` where `id` = '{$firstCorrectPlayerId}' limit 1");
+            $firstCorrectPlayerName = $this->result->fetch_assoc()['name'];
+        }
         $this->setBalancePlayersPack($fastPlayerName,$firstCorrectPlayerName);
 
     }

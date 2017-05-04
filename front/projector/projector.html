@@ -322,10 +322,19 @@
             var chooseB = questionStatisticsPack['B'];
             var chooseC = questionStatisticsPack['C'];
             var chooseD = questionStatisticsPack['D'];
-            var rateA = Math.round(chooseA/peopleCount*10000)/100;
-            var rateB = Math.round(chooseB/peopleCount*10000)/100;
-            var rateC = Math.round(chooseC/peopleCount*10000)/100;
-            var rateD = Math.round(chooseD/peopleCount*10000)/100;
+            var rateA,rateB,rateC,rateD;
+            if(peopleCount == 0){
+                rateA = 0;
+                rateB = 0;
+                rateC = 0;
+                rateD = 0;
+            }else{
+                rateA = Math.round(chooseA/peopleCount*10000)/100;
+                rateB = Math.round(chooseB/peopleCount*10000)/100;
+                rateC = Math.round(chooseC/peopleCount*10000)/100;
+                rateD = Math.round(chooseD/peopleCount*10000)/100;
+            }
+
             $("#rateNum-a").html(rateA+"%");
             $("#rateNum-b").html(rateB+"%");
             $("#rateNum-c").html(rateC+"%");
@@ -350,7 +359,13 @@
                     $(".div-question-container").addClass("hide");
                     $(".div-idccontainer").addClass("hide");
                     $(".div-questionproperty-container").addClass("hide");
-                    $(".question-honor").addClass("show");
+                    if(fastPlayer !== "::null"){
+                        $(".question-honor[data-type='fastPlayer']").addClass("show");
+                    }
+                    if(firstCorrectPlayer !== "::null"){
+                        $(".question-honor[data-type='firstCorrectPlayer']").addClass("show");
+                    }
+
                 },800);
 
             },1000);
@@ -667,11 +682,11 @@
         </div>
 
         <div class="question-honor-container">
-            <div class="question-honor">
+            <div class="question-honor" data-type='fastPlayer'>
                 <img src="/front/assets/img/honor_fast.png">
                 <h1 id="fastPlayer"></h1>
             </div>
-            <div class="question-honor">
+            <div class="question-honor" data-type='firstCorrectPlayer'>
                 <img src="/front/assets/img/honor_firstCorrect.png">
                 <h1 id="firstCorrectPlayer"></h1>
             </div>
