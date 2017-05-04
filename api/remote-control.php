@@ -244,10 +244,14 @@ function showSolution(){
     $questionPack = $db_questionConfig->getQuestionPack();
     $questionId = $questionPack['currentquestionid'];
 
+    $db_player = new player($db_questionConfig->getMysqli());
+
+    //先把分数变化的原因重置为 none
+    $db_player->setScoreChangeReasonToNone();
+
     ScoreRules::addScore($db_questionConfig,$questionPack);
     ScoreRules::minusScore($db_questionConfig,$questionPack);
 
-    $db_player = new player($db_questionConfig->getMysqli());
 
     //重置分数低于0 的为0分。
     $db_player->belowResetZero();

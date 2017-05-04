@@ -326,6 +326,7 @@ function getProfile(){
     $responsePack ->{'wrongcount'} = $profilePack['wrongcount'];
     $responsePack ->{'isbanned'} = $profilePack['isbanned'];
     $responsePack ->{'active'} = $profilePack['active'];
+    $responsePack ->{'reason-for-score'} = $profilePack['reason-for-score'];
     $responsePack ->{'achievetime'} = date("H:i:s",strtotime($profilePack['achievetime']));
     $db_player->close();
     die(json_encode($responsePack,JSON_UNESCAPED_UNICODE));

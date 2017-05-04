@@ -136,13 +136,28 @@ class ScoreRules {
                             player.rightcount = player.rightcount + 1,
                             player.rightids=concat(IFNULL(player.rightids,''),'$questionId,'),
                             player.achievetime = buffer.time,
-                            player.achievets = buffer.ts
+                            player.achievets = buffer.ts,
+                            player.`reason-for-score` = 'correct'
                             where
                             player.id = buffer.peopleid and 
                             buffer.state = 'done' and
                             buffer.choose = '$correctSolution' and
                             buffer.questionid = $questionId and 
                             buffer.id <= {$theLastCorrectPlayerId}
+        ");
+
+        //对这些答对但是不是前面答对的人进行记录
+        $sqlihelper->mysql("update question_people as player,question_buffer as buffer
+                            set
+                            player.rightcount = player.rightcount + 1,
+                            player.rightids=concat(IFNULL(player.rightids,''),'$questionId,'),
+                            player.`reason-for-score` = 'none'
+                            where
+                            player.id = buffer.peopleid and 
+                            buffer.state = 'done' and
+                            buffer.choose = '$correctSolution' and
+                            buffer.questionid = $questionId and 
+                            buffer.id > {$theLastCorrectPlayerId}
         ");
 
     }
@@ -181,21 +196,26 @@ class ScoreRules {
                             order by `time` desc limit $minusPlayerCount
         ");
 
-        $result->data_seek($result->num_rows-1);
-        $theLastWrongPlayerId = $result->fetch_row()[0];
-
+        //如果说根本就没人的状态 是 done 的话，之后的sql 语句会出现bug，所以要设置一个值。
+        if($result->num_rows <= 0){
+            $theLastWrongPlayerId = 1;
+        }else{
+            $result->data_seek($result->num_rows-1);
+            $theLastWrongPlayerId = $result->fetch_row()[0];
+        }
 
         //倒数答错 & 答题超时 & 没有作答扣分
         $sqlihelper->mysql("update question_people,question_buffer 
             set question_people.score = question_people.score-$minusScore,
             question_people.wrongcount=question_people.wrongcount+1,
             question_people.wrongids=concat(IFNULL(question_people.wrongids,''),'$questionId,'),
-            achievetime = question_buffer.time, achievets = question_buffer.ts
+            achievetime = question_buffer.time, achievets = question_buffer.ts,
+            question_people.`reason-for-score` = IF(question_buffer.state = 'done','last',question_buffer.state)
             where 
             question_people.id = question_buffer.peopleid and 
             question_buffer.questionid = $questionId and
             (
-            (question_buffer.state = 'done' and question_buffer.choose <> '$correctSolution' and question_buffer.id>={$theLastWrongPlayerId}) or
+            (question_buffer.state = 'done' and question_buffer.choose <> '$correctSolution' and question_buffer.id>='{$theLastWrongPlayerId}') or
             question_buffer.state='joined' or
             question_buffer.state='waiting' or
             question_buffer.state='timeout' or
@@ -216,7 +236,8 @@ class ScoreRules {
             set question_people.score = question_people.score-round(question_people.score * '{$minusRate}'),
             question_people.wrongcount=question_people.wrongcount+1,
             question_people.wrongids=concat(IFNULL(question_people.wrongids,''),'$questionId,'),
-            achievetime = question_buffer.time, achievets = question_buffer.ts
+            achievetime = question_buffer.time, achievets = question_buffer.ts,
+            question_people.`reason-for-score` = 'wrong'
             where 
             question_people.score > '{$threshold}' and
             question_people.id = question_buffer.peopleid and 
@@ -229,7 +250,7 @@ class ScoreRules {
 
 
         //如果有连续两次没有输入验证码,那么就会被扣除分数,扣除的分数是 连续没有参加的次数*2
-        $sqlihelper ->mysql("update question_people set score=score-active*2,activeminusscore=activeminusscore+active*2 where active>2 and lastactiveyear='{$year}'");
+        $sqlihelper ->mysql("update question_people set score=score-active*2,activeminusscore=activeminusscore+active*2,`reason-for-score` = 'passive' where active>2 and lastactiveyear='{$year}'");
         $sqlihelper ->mysql("update question_people set active=active+1 where lastactiveyear='{$year}'");
     }
 

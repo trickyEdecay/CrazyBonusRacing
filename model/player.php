@@ -126,7 +126,7 @@ class player extends sqlihelper {
 
 
     public function getProfilePack($peopleId){
-        return $this->getInfo($peopleId,"oldranking,ranking,score,rightcount,wrongcount,achievetime,isbanned,active");
+        return $this->getInfo($peopleId,"oldranking,ranking,score,rightcount,wrongcount,achievetime,isbanned,active,`reason-for-score`");
     }
 
     public function isPlayerExist($name,$tel){
@@ -167,6 +167,7 @@ class player extends sqlihelper {
                       `rightids`='',
                       `wrongids`='',
                       `active`='1',
+                      `reson-for-score`='none',
                       `activeminusscore`='0',
                       `lastactiveyear`='{$this->year}',
                       `historyscore`='0',
@@ -181,14 +182,19 @@ class player extends sqlihelper {
               (`name`,`tel`,`achievetime`,`achievets`,`participateyears`,`lastactiveyear`,
               `ranking`,`oldranking`,`historyscore`,`historyranking`,
               `rightcount`,`wrongcount`,`score`,`wrongidccount`,`isbanned`,
-              `rightids`,`wrongids`,`active`,`activeminusscore`
+              `rightids`,`wrongids`,`active`,`activeminusscore`,`reson-for-score`
               ) 
               values
               ('{$name}','{$tel}',now(6),'{$ts}','{$this->year}','{$this->year}',
               '{$this->defaultRanking}','{$this->defaultRanking}',0,'{$this->defaultRanking}',
               0,0,0,0,0,
-              '','',1,0
+              '','',1,0,'none'
               )
         ");
+    }
+
+
+    public function setScoreChangeReasonToNone(){
+        $this->mysql("update question_people set `reason-for-score` = 'none' where `lastactiveyear` = '{$this->year}'");
     }
 }
