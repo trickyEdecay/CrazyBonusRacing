@@ -95,154 +95,84 @@ if($err['code']!=0000){
             </form>
             <p id="checkidctips" class="p-error"></p>
             <br style="clear:both">
-            <br>
-            <br>
-            <br>
-            <br>
-            <p class="p-bottom-extras">科创社·科技部 技术提供</p>
 
         </section>
         
         <!--答题面板-->
-        <section id="answerpanel" style="display:none">
-            <div class="container-fluid" style="padding:0;">
-                <br>
-                <div class="col-md-1 col-sm-1 col-xs-1">
-                    <div class="div-answer-index-circle"><div class="div-answer-index-number" id="answerpanelranking">N</div></div>
-                </div>
-                <div class="col-md-8 col-sm-8 col-xs-8">
-                    <span class="div-answer-mobile-name" id="answerpanelname">&nbsp;&nbsp;loading</span><span class="div-answer-mobile-score" id="answerpanelscore">loading..</span>
-                </div>
-                <div class="col-md-1 col-sm-1 col-xs-1" style="padding-left: 0px;">
-                    <div class="div-answer-addscore-block" id="addscore">0</div>
-                </div>
-                <div class="col-md-1 col-sm-1 col-xs-1">
-                    <div class="div-answer-minusscore-block" id="minusscore">-0</div>
-                </div>
-                <br style="clear:both">
-                <br style="clear:both">
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="div-answer-question-block" id="question">loading</div>
-                </div>
+<!--        <section id="answerpanel" style="display:none">-->
+        <section id="answerpanel">
 
-                <br style="clear:both">
-                <br style="clear:both">
-
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="timebaricon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
-                    <div class="timebar" id="timebar">
-                        <div class="timebarvalue" id="timebarvalue"></div>
+            <div id="question-area">
+                <div class="question-sort" id="answerpanelranking">N</div>
+                <div class="question-bg">
+                    <div class="scores-container">
+                        <div class="minusscore" id="minusscore">0</div>
+                        <div class="addscore" id="addscore">0</div>
                     </div>
-                </div>
-
-                <div class="col-md-12 col-sm-12 col-xs-12" id="errorbox" style="display:none;">
-                    <br style="clear:both">
-                    <br style="clear:both">
-                    <div class="alert alert-danger alert-dismissible" role="alert">
-                        <button type="button" class="close" id="alertclose"><span aria-hidden="true">&times;</span></button>
-                        <span id="errortips"></span>
-                    </div>
-                </div>
-                <script>
-                
-                </script>
-
-                <br style="clear:both">
-                <br style="clear:both">
-
-                <div id="answerbuttongroup">
-                    
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="div-answer-answer-block" onclick="submitSolution('A')">
-                            <span id="answer-a"></span>
-                            <br style="clear:both">
+                    <div class="question" id="question">loading...</div>
+                    <div class="time-container">
+                        <h5 class="title"><i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;TIME</h5>
+                        <h5 class="second" id="second">10s</h5>
+                        <div class="timebar" id="timebar">
+                            <div class="timebarvalue" id="timebarvalue"></div>
                         </div>
                     </div>
-                    <br style="clear:both">
-                    <br style="clear:both">
-                    
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="div-answer-answer-block" onclick="submitSolution('B')">
-                            <span id="answer-b"></span>
-                            <br style="clear:both">
-                        </div>
-                    </div>
-                    <br style="clear:both">
-                    <br style="clear:both">
-                    
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="div-answer-answer-block" onclick="submitSolution('C')">
-                            <span id="answer-c"></span>
-                            <br style="clear:both">
-                        </div>
-                    </div>
-                    <br style="clear:both">
-                    <br style="clear:both">
-                    
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="div-answer-answer-block" onclick="submitSolution('D')">
-                            <span id="answer-d"></span>
-                            <br style="clear:both">
-                        </div>
-                    </div>
-                    <br style="clear:both">
-                    <br style="clear:both">
-                    
-                    
                 </div>
-
-                <script>
-                
-                </script>
-
-                <div id="processinganimation" style="display:none;">
-                    <center>
-                        <h1><i class="fa fa-spinner fa-spin"></i></h1>
-                        <br>
-                        <h1 class="allinfo">努力提交答案ing~</h1>
-                    </center>
-                </div>
-
-                <br>
-                <br>
-                <center>
-                    <p class="p-bottom-extras">科创社·科技部 技术提供</p>
-                </center>
             </div>
+
+            <div id="answer-group">
+                <div class="answer" onclick="submitSolution('A')">
+                    <div class="index">A</div>
+                    <div class="content" id="answer-a"></div>
+                </div>
+                <div class="answer" onclick="submitSolution('B')">
+                    <div class="index">B</div>
+                    <div class="content" id="answer-b"></div>
+                </div>
+                <div class="answer" onclick="submitSolution('C')">
+                    <div class="index">C</div>
+                    <div class="content" id="answer-c"></div>
+                </div>
+                <div class="answer" onclick="submitSolution('D')">
+                    <div class="index">D</div>
+                    <div class="content" id="answer-d"></div>
+                </div>
+            </div>
+
+            <div class="errorbox" id="errorbox" style="display:none;">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" id="alertclose"><span aria-hidden="true">&times;</span></button>
+                    <span id="errortips"></span>
+                </div>
+            </div>
+
+            <div id="processinganimation" style="display:none;">
+                <h1><i class="fa fa-spinner fa-spin"></i></h1>
+                <br>
+                <h1 class="allinfo">努力提交答案ing~</h1>
+            </div>
+
         </section>
         
         
         <!--提示信息页面-->
         <section id="infopanel" style="display:none">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-                <div>
-                    <br style="clear:both">
-                    <center>
-                        <h1 style="font-size:72px;"><span class="glyphicon glyphicon-ok" id="infopanel-icon"></span></h1>
-                        <h1 id="infopanel-info">loading</h1>
-                    </center>
+            <div class="info-container">
+                <div class="info-bg">
+                    <h1 class="icon"><span class="fa fa-check" id="infopanel-icon"></span></h1>
+                    <h1 id="infopanel-info">loading</h1>
                 </div>
-                <br style="clear:both">
-                <br style="clear:both">
 
-                <button class="div-caq-button col-md-12 col-sm-12 col-xs-12" onclick="scanstate('idc')"><span class="glyphicon glyphicon-circle-arrow-left"></span>&nbsp;&nbsp;回到输入验证码的界面</button>
-                <br style="clear:both">
-                <br style="clear:both">
-                <br style="clear:both">
-                <br style="clear:both">
-                <br style="clear:both">
-                <br style="clear:both">
-                <br style="clear:both">
-                <br style="clear:both">
-                <center>
-                    <p class="p-bottom-extras">科创社·科技部 技术提供</p>
-                </center>
+
+                <button class="submit_btn" onclick="scanstate('idc')"><span class="fa fa-arrow-circle-left"></span>&nbsp;&nbsp;回到输入验证码的界面</button>
+
+
             </div>
         </section>
-        
-        
-        
-        
+
+
+
+        <p class="p-bottom-extras">科创社·科技部 技术提供</p>
         
         
         
@@ -318,8 +248,6 @@ if($err['code']!=0000){
 //                    $("#rank").html(idcpanelpack.ranking);
                     $("#answerpanelranking").html(idcpanelpack.ranking);
                     $("#playerName").html(idcpanelpack.name);
-                    $("#answerpanelname").html(idcpanelpack.name);
-                    $("#answerpanelscore").html("  (你的总分: "+idcpanelpack.score+" 分)");
                     $("#achieveTime").html(idcpanelpack.achievetime);
                     changeRankingIcon(idcpanelpack.ranking,idcpanelpack.oldranking);
                     var rightcount = parseInt(idcpanelpack.rightcount);
@@ -399,17 +327,17 @@ if($err['code']!=0000){
                     }
 
                     //绑定数据
-                    $("#addscore").html(answerpanelpack.addscore);
+                    $("#addscore").html("+"+answerpanelpack.addscore);
                     $("#minusscore").html("-"+answerpanelpack.minusscore);
                     $("#question").html(answerpanelpack.question);
                     questionid = answerpanelpack.questionid;
                     availabletime = answerpanelpack.availabletime * 1000;
-                    $("#answer-a").html("A."+answerpanelpack.answera);
-                    $("#answer-b").html("B."+answerpanelpack.answerb);
-                    $("#answer-c").html("C."+answerpanelpack.answerc);
-                    $("#answer-d").html("D."+answerpanelpack.answerd);
+                    $("#answer-a").html(answerpanelpack.answera);
+                    $("#answer-b").html(answerpanelpack.answerb);
+                    $("#answer-c").html(answerpanelpack.answerc);
+                    $("#answer-d").html(answerpanelpack.answerd);
                     
-                    $("#answerbuttongroup").css("display","inline");
+                    $("#answer-group").css("display","block");
                     $("#processinganimation").css("display","none");
                     
                     $("#answerpanel").css("display","block");
@@ -624,8 +552,8 @@ if($err['code']!=0000){
             function timejudge(){
                 var now = new Date().getTime();
                 if(now-startAnswerTime>=availabletime){
-                    $("#answerbuttongroup").css("display","none");
-                    $("#processinganimation").css("display","inline");
+                    $("#answer-group").css("display","none");
+                    $("#processinganimation").css("display","block");
                     clearInterval(timer1);
                     scanstate('infopage','err::你没有在规定的时间内作答~');
 
@@ -643,14 +571,15 @@ if($err['code']!=0000){
                 }
                 var widthpercent = (availabletime-(now-startAnswerTime))/availabletime * 100;
                 $("#timebarvalue").css('width',widthpercent+"%");
+                $("#second").html(Math.round((availabletime-(now-startAnswerTime))/1000)+"s");
             }
             
             
             
             function submitSolution(choose){
                 clearInterval(timer1);
-                $("#answerbuttongroup").css("display","none");
-                $("#processinganimation").css("display","inline");
+                $("#answer-group").css("display","none");
+                $("#processinganimation").css("display","block");
                 $.ajax({
                     url: "<?php echo ROOT_PREFIX.API;?>/mobile",
                     type: "POST",
@@ -666,8 +595,9 @@ if($err['code']!=0000){
                         }else{
                             $("#errortips").html(data.info);
                             $("#errorbox").css("display","inline");
-                            $("#answerbuttongroup").css("display","inline");
+                            $("#answer-group").css("display","block");
                             $("#processinganimation").css("display","none");
+                            timer1 = setInterval('timejudge()',10);
                         }
                     }
                 });

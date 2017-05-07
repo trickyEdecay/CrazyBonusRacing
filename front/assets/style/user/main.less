@@ -1,3 +1,5 @@
+@font-family: PingFang SC,Hiragino Sans GB,"思源黑体",Microsoft Yahei,WenQuanYi Micro Hei,sans-serif;
+
 html,body{
     background-color:#fef0f0;
     text-align: center;
@@ -16,6 +18,15 @@ html,body{
     color:#bfbfbf;
 }
 
+//去掉上下小箭头
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
 
 //等待输入验证码页面
 #captchaPanel{
@@ -67,7 +78,7 @@ html,body{
             h4{
                 margin:6px 0 -2px 0;
                 color:rgba(255,255,255,.5);
-                font-family: "思源黑体","Helvetica Neue", Helvetica, Arial, sans-serif;
+                font-family: @font-family;
                 font-weight:normal;
                 font-size:12px;
             }
@@ -75,7 +86,7 @@ html,body{
             p{
                 margin:0;
                 color:#fff;
-                font-family: "思源黑体","Helvetica Neue", Helvetica, Arial, sans-serif;
+                font-family: @font-family;
                 font-weight:bolder;
                 font-size:25px;
             }
@@ -152,7 +163,7 @@ html,body{
 
             color:#333;
             font-size: 10px;
-            font-family: "思源黑体","Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-family: @font-family;
 
             background-color: #fff;
             border: 1px solid #ccc;
@@ -229,6 +240,232 @@ html,body{
 }
 
 
+//答题页面样式
+
+#answerpanel{
+    //禁止选中任何文字
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Chrome/Safari/Opera */
+    -khtml-user-select: none; /* Konqueror */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+}
+
+#question-area{
+    margin-top: 20px;
+    width: 100%;
+    min-height:150px;
+    text-align: center;
+}
+//题号的圆圈直径
+@circleSize: 60px;
+//题目加减分展示框的高度
+@score-height: 20px;
+.question-bg{
+
+
+
+    position: relative;
+    display: inline-block;
+    width:90%;
+    min-height:100px;
+    border-radius: 10px;
+    background: #fff;
+
+    -webkit-box-shadow:  0 9px 38px rgba(185,39,137,.08);
+    -moz-box-shadow:  0 9px 38px rgba(185,39,137,.08);
+    box-shadow:  0 9px 38px rgba(185,39,137,.08);
+    margin-top: -@circleSize/2;
+    z-index:100;
+
+    box-sizing: border-box;
+    padding:25px;
+
+    .scores-container{
+        position: absolute;
+        right:5px;
+        top: -@score-height;
+        
+        div{
+            float: right;
+            width:40px;
+            line-height:@score-height;
+            height: @score-height;
+            font-size:12px;
+            margin-right:5px;
+            border-radius: 5px 5px 0 0;
+            color:#fff;
+            text-align: center;
+        }
+        
+        .addscore{
+            background: #31ba5b;
+        }
+
+        .minusscore{
+            background: #ff596e;
+        }
+    }
+    
+}
+.question-sort{
+
+    position: relative;
+    display: inline-block;
+    width:@circleSize;
+    height:@circleSize;
+    border-radius: @circleSize;
+    line-height:@circleSize;
+
+    color: #fff;
+    font-size:25px;
+
+    background:#f04d60; /* 一些不支持背景渐变的浏览器 */
+    background:-moz-linear-gradient(0deg, #e93945, #d02d5c);
+    background:-o-linear-gradient(0deg, #e93945, #d02d5c);
+    background:-webkit-linear-gradient(0deg, #e93945, #d02d5c);
+
+    -webkit-box-shadow:  0 9px 38px rgba(185,39,137,.4);
+    -moz-box-shadow:  0 9px 38px rgba(185,39,137,.4);
+    box-shadow:  0 9px 38px rgba(185,39,137,.4);
+
+    letter-spacing: .1em;
+    font-weight: lighter;
+
+    z-index: 200;
+}
+.question{
+    width:100%;
+    text-align: left;
+
+    margin-top:@circleSize/2;
+    color: #333;
+    font-size:14px;
+    font-family: @font-family;
+    font-weight: normal;
+    line-height: 1.5em;
+}
+.time-container{
+    @dark-red: #c63d3d;
+    @light-red: #f9bdbd;
+    margin-top: 25px;
+    height:20px;
+    position: relative;
+    box-sizing: border-box;
+
+    h5{
+        top:0;
+        position: absolute;
+        font-size:12px;
+        margin:0;
+        font-weight:bold;
+    }
+
+    .title{
+        left:0;
+        color: @dark-red;
+    }
+    .second{
+        right:0;
+        float: right;
+        color: @light-red;
+    }
+
+    .timebar{
+        position: absolute;
+        top: 15px;
+        display: block;
+        background-color: @light-red;
+        border-radius: 5px;
+        height:5px;
+        width:100%;
+    }
+    .timebarvalue{
+        background-color: @dark-red;
+        border-radius: 5px;
+        height:5px;
+    }
+
+}
+#answer-group{
+    margin-top: 25px;
+}
+.answer{
+
+    display: inline-block;
+    width:88%;
+    background-color: #C63D3D;
+    border-radius: 5px;
+    margin-top: 14px;
+    padding:5px 15px 5px 12px;
+    text-align: left;
+    overflow: hidden;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+    .index{
+        float: left;
+        font-family: @font-family;
+        font-size:14px;
+        font-weight:bold;
+        color:#FFF;
+    }
+    .content{
+        margin-left:20px;
+        font-family: @font-family;
+        font-size:14px;
+        font-weight:normal;
+        color:#FFF;
+    }
+
+}
+#processinganimation{
+    display: block;
+    text-align: center;
+    width: 90%;
+
+    h1{
+        font-size:28px;
+        margin:0 0 10px 0;
+    }
+}
+
+.errorbox{
+    margin-top:20px;
+    width:90%;
+}
+
+//信息提醒页面样式
+.info-container{
+    display: inline-block;
+    width:90%;
+
+    .info-bg{
+        display: block;
+        width:100%;
+        min-height:100px;
+        border-radius: 10px;
+        background: #fff;
+        padding: 20px;
+
+        -webkit-box-shadow:  0 9px 38px rgba(185,39,137,.08);
+        -moz-box-shadow:  0 9px 38px rgba(185,39,137,.08);
+        box-shadow:  0 9px 38px rgba(185,39,137,.08);
+        margin-top: 30px;
+        margin-bottom:80px;
+    }
+
+    .icon{
+        font-size:50px;
+    }
+    #infopanel-info{
+        font-size:20px;
+        margin-bottom:20px;
+    }
+}
+
 .div-caq-button{
     margin:10px 0;
     padding:10px;
@@ -253,8 +490,9 @@ html,body{
 }
 
 .p-bottom-extras{
+    margin-top: 80px;
     color:#7F7F7F;
-    font-family:"微软雅黑","黑体","Arial";
+    font-family: @font-family;
 }
 
 
