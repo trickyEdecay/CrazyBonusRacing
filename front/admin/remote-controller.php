@@ -26,7 +26,7 @@ $currentQuestionId = $row['value'];
     <!-- endbuild -->
 
     <script>
-        var iosocket = io.connect("ws://localhost:8080");
+        var iosocket = io.connect("ws://192.168.23.1:8080");
         var questionState = "";
         var currentQuestionId = <?php echo $currentQuestionId ?>;
         iosocket.on('connect', function () {
@@ -264,7 +264,9 @@ $currentQuestionId = $row['value'];
     function showsponsor(id){
         $(".question-panel[data-id='"+currentQuestionId+"']").removeClass("current");
         currentQuestionId = id;
-        $(".question-panel[data-id='"+currentQuestionId+"']").addClass("current");
+        var $curentQuestionPanel = $(".question-panel[data-id='"+currentQuestionId+"']");
+        $curentQuestionPanel.addClass("current");
+        $("body").animate({"scrollTop":$curentQuestionPanel[0].offsetTop+"px"},"fast");
         $.ajax({
             url: "<?php echo ROOT_PREFIX.API;?>/remote-control",
             type: "POST",
