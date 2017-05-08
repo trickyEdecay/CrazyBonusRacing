@@ -170,8 +170,8 @@ class player extends sqlihelper {
                       `reason-for-score`='none',
                       `activeminusscore`='0',
                       `lastactiveyear`='{$this->year}',
-                      `historyscore`='0',
-                      `historyranking`='{$this->defaultRanking}'
+                      `historyscore`='0,',
+                      `historyranking`='{$this->defaultRanking},'
                       WHERE 
                       `name` = '{$name}' and `tel` = '{$tel}' limit 1
         ");
@@ -186,7 +186,7 @@ class player extends sqlihelper {
               ) 
               values
               ('{$name}','{$tel}',now(6),'{$ts}','{$this->year}','{$this->year}',
-              '{$this->defaultRanking}','{$this->defaultRanking}',0,'{$this->defaultRanking}',
+              '{$this->defaultRanking}','{$this->defaultRanking}','0,','{$this->defaultRanking},',
               0,0,0,0,0,
               '','',1,0,'none'
               )
