@@ -116,48 +116,43 @@ class ScoreRules {
         $correctSolution = $questionPack['correctanswer'];
         $peopleLimit = $questionPack['peoplelimit'];
 
-        //获取前 n 名答对的人中，第n名玩家在buffer表中的id
-        $result = $sqlihelper->mysql("select id from
-                            question_buffer
-                            where
-                            questionid = '{$questionId}' and
-                            choose = '{$correctSolution}' and
-                            state = 'done'
-                            order by `time` asc limit $peopleLimit
-        ");
-
-        $result->data_seek($result->num_rows-1);
-        $theLastCorrectPlayerId = $result->fetch_row()[0];
 
         //对这些答对的人进行加分
-        $sqlihelper->mysql("update question_people as player,question_buffer as buffer
+        $sqlihelper->mysql("update question_people as player,
+                            (select * from question_buffer 
+                                      where 
+                                      `state` = 'done' and
+                                      `choose` = '{$correctSolution}' and 
+                                      `questionid` = '{$questionId}'
+                                      order by `done-time` asc limit {$peopleLimit}
+                            ) as buffer
                             set
                             player.score = player.score + $addScore,
                             player.rightcount = player.rightcount + 1,
                             player.rightids=concat(IFNULL(player.rightids,''),'$questionId,'),
-                            player.achievetime = buffer.time,
+                            player.achievetime = buffer.`done-time`,
                             player.achievets = buffer.ts,
                             player.`reason-for-score` = 'correct'
                             where
-                            player.id = buffer.peopleid and 
-                            buffer.state = 'done' and
-                            buffer.choose = '$correctSolution' and
-                            buffer.questionid = $questionId and 
-                            buffer.id <= {$theLastCorrectPlayerId}
+                            player.id = buffer.peopleid
         ");
 
+
         //对这些答对但是不是前面答对的人进行记录
-        $sqlihelper->mysql("update question_people as player,question_buffer as buffer
+        $sqlihelper->mysql("update question_people as player,
+                            (select * from question_buffer 
+                                      where 
+                                      `state` = 'done' and
+                                      `choose` = '{$correctSolution}' and 
+                                      `questionid` = '{$questionId}'
+                                      order by `done-time` asc limit {$peopleLimit},999
+                            ) as buffer
                             set
                             player.rightcount = player.rightcount + 1,
                             player.rightids=concat(IFNULL(player.rightids,''),'$questionId,'),
                             player.`reason-for-score` = 'none'
                             where
-                            player.id = buffer.peopleid and 
-                            buffer.state = 'done' and
-                            buffer.choose = '$correctSolution' and
-                            buffer.questionid = $questionId and 
-                            buffer.id > {$theLastCorrectPlayerId}
+                            player.id = buffer.peopleid
         ");
 
     }
@@ -186,45 +181,62 @@ class ScoreRules {
         //如果小于0 需要重置到 1，要不然下面的limit不生效
         $minusPlayerCount = $minusPlayerCount <= 0 ? 1 : $minusPlayerCount;
 
-        //找出在buffer中倒数第n个答错的人的id。
-        $result = $sqlihelper->mysql("select id from
-                            question_buffer
-                            where
-                            questionid = '{$questionId}' and
-                            choose <> '{$correctSolution}' and
-                            state = 'done'
-                            order by `time` desc limit $minusPlayerCount
-        ");
 
-        //如果说根本就没人的状态 是 done 的话，之后的sql 语句会出现bug，所以要设置一个值。
-        if($result->num_rows <= 0){
-            $theLastWrongPlayerId = 1;
-        }else{
-            $result->data_seek($result->num_rows-1);
-            $theLastWrongPlayerId = $result->fetch_row()[0];
-        }
 
-        //倒数答错 & 答题超时 & 没有作答扣分
-        $sqlihelper->mysql("update question_people,question_buffer 
-            set question_people.score = question_people.score-$minusScore,
-            question_people.wrongcount=question_people.wrongcount+1,
-            question_people.wrongids=concat(IFNULL(question_people.wrongids,''),'$questionId,'),
-            achievetime = question_buffer.time, achievets = question_buffer.ts,
-            question_people.`reason-for-score` = IF(question_buffer.state = 'done','last',question_buffer.state)
-            where 
-            question_people.id = question_buffer.peopleid and 
-            question_buffer.questionid = $questionId and
-            (
-            (question_buffer.state = 'done' and question_buffer.choose <> '$correctSolution' and question_buffer.id>='{$theLastWrongPlayerId}') or
-            question_buffer.state='joined' or
-            question_buffer.state='waiting' or
-            question_buffer.state='timeout' or
-            question_buffer.choose is null
-            )"
+        //倒数15%的人里面：答错 & 答题超时 & 没有作答扣分
+        $sqlihelper->mysql("update question_people as player,
+                            (select * from question_buffer
+                                      where
+                                       `questionid` = '{$questionId}' and
+                                       (
+                                          (`state` = 'done' and `choose` <> '$correctSolution') or 
+                                          `state` = 'joined' or
+                                          `state` = 'wating' or 
+                                          `state` = 'timeout' or 
+                                          `choose` is null
+                                       )
+                                       order by `done-time` desc
+                                       limit $minusPlayerCount
+                            ) as buffer
+                            set player.score = player.score-$minusScore,
+                            player.wrongcount=player.wrongcount+1,
+                            player.wrongids=concat(IFNULL(player.wrongids,''),'$questionId,'),
+                            player.achievetime = now(6), 
+                            player.achievets = buffer.ts,
+                            player.`reason-for-score` = IF(buffer.state = 'done','last',buffer.state)
+                            where 
+                            player.id = buffer.peopleid"
+        );
+
+        //倒数15%以外没有作答、超时被扣分
+        $sqlihelper->mysql("update question_people as player,
+                            (select * from question_buffer
+                                      where
+                                       `questionid` = '{$questionId}' and
+                                       (
+                                          (`state` = 'done' and `choose` <> '$correctSolution') or 
+                                          `state` = 'joined' or
+                                          `state` = 'wating' or 
+                                          `state` = 'timeout' or 
+                                          `choose` is null
+                                       )
+                                       order by `done-time` desc
+                                       limit $minusPlayerCount,999
+                            ) as buffer
+                            set player.score = player.score-$minusScore,
+                            player.wrongcount=player.wrongcount+1,
+                            player.wrongids=concat(IFNULL(player.wrongids,''),'$questionId,'),
+                            player.achievetime = now(6), 
+                            player.achievets = buffer.ts,
+                            player.`reason-for-score` = IF(buffer.state = 'done','last',buffer.state)
+                            where 
+                            player.id = buffer.peopleid and 
+                            buffer.state <> 'done'
+                            "
         );
 
         //0分题可以作为不扣分的题
-        if($minusScore>1){
+        if($minusScore>=1){
             //凡是答错扣除自身分数的百分之多少
             $minusRate = 0.05;
 
@@ -232,25 +244,38 @@ class ScoreRules {
             $threshold = 15;
 
             //凡是答错都得扣分,只有当分数大于15分的时候才会被扣分
-            $sqlihelper->mysql("update question_people,question_buffer 
-            set question_people.score = question_people.score-round(question_people.score * '{$minusRate}'),
-            question_people.wrongcount=question_people.wrongcount+1,
-            question_people.wrongids=concat(IFNULL(question_people.wrongids,''),'$questionId,'),
-            achievetime = question_buffer.time, achievets = question_buffer.ts,
-            question_people.`reason-for-score` = 'wrong'
-            where 
-            question_people.score > '{$threshold}' and
-            question_people.id = question_buffer.peopleid and 
-            question_buffer.questionid = $questionId and
-            question_buffer.state = 'done' and question_buffer.choose <> '$correctSolution' and question_buffer.id<{$theLastWrongPlayerId}
-            "
+            $sqlihelper->mysql("update question_people as player,
+                            (select * from question_buffer
+                                      where
+                                       `questionid` = '{$questionId}' and
+                                       (
+                                          (`state` = 'done' and `choose` <> '$correctSolution') or 
+                                          `state` = 'joined' or
+                                          `state` = 'wating' or 
+                                          `state` = 'timeout' or 
+                                          `choose` is null
+                                       )
+                                       order by `done-time` desc
+                                       limit $minusPlayerCount,999
+                            ) as buffer
+                            set player.score = player.score-round(player.score * '{$minusRate}'),
+                            player.wrongcount=player.wrongcount+1,
+                            player.wrongids=concat(IFNULL(player.wrongids,''),'$questionId,'),
+                            player.achievetime = buffer.`done-time`, 
+                            player.achievets = buffer.ts,
+                            player.`reason-for-score` = 'wrong'
+                            where 
+                            player.score > '{$threshold}' and
+                            player.id = buffer.peopleid and 
+                            buffer.state = 'done'
+                            "
             );
         }
 
 
 
         //如果有连续两次没有输入验证码,那么就会被扣除分数,扣除的分数是 连续没有参加的次数*2
-        $sqlihelper ->mysql("update question_people set score=score-active*2,activeminusscore=activeminusscore+active*2,`reason-for-score` = 'passive' where active>2 and lastactiveyear='{$year}'");
+        $sqlihelper ->mysql("update question_people set score=score-active*2,`achievetime`=now(6),activeminusscore=activeminusscore+active*2,`reason-for-score` = 'passive' where active>2 and lastactiveyear='{$year}'");
         $sqlihelper ->mysql("update question_people set active=active+1 where lastactiveyear='{$year}'");
     }
 

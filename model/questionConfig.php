@@ -135,7 +135,7 @@ class questionConfig extends sqlihelper{
     public function computeBalancePlayerInfo($questionPack){
         $questionId = $questionPack['currentquestionid'];
         $correctSolution = $questionPack['correctanswer'];
-        $this->mysql("select `peopleid` from `question_buffer` where `questionid` = '{$questionId}' order by 'time' asc limit 1");
+        $this->mysql("select `peopleid` from `question_buffer` where `questionid` = '{$questionId}' order by `time` asc limit 1");
         $fastPlayerId = $this->result->fetch_assoc()['peopleid'];
         $this->mysql("select `name` from `question_people` where `id` = '{$fastPlayerId}' limit 1");
         if($this->result->num_rows <= 0){
@@ -144,7 +144,7 @@ class questionConfig extends sqlihelper{
             $fastPlayerName = $this->result->fetch_assoc()['name'];
         }
 
-        $this->mysql("select `peopleid` from `question_buffer` where `questionid` = '{$questionId}' and `choose` = '{$correctSolution}' order by 'time' asc limit 1");
+        $this->mysql("select `peopleid` from `question_buffer` where `questionid` = '{$questionId}' and `choose` = '{$correctSolution}' order by `done-time` asc limit 1");
         if($this->result->num_rows <= 0){
             $firstCorrectPlayerName = "::null";
         }else{

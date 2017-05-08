@@ -167,7 +167,7 @@ class player extends sqlihelper {
                       `rightids`='',
                       `wrongids`='',
                       `active`='1',
-                      `reson-for-score`='none',
+                      `reason-for-score`='none',
                       `activeminusscore`='0',
                       `lastactiveyear`='{$this->year}',
                       `historyscore`='0',

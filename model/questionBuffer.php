@@ -36,8 +36,8 @@ class questionBuffer extends sqlihelper {
     public function insertPeopleIntoBuffer($peopleId,$questionId,$now,$ts){
         $state = QuestionBufferState::Waiting;
         $this->result = $this->mysql("insert into `question_buffer` 
-            (`peopleid`,`questionid`,`time`,`state`,`ts`)
-            select * from (select {$peopleId},{$questionId},now(6),'{$state}',{$ts}) as tmp
+            (`peopleid`,`questionid`,`time`,`done-time`,`state`,`ts`)
+            select * from (select {$peopleId},{$questionId},now(6),'9999-12-31 00:00:00:000000','{$state}',{$ts}) as tmp
             where not exists(
               select `peopleid`,`questionid` from `question_buffer` where `peopleid` = {$peopleId} and `questionid` = {$questionId} limit 1
             )"
@@ -93,10 +93,11 @@ class questionBuffer extends sqlihelper {
 
     public function submitSolution($peopleId,$questionId,$choose){
         $state = QuestionBufferState::Done;
-        $this->mysql("update question_buffer set state='{$state}',choose='{$choose}' 
+        $this->mysql("update question_buffer set state='{$state}',choose='{$choose}',`done-time`= now(6)
             where questionid='{$questionId}' and peopleid='{$peopleId}' limit 1"
         );
     }
+
 }
 
 class QuestionBufferState {
