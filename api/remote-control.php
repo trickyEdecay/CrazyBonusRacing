@@ -55,6 +55,7 @@ function getQuestionStatus(){
     $currentQuestionId = $questionPack['currentquestionid'];
     $peopleLimit = $questionPack['peoplelimit'];
     $question = $questionPack['question'];
+    $availabletime = $questionPack['availabletime'];
     $sort = $questionPack['sort'];
     $addScore = $questionPack['addscore'];
     $minusScore = $questionPack['minusscore'];
@@ -66,6 +67,9 @@ function getQuestionStatus(){
     $peopleDone = $questionBuffer->getCountOfState($questionPack,QuestionBufferState::Done);
     $peopleTimeout = $questionBuffer->getCountOfState($questionPack,QuestionBufferState::Timeout);
 
+    $db_player = new player($db_questionConfig->getMysqli());
+    $playerCount = $db_player->getPlayerCount();
+
     $db_questionConfig->close();
 
     $questionStatusPack = new stdClass();
@@ -76,11 +80,13 @@ function getQuestionStatus(){
     $questionStatusPack->{'peoplelimit'} = $peopleLimit;
     $questionStatusPack->{'sort'} = $sort;
     $questionStatusPack->{'question'} = $question;
+    $questionStatusPack->{'availabletime'} = $availabletime;
     $questionStatusPack->{'addscore'} = $addScore;
     $questionStatusPack->{'minusscore'} = $minusScore;
     $questionStatusPack->{'peoplejoined'} = $peopleJoined;
     $questionStatusPack->{'peopledone'} = $peopleDone;
     $questionStatusPack->{'peopletimeout'} = $peopleTimeout;
+    $questionStatusPack->{'playerCount'} = $playerCount;
     die(json_encode($questionStatusPack));
 
 }

@@ -197,4 +197,8 @@ class player extends sqlihelper {
     public function setScoreChangeReasonToNone(){
         $this->mysql("update question_people set `reason-for-score` = 'none' where `lastactiveyear` = '{$this->year}'");
     }
+
+    public function getPlayerCount(){
+        return $this->mysql("select * from question_people where lastactiveyear = '{$this->year}'")->num_rows;
+    }
 }

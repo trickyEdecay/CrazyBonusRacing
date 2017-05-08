@@ -1,0 +1,313 @@
+@font-family: PingFang SC,Hiragino Sans GB,"思源黑体",Microsoft Yahei,WenQuanYi Micro Hei,sans-serif;
+
+body{
+  margin:0;
+  background: #fafafa;
+  text-align: center;
+  font-size:14px;
+}
+
+*{
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+h1{
+  font-weight:normal;
+  font-family: @font-family;
+}
+
+.btn{
+  display: inline-block;
+  padding:12px 12px;
+  text-align: center;
+  border:1px solid #ddd;
+  font-family: @font-family;
+  background: #fff;
+  border-radius: 5px;
+
+  &.btn-outer{
+    margin-bottom:20px;
+    width:90%;
+  }
+
+  &.btn-middle{
+    margin-bottom:20px;
+    width:50%;
+    position: relative;
+    overflow: hidden;
+
+    .word{
+      position: relative;
+      width: 100%;
+      height:100%;
+    }
+    .mask{
+      position: absolute;
+      top:0;
+      left:0;
+      height:100%;
+      width: 100%;
+      background: rgba(0,0,0,.3);
+    }
+  }
+
+  &.green{
+    background: #3da16e;
+    color: #fff;
+    border:1px solid transparent;
+  }
+  &.red{
+    background: #f14555;
+    color: #fff;
+    border:1px solid transparent;
+  }
+  &.yellow{
+    background: #ffb400;
+    color: #fff;
+    border:1px solid transparent;
+  }
+
+  &.disabled{
+    background: #eee;
+    color: #b8b8b8;
+    border:1px solid transparent;
+  }
+}
+
+
+
+#opeTips{
+  transition: all .2s linear;
+  position: fixed;
+  width:100%;
+  height:0px;
+  line-height: 0px;
+  background: #3da16e;
+  color: #fff;
+
+  &.red{
+    background: #f14555;
+  }
+
+  &.show{
+    height:40px;
+    line-height: 40px;
+  }
+}
+
+.question-panel{
+  display: inline-block;
+  margin-bottom: 20px;
+  width:90%;
+  border:1px solid #ddd;
+  border-radius: 3px;
+
+  .title{
+    padding:10px;
+    width:100%;
+    border-bottom: 1px solid #ddd;
+    background: #f5f5f5;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+    .current{
+      transition: all .2s linear;
+      opacity:0;
+      float: left;
+      padding:5px 8px;
+      line-height: 20px;
+      margin-left:5px;
+      background: #3da16e;
+      color: #fff;
+      border-radius: 5px;
+    }
+
+    h1{
+      word-break: break-all;
+      margin:0 0 0 50px;
+      padding:5px 8px;
+      text-align: left;
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+
+  .content{
+    width:100%;
+    padding:10px;
+    background: #fff;
+  }
+
+
+  &.current{
+    .current{
+      opacity:1;
+    }
+  }
+
+}
+
+.bottom-toolbar{
+  position: fixed;
+  bottom:0;
+  width:100%;
+
+  .title{
+    width:100%;
+    height:60px;
+    background: #f8f8f8;
+    border-top:1px solid #ddd;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding:10px;
+
+    h1{
+      float: left;
+      text-align: left;
+      margin:0;
+      font-size: 14px;
+      line-height:40px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width:84%;
+      white-space: nowrap;
+    }
+
+    #expandBtn{
+      float: right;
+      width:40px;
+      height: 40px;
+      line-height: 40px;
+      font-size:14px;
+      background: #fff;
+      color: #333;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+    }
+
+  }
+
+  .content{
+    transition: all .2s cubic-bezier(0,0,0.75,1);
+    height:0;
+    width:100%;
+    background: #fff;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding:0;
+    text-align: center;
+
+    &.show{
+      padding:10px;
+      height:300px;
+    }
+
+    .state-display{
+      position: relative;
+      display: inline-block;
+      width:90%;
+      border:1px solid #ddd;
+      border-radius: 3px;
+      background: #fff;
+      text-align: center;
+      padding:10px;
+      margin-bottom:20px;
+
+      .small{
+        text-align: center;
+        font-size: 12px;
+        color:#ccc;
+      }
+
+      h1{
+        margin:2px 0 10px 0;
+        font-size: 20px;
+        color:#333;
+      }
+
+      .player-data{
+        font-size:12px;
+        text-align: center;
+        color: #333;
+
+        >data-line{
+          display: block;
+          width:100%;
+        }
+
+        >.data-item{
+          display: inline-block;
+          width:30%;
+        }
+
+        .statics{
+          margin:0 2px;
+          font-weight: bold;
+          font-family: @font-family;
+        }
+        #playerJoined{
+          color:#ffb400;
+        }
+
+        #playerDone{
+          color: #3da16e;
+        }
+        #playerTimeout{
+          color: #f14555;
+        }
+
+      }
+
+      .progress-bar-bg{
+        display: inline-block;
+        width:90%;
+        height:5px;
+        border-radius: 5px;
+        background: #ccc;
+        overflow: hidden;
+      }
+      .progress-bar{
+        transition: all .28s cubic-bezier(0,0,0.75,1);
+        float: left;
+        height:5px;
+        width:0%;
+        overflow: hidden;
+
+        &.yellow{
+          background: #ffb400;
+        }
+        &.green{
+          background: #3da16e;
+        }
+        &.red{
+          background: #f14555;
+        }
+      }
+      #refreshBtn{
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        font-size:16px;
+        line-height: 30px;
+        color: #ccc;
+        right:5px;
+        top:5px;
+      }
+
+    }
+
+  }
+
+
+}
+
+//用来占用底部的位置，以免被底部栏挡住
+.bottom-placeholder{
+  clear: both;
+  height:80px;
+  width:100%;
+}

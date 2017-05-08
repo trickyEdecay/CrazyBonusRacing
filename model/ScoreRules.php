@@ -170,7 +170,7 @@ class ScoreRules {
         $year = YEAR;
 
         //总共有多少玩家
-        $playerCount = $sqlihelper->mysql("select * from question_people where lastactiveyear = {$year}")->num_rows;
+        $playerCount = $sqlihelper->mysql("select * from question_people where lastactiveyear = '{$year}'")->num_rows;
 
         //倒数百分之x 的人扣分
         $rateOfMinus = 0.15;

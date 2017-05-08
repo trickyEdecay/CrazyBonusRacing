@@ -1,4 +1,11 @@
-
+<?php
+$nc = new sqlihelper();
+if(!$nc->connect()){
+}
+$result = $nc ->mysql("select * from question_config where keyname = 'currentquestionid' limit 1");
+$row = $result->fetch_assoc();
+$currentQuestionId = $row['value'];
+?>
 
 <!DOCTYPE html>
 <html>
@@ -10,85 +17,148 @@
 
     <!-- build:js /assets/js/admin/controller.js -->
     <script src="/front/assets/js/jquery-1.12.4.js"></script>
-    <script src="/front/assets/js/bootstrap.js"></script>
     <script src="/front/assets/js/socket.io-1-7-3.js"></script>
     <!-- endbuild -->
 
     <!-- build:css /assets/css/admin/controller.css -->
-    <link href="/front/assets/style/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="/front/assets/style/font-awesome.css">
+    <link href="/front/assets/style/admin/remote-controller.less" rel="stylesheet">
     <!-- endbuild -->
 
     <script>
-            var iosocket = io.connect("ws://localhost:8080");
+        var iosocket = io.connect("ws://localhost:8080");
+        var questionState = "";
+        var currentQuestionId = <?php echo $currentQuestionId ?>;
+        iosocket.on('connect', function () {
+            console.log("连接成功!");
 
-            iosocket.on('connect', function () {
-                console.log("连接成功!");
-                
-            });
-        
+        });
+
+
     refreshdata();
         
     function refreshdata(){
+        if(isAllBtnDisabled){
+            return;
+        }
         disableallbtn();
         $("#refreshbtn").attr("disabled",true);
         $("#refreshbtn").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;刷新上面的数据");
-        var id=$("#opepanel-questionid").html();
         $("[sign-data='questionsign']").html("");
         $.ajax({
             url: "<?php echo ROOT_PREFIX.API;?>/remote-control",
             type: "POST",
             data:{
                 'what':'getQuestionStatus',
-                'questionid':id
+                'questionid':currentQuestionId
             },
             success: function(data,status){
                 data = JSON.parse(data);
-                $("#Operatetips").html(data.info);
+                showTips(data.info);
                 if(data.code == 0000){
-                    $("#opepanel-questionid").html(data.currentquestionid);
+                    currentQuestionId = data['currentquestionid'];
+                    questionState = data['questionstate'];
                     $("#questionstate").html(data.questionstate);
+
+                    decideToShowToolBtns();
+
                     $("#peopleoflimit").html(data.peoplelimit);
-                    $("#peopleofjoined").html(data.peoplejoined);
-                    $("#peopleofdone").html(data.peopledone);
-                    $("#peopleoftimeout").html(data.peopletimeout);
+                    $("#playerJoined").html(data.peoplejoined);
+                    $("#playerCount").html(data['playerCount']);
+                    $("#playerDone").html(data.peopledone);
+                    $("#playerTimeout").html(data.peopletimeout);
                     $("#questiontitle").html(data.question);
                     $("#current-"+data.currentquestionid).html("当前");
+
+                    $("#pb_joined").css("width",Math.round(data['peoplejoined']/data['playerCount']*100)+"%");
+                    $("#pb_done").css("width",Math.round(data['peopledone']/data['playerCount']*100)+"%");
+                    $("#pb_timeout").css("width",Math.round(data['peopletimeout']/data['playerCount']*100)+"%");
                 }
-                setTimeout(clearTips,2000);
                 $("#refreshbtn").html("刷新上面的数据");
                 $("#refreshbtn").attr("disabled",false);
                 enableallbtn();
             }
         });
     }
-    
-    //清除提示
-    function clearTips(){
-        $("#Operatetips").html("");
+
+
+    //显示提示
+    function showTips(info){
+        $("#opeTips").html(info);
+        $("#opeTips").addClass("show");
+        setTimeout(function(){
+            $("#opeTips").removeClass("show");
+        },2500);
     }
-        
+    var isAllBtnDisabled = false;
+    var isAllToolBtnShown = false;
     function disableallbtn(){
-        $("#refreshbtn").attr("disabled",true);
-        $("#showidcbtn").attr("disabled",true);
-        $("#showquestionbtn").attr("disabled",true);
-        $("#showkeybtn").attr("disabled",true);
-        $("[sign-data='showsponsorbtn']").attr("disabled",true);
+        $(".btn").addClass('disabled');
+        isAllBtnDisabled = true;
     }
         
     function enableallbtn(){
-        $("#refreshbtn").attr("disabled",false);
-        $("#showidcbtn").attr("disabled",false);
-        $("#showquestionbtn").attr("disabled",false);
-        $("#showkeybtn").attr("disabled",false);
-        $("[sign-data='showsponsorbtn']").attr("disabled",false);
+        $(".btn").removeClass('disabled');
+        isAllBtnDisabled = false;
+    }
+
+
+    //显示所有工具按钮
+    function toggleAllToolBtns() {
+        if(!isAllToolBtnShown){
+            $("#showAllToolToggle").html("仅显示推荐工具按钮");
+            isAllToolBtnShown = true;
+            $(".btn-middle").css('display','inline-block');
+        }else{
+            $("#showAllToolToggle").html("显示所有工具按钮");
+            isAllToolBtnShown = false;
+            refreshdata();
+        }
+
+    }
+
+    //决定显示哪个工具按钮
+    function decideToShowToolBtns(){
+        if(!isAllToolBtnShown){
+            $(".btn-middle").css('display','none');
+            $(".btn-middle").children(".mask").css('width','100%');
+            switch(questionState){
+                case 'showingSponsor':
+                    $("#showCaptchaBtn").css('display','inline-block');
+                    break;
+                case 'showingCaptcha':
+                    $("#showQuestionBtn").css('display','inline-block');
+                    break;
+                case 'showingQuestion':
+                    $("#showSolutionBtn").css('display','inline-block');
+                    break;
+                case 'showingSolution':
+                    $("#goNextSponsorBtn").css('display','inline-block');
+                    break;
+            }
+            var timer;
+            var second = 0;
+            timer = setInterval(function(){
+                if(second>=2000){
+                    $(".btn-middle").children(".mask").css('width',"0%");
+                    clearInterval(timer);
+                }else{
+                    $(".btn-middle").children(".mask").css('width',(2000-second)/2000*100+"%");
+                    second+=10;
+                }
+            },10);
+        }
     }
         
     function showCaptcha(){
+        if(isAllBtnDisabled){
+            return;
+        }else if(!isAllToolBtnShown && $(".btn-middle").children(".mask").width() > 0){
+            return
+        }
         disableallbtn();
         $("#showidcbtn").attr("disabled",true);
         $("#showidcbtn").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;显示验证码");
-        var id=$("#opepanel-questionid").html();
         $.ajax({
             url: "<?php echo ROOT_PREFIX.API;?>/remote-control",
             type: "POST",
@@ -97,15 +167,15 @@
             },
             success: function(data,status){
                 data = JSON.parse(data);
-                $("#Operatetips").html(data.info);
+                showTips(data.info);
                 if(data.code == 0000){
-                    iosocket.emit('showidc',{'questionid':id});
-                    refreshdata();
+                    iosocket.emit('showidc',{'questionid':currentQuestionId});
                 }
-                setTimeout(clearTips,2000);
+                questionState = 'showingCaptcha';
                 $("#showidcbtn").html("显示验证码");
-                $("#showidcbtn").attr("disabled",false);
+                decideToShowToolBtns();
                 enableallbtn();
+                setTimeout(refreshdata(),1000);
             }
         });
         
@@ -113,10 +183,14 @@
     }
         
     function showquestion(){
+        if(isAllBtnDisabled){
+            return;
+        }else if(!isAllToolBtnShown && $(".btn-middle").children(".mask").width() > 0){
+            return
+        }
         disableallbtn();
         $("#showquestionbtn").attr("disabled",true);
         $("#showquestionbtn").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;显示题目");
-        var id=$("#opepanel-questionid").html();
         $.ajax({
             url: "<?php echo ROOT_PREFIX.API;?>/remote-control",
             type: "POST",
@@ -125,37 +199,38 @@
             },
             success: function(data,status){
                 data = JSON.parse(data);
-                $("#Operatetips").html(data.info);
+                showTips(data.info);
                 if(data.code == 0000){
-                    iosocket.emit('showquestion',{'questionid':id});
-                    refreshdata();
+                    iosocket.emit('showquestion',{'questionid':currentQuestionId});
                 }
-                setTimeout(clearTips,2000);
+                questionState = 'showingQuestion';
                 $("#showquestionbtn").html("显示题目");
-                $("#showquestionbtn").attr("disabled",false);
+                decideToShowToolBtns();
                 enableallbtn();
+                setTimeout(refreshdata(),1000);
             }
         });
     }
     
     function showkey(){
+        if(isAllBtnDisabled){
+            return;
+        }else if(!isAllToolBtnShown && $(".btn-middle").children(".mask").width() > 0){
+            return
+        }
         disableallbtn();
-        if($("#questionstate").html()=="showingkey"){
+        if($("#questionstate").html()=="showingSolution"){
             $("#showkeybtn").attr("disabled",true);
             $("#showkeybtn").html("<span class=\"glyphicon glyphicon-remove\"></span>&nbsp;&nbsp;已经结算过了");
-            $("#Operatetips").html("当前已经结算完毕!");
-            setTimeout(clearTips,2000);
+            showTips("当前已经结算完毕");
             setTimeout(function(){
-                $("#showkeybtn").attr("disabled",false);
                 $("#showkeybtn").html("显示答案+结算分数");
                 enableallbtn();
             },2000);
             return;
         }
-        
-        $("#showkeybtn").attr("disabled",true);
+
         $("#showkeybtn").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;显示答案+结算分数");
-        var id=$("#opepanel-questionid").html();
         $.ajax({
             url: "<?php echo ROOT_PREFIX.API;?>/remote-control",
             type: "POST",
@@ -164,40 +239,47 @@
             },
             success: function(data,status){
                 data = JSON.parse(data);
-                $("#Operatetips").html(data.info);
+                showTips(data.info);
                 if(data.code == 0000){
-                    iosocket.emit('showkey',{'questionid':id});
-                    refreshdata();
+                    iosocket.emit('showkey',{'questionid':currentQuestionId});
                 }
-                setTimeout(clearTips,2000);
+                questionState = 'showingSolution';
                 $("#showkeybtn").html("显示答案+结算分数");
-                $("#showkeybtn").attr("disabled",false);
+                decideToShowToolBtns();
                 enableallbtn();
+                setTimeout(refreshdata(),1000);
             }
         });
     }
+
+    //跳到下一个问题
+    function goNextSponsor(){
+        var nextEle = $(".question-panel[data-id='"+currentQuestionId+"']").next();
+        if(nextEle.hasClass('question-panel')){
+            var nextId = nextEle.attr('data-id');
+            showsponsor(nextId);
+        }
+    }
         
     function showsponsor(id){
-        $("#opepanel-questionid").html(id);
+        $(".question-panel[data-id='"+currentQuestionId+"']").removeClass("current");
+        currentQuestionId = id;
+        $(".question-panel[data-id='"+currentQuestionId+"']").addClass("current");
         $.ajax({
             url: "<?php echo ROOT_PREFIX.API;?>/remote-control",
             type: "POST",
             data:{
                 'what':'showSponsor',
-                'questionId':id
+                'questionId':currentQuestionId
             },
             success: function(data,status){
                 data = JSON.parse(data);
-                $("#Operatetips").html(data.info);
+                showTips(data.info);
                 if(data.code == 0000){
-                    $("#Operatetips-"+id).html("成功切换!");
-                    setTimeout(function(){
-                        $("#Operatetips-"+id).html("");
-                    },5000);
-                    iosocket.emit('showsponsor',{'questionid':id});
+                    showTips("成功切换");
+                    iosocket.emit('showsponsor',{'questionid':currentQuestionId});
                     refreshdata();
                 }
-                setTimeout(clearTips,2000);
             }
         });
     }
@@ -212,12 +294,11 @@
             },
             success: function(data,status){
                 data = JSON.parse(data);
-                $("#Operatetips").html(data.info);
+                showTips(data.info);
                 if(data.code == 0000){
                     iosocket.emit('showhonor',{'questionid':'nothing'});
                     refreshdata();
                 }
-                setTimeout(clearTips,2000);
             }
         });
     }
@@ -233,128 +314,113 @@
             },
             success: function(data,status){
                 data = JSON.parse(data);
-                $("#Operatetips").html(data.info);
+                showTips(data.info);
                 if(data.code == 0000){
                     location.reload();
                 }
-                setTimeout(clearTips,2000);
             }
         });
     }
+
+
+    $(function(){
+
+        $("#expandBtn").click(function(){
+            if($("#bottomContent").hasClass("show")){
+                $("#bottomContent").removeClass("show");
+            }else{
+                $("#bottomContent").addClass("show");
+            }
+        });
+
+        refreshdata();
+    });
     </script>
 </head>
 
-<body id="maincontainer" style="background-color:#fafafa">
-    <div class="col-md-12 col-sm-12 col-xs-12 div_mainblock">
+<body>
+<div id="opeTips"></div>
         <br>
         <br>
         <?php
-            $nc = new sqlhelper();
-            $opecode = $nc->connect();
-            if($opecode!=0){
-
-            }
             $result = $nc ->mysql("select * from question order by sort");
-            while($row = mysql_fetch_array($result)){
-                
-                $ncs = new sqlhelper();
-                $opecodes = $ncs->connect();
-                $results = $ncs->mysql("select * from question_config where keyname = 'currentquestionid'");
-                $rows = mysql_fetch_array($results);
-                if($rows['value'] == $row['id']){
-                    $title = "(当前) ";
-                }else{
-                    $title = "";
-                }
+            while($row = $result->fetch_assoc()){
         ?>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <span id="current-<?php echo $row['sort'];?>" sign-data="questionsign"><?php echo $title;?></span>
-                <span id="questionsort-<?php echo $row['sort'];?>"><?php echo $row['sort'].".";?></span>
-                <span id="question-<?php echo $row['sort'];?>"><?php echo $row['question'];?></span>
-            </div>
-          <div class="panel-body">
-            <?php
-              if($title == "(当前) "){
-                  $results = $ncs->mysql("select * from question_buffer where questionid = '{$row['id']}' and state='joined'");
-                  $peoplehavegotincount = mysql_num_rows($results);
-                  $results = $ncs->mysql("select * from question_buffer where questionid = '{$row['id']}' and state='done'");
-                  $peoplehavedonecount = mysql_num_rows($results);
-              ?>
-              <?php
-              }
-            ?>
-            
-            <button sign-data="showsponsorbtn" class="col-md-3 col-sm-12 col-xs-12 btn btn-default btn-lg" onclick="showsponsor(<?php echo $row['id'];?>)">切换并显示赞助商</button>
-            <p id="Operatetips-<?php echo $row['id'];?>"></p>
-          </div>
-        </div>
-        <br style="clear:both">
+                <div class="question-panel <?php echo $currentQuestionId==$row['id']?'current':''; ?>" data-id="<?php echo $row['id'];?>">
+                    <div class="title">
+                        <div class="current">当前</div>
+                        <h1><?php echo $row['sort'].".".$row['question'];?></h1>
+                    </div>
+                    <div class="content">
+                        <div class="btn" onclick="showsponsor(<?php echo $row['id'];?>)">切换并显示赞助商</div>
+
+                    </div>
+                </div>
         <?php
             }
         ?>
-        
-        <br style="clear:both">
-        <button class="col-md-3 col-sm-12 col-xs-12 btn btn-default btn-lg" onclick="showWinners()">显示获奖名单</button>
-        
-        <br style="clear:both">
-        <br style="clear:both">
+
+
+        <div class="btn btn-outer green" onclick="showWinners()">显示获奖名单</div>
+
         <?php
         $result = $nc ->mysql("select value from question_config where keyname='isreging'");
-        $row = mysql_fetch_array($result);
+        $row = $result->fetch_assoc();
         if($row['value']=='true'){
         ?>
-            <button class="col-md-3 col-sm-12 col-xs-12 btn btn-default btn-lg" onclick="toggleReging(false)">关闭注册</button>
+            <div class="btn btn-outer red" onclick="toggleReging(false)">关闭注册</div>
         <?php
         }else{
         ?>
-            <button class="col-md-3 col-sm-12 col-xs-12 btn btn-default btn-lg" onclick="toggleReging(true)">开放注册</button>
+            <div class="btn btn-outer green" onclick="toggleReging(true)">开放注册</div>
         <?php
         }
+        $nc->close();
         ?>
-        <br style="clear:both">
-        <br style="clear:both">
-        <br style="clear:both">
-        <br style="clear:both">
-        
-        
-        <nav class="navbar navbar-default navbar-fixed-bottom">
-            <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">打开面板</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#"><span id="questiontitle"></span></a>
-                </div>
+        <div id="showAllToolToggle" class="btn btn-outer yellow" onclick="toggleAllToolBtns()">显示所有工具按钮</div>
 
-                <!-- 合起来里面的东西 -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <p> 问题id:<span id="opepanel-questionid">1</span><br>
-                        当前问题状态:&nbsp;&nbsp;<span id="questionstate"></span>
-                    </p>
-                    <p>问题允许人数:&nbsp;&nbsp;<span id="peopleoflimit"></span><br>
-                        问题进入人数:&nbsp;&nbsp;<span id="peopleofjoined"></span><br>
-                        问题完成人数:&nbsp;&nbsp;<span id="peopleofdone"></span><br>
-                        答题超时人数:&nbsp;&nbsp;<span id="peopleoftimeout"></span>
-                    </p>
-                    <button type="button" id="refreshbtn" class="btn btn-default navbar-btn col-md-3 col-sm-12 col-xs-12" onclick="refreshdata()">刷新上面的数据</button>
-                    <br style="clear:both">
-                    <p id="Operatetips"></p>
-                    <br style="clear:both">
-                    <button type="button" id="showidcbtn" class="btn btn-default btn-lg navbar-btn col-md-3 col-sm-12 col-xs-12" onclick="showCaptcha()">显示验证码</button>
-                    <br style="clear:both">
-                    <button type="button" id="showquestionbtn" class="btn btn-default btn-lg navbar-btn col-md-3 col-sm-12 col-xs-12" onclick="showquestion()">显示题目</button>
-                    <br style="clear:both">
-                    <button type="button" id="showkeybtn" class="btn btn-default btn-lg navbar-btn col-md-3 col-sm-12 col-xs-12" onclick="showkey()">显示答案+结算分数</button>
-                    <br style="clear:both">
-                </div>
+<!--底部的工具栏-->
+        <div class="bottom-toolbar">
+            <div class="title">
+                <div id="expandBtn"><span class="fa fa-expand"></span></div>
+                <h1 id="questiontitle"></h1>
             </div>
-        </nav>
-    </div>
+            <div class="content" id="bottomContent">
+
+                <div class="state-display">
+                    <div class="small">问题状态</div>
+                    <h1 id="questionstate"></h1>
+                    <div class="player-data">
+                        <div class="data-line">
+                            <span>游戏总人数：</span><span class="statics" id="playerCount">12</span><span>人</span>
+                        </div>
+                        <div class="data-item">
+                            <span>正在作题：</span><span class="statics" id="playerJoined">12</span><span>人</span>
+                        </div>
+                        <div class="data-item">
+                            <span>完成答题：</span><span class="statics" id="playerDone">12</span><span>人</span>
+                        </div>
+                        <div class="data-item">
+                            <span>答题超时：</span><span class="statics" id="playerTimeout">12</span><span>人</span>
+                        </div>
+                    </div>
+<!--                    进度条形式的信息显示-->
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar yellow" id="pb_joined"></div>
+                        <div class="progress-bar green" id="pb_done"></div>
+                        <div class="progress-bar red" id="pb_timeout"></div>
+                    </div>
+
+                    <div id="refreshBtn" onclick="refreshdata()"><span class="fa fa-refresh"></span></div>
+                </div>
+                <div id="showCaptchaBtn" class="btn btn-middle green" onclick="showCaptcha()"><div class="word">显示验证码</div><div class="mask"></div></div>
+                <div id="showQuestionBtn" class="btn btn-middle green" onclick="showquestion()"><div class="word">显示题目</div><div class="mask"></div></div>
+                <div id="showSolutionBtn" class="btn btn-middle green" onclick="showkey()"><div class="word">显示答案+结算分数</div><div class="mask"></div></div>
+                <div id="goNextSponsorBtn" class="btn btn-middle green" onclick="goNextSponsor()"><div class="word">切换到下一题</div><div class="mask"></div></div>
+            </div>
+        </div>
+
+        <div class="bottom-placeholder"></div>
 </body>
 
 </html>
