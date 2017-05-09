@@ -181,6 +181,9 @@ class ScoreRules {
         //如果小于0 需要重置到 1，要不然下面的limit不生效
         $minusPlayerCount = $minusPlayerCount <= 0 ? 1 : $minusPlayerCount;
 
+        //消极扣分该扣 减分的1.5倍分数
+        $passiveMinusScore = round($minusScore*1.5);
+
 
 
         //倒数15%的人里面：答错 & 答题超时 & 没有作答扣分
@@ -275,7 +278,7 @@ class ScoreRules {
 
 
         //如果有连续两次没有输入验证码,那么就会被扣除分数,扣除的分数是 连续没有参加的次数*2
-        $sqlihelper ->mysql("update question_people set score=score-active*2,`achievetime`=now(6),activeminusscore=activeminusscore+active*2,`reason-for-score` = 'passive' where active>2 and lastactiveyear='{$year}'");
+        $sqlihelper ->mysql("update question_people set score=score-{$passiveMinusScore},`achievetime`=now(6),activeminusscore=activeminusscore+{$passiveMinusScore},`reason-for-score` = 'passive' where active>=2 and lastactiveyear='{$year}'");
         $sqlihelper ->mysql("update question_people set active=active+1 where lastactiveyear='{$year}'");
     }
 

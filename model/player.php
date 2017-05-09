@@ -99,7 +99,7 @@ class player extends sqlihelper {
      * @param $peopleId 用户id
      */
     public function clearPassiveRecord($peopleId){
-        $this->bindingQuery("update `question_people` set `active`= 0 where `id`=?",
+        $this->bindingQuery("update `question_people` set `active`= IF(`active` > 1,1,0) where `id`=?",
         "i",$peopleId
         );
     }

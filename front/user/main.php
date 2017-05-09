@@ -73,7 +73,9 @@ if($err['code']!=0000){
             <br>
             <div class="div-alert-info" id="ban-info"><span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;&nbsp;很抱歉,您已经连续输入五次错误的验证码,您的账号已经被封禁,请向现场工作人员求助,带来不便敬请谅解</div>
             
-            <div class="div-alert-info" id="active-info"><span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;&nbsp;哈喽？您还在进行活动吗？如果您一直挂机，系统将扣除您的一定分数哦。</div>
+            <div class="div-alert-info" id="active-info"><span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;&nbsp;哈喽？您还在进行活动吗？您的挂机行为已经被系统扣除了一定分数，请一定积极参与到游戏中来哦。</div>
+
+            <div class="div-alert-info" id="active-warn"><span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;&nbsp;逃避答题 = 消极比赛，为了维护游戏环境，继续挂机每道题结算时将被扣除答错分数的1.5倍哦。</div>
 
             <br>
             <br>
@@ -454,13 +456,18 @@ if($err['code']!=0000){
                         
                         $("#ban-info").css("display","none");
                         $("#active-info").css("display","none");
+                        $("#active-warn").css("display","none");
 
                         if(idcpanelpack.isbanned >0){
                             $("#ban-info").css("display","block");
                         }
 
-                        if(idcpanelpack.active >=2){
+                        if(idcpanelpack.active >2){
                             $("#active-info").css("display","block");
+                        }
+                        if(idcpanelpack.active ==2 && getCookie("passiveWarn") != "true"){
+                            $("#active-warn").css("display","block");
+                            setCookie("passiveWarn","true",10);
                         }
 
                         $("#captchaPanel").css("display","block");
