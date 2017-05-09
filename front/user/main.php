@@ -48,7 +48,7 @@ if($err['code']!=0000){
                     <h4>排名</h4>
                     <p id="rank">1</p>
                 </div>
-                <div class="color-block score-container">
+                <div class="color-block score-container" id="scoreBtn">
                     <h4>分数</h4>
                     <p id="score">1</p>
                 </div>
@@ -67,6 +67,12 @@ if($err['code']!=0000){
                     </p>
                 </div>
                 <button class="refresh" id="refresh"><i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;刷新</button>
+                <div class="score-why">
+                    <div class="caret"></div>
+                    <div class="content">
+                        <span id="reasonForScore">因为答错被扣分了</span>
+                    </div>
+                </div>
             </div>
 <!--            个人信息完-->
 
@@ -258,17 +264,27 @@ if($err['code']!=0000){
                     if(rightcount+wrongcount <= 0){
                         correctrate = "100%";
                     }
+
+
+                    //设置加扣分原因
+                    setReasonForScore(idcpanelpack['reason-for-score']);
+
+
                     $("#ban-info").css("display","none");
                     $("#active-info").css("display","none");
-                    
+                    $("#active-warn").css("display","none");
+
                     if(idcpanelpack.isbanned >0){
                         $("#ban-info").css("display","block");
                     }
-                    
+
                     if(idcpanelpack.active >2){
                         $("#active-info").css("display","block");
                     }
-                    
+                    if(idcpanelpack.active ==2){
+                        $("#active-warn").css("display","block");
+                        setCookie("passiveWarn","true",10);
+                    }
                     
                     $("#captchaPanel").css("display","block");
                     
@@ -393,7 +409,41 @@ if($err['code']!=0000){
                 return "";
             }
             
-            
+            //设置分数变化原因
+            function setReasonForScore(reason){
+                var reasonForScore = reason;
+                switch (reasonForScore){
+                    case "none":
+                        reasonForScore = "分数没有丝毫波动";
+                        break;
+                    case "last":
+                        reasonForScore = "抢答速度落后于全场75%的人，并且没答对，扣分";
+                        break;
+                    case "wrong":
+                        reasonForScore = "答错了被扣分嘤嘤嘤";
+                        break;
+                    case "timeout":
+                        reasonForScore = "答题超时被扣分了QAQ";
+                        break;
+                    case "joined":
+                    case "wait":
+                        reasonForScore = "￣へ￣ 没有提交答案被扣分了";
+                        break;
+                    case "correct":
+                        reasonForScore = "(≧∇≦)ﾉ 答对加分";
+                        break;
+                    case "correctUnlucky":
+                        reasonForScore = "答对了但是手速慢了，分数没变化QAQ";
+                        break;
+                    case "passive":
+                        reasonForScore = "唔，由于挂机被扣分了呢";
+                        break;
+                    default:
+                        reasonForScore = "我们也不知道你的分数发生了什么变化";
+                        break;
+                }
+                $("#reasonForScore").html(reasonForScore);
+            }
             
             
             
@@ -426,7 +476,11 @@ if($err['code']!=0000){
                     $("#oldcomertip").css("display","none");
                     setCookie("oldComercopythat","true",10);
                 });
-                
+
+                $("#scoreBtn").click(function(){
+                    $(".score-why").toggleClass("show");
+                });
+
                 $("#refresh").click(function(){
                     $("#refresh").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;刷新中");
                     $("#refresh").attr("disabled",true);
@@ -453,6 +507,10 @@ if($err['code']!=0000){
                         if(rightcount+wrongcount <= 0){
                             correctrate = "100%";
                         }
+
+                        //设置加扣分原因
+                        setReasonForScore(idcpanelpack['reason-for-score']);
+
                         
                         $("#ban-info").css("display","none");
                         $("#active-info").css("display","none");

@@ -150,7 +150,7 @@ class ScoreRules {
                             set
                             player.rightcount = player.rightcount + 1,
                             player.rightids=concat(IFNULL(player.rightids,''),'$questionId,'),
-                            player.`reason-for-score` = 'none'
+                            player.`reason-for-score` = 'correctUnlucky'
                             where
                             player.id = buffer.peopleid
         ");

@@ -103,6 +103,48 @@ input[type="number"] {
             background: #ffb400;
         }
 
+        .score-why{
+            transition: all .2s linear;
+            position: absolute;
+            top:65px;
+            right:15px;
+            height:0;
+            overflow: hidden;
+
+            &.show{
+                height: 130px;
+            }
+
+
+            @size:8px;
+            .caret{
+                position: absolute;
+                top:0px;
+                right:35px-@size/2;
+                height:@size;
+                width:@size;
+                border-bottom:@size solid #ffb400;
+                border-top: 0;
+            }
+
+            .content{
+                text-align: right;
+                border-radius:5px;
+                background: #ffb400;
+                color: #fff;
+                font-weight:bold;
+                margin-top: @size;
+                padding:10px 15px;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+
+                -webkit-box-shadow:  0px 5px 19px rgba(175,10,0,.3);
+                -moz-box-shadow:  0px 5px 19px rgba(175,10,0,.3);
+                box-shadow:  0px 5px 19px rgba(175,10,0,.3);
+            }
+        }
+
         .name-block{
             position: absolute;
             left: 15px;
