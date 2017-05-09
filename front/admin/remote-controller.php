@@ -35,15 +35,14 @@ $currentQuestionId = $row['value'];
         });
 
 
-    refreshdata();
+    refreshData(true);
         
-    function refreshdata(){
+    function refreshData(refreshBtn){
         if(isAllBtnDisabled){
             return;
         }
         disableallbtn();
-        $("#refreshbtn").attr("disabled",true);
-        $("#refreshbtn").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;刷新上面的数据");
+        $("#refreshBtn").html("<span class=\"fa fa-refresh fa-spin\"></span>");
         $("[sign-data='questionsign']").html("");
         $.ajax({
             url: "<?php echo ROOT_PREFIX.API;?>/remote-control",
@@ -60,7 +59,10 @@ $currentQuestionId = $row['value'];
                     questionState = data['questionstate'];
                     $("#questionstate").html(data.questionstate);
 
-                    decideToShowToolBtns();
+                    if(refreshBtn){
+                        decideToShowToolBtns();
+                    }
+
 
                     $("#peopleoflimit").html(data.peoplelimit);
                     $("#playerJoined").html(data.peoplejoined);
@@ -74,8 +76,7 @@ $currentQuestionId = $row['value'];
                     $("#pb_done").css("width",Math.round(data['peopledone']/data['playerCount']*100)+"%");
                     $("#pb_timeout").css("width",Math.round(data['peopletimeout']/data['playerCount']*100)+"%");
                 }
-                $("#refreshbtn").html("刷新上面的数据");
-                $("#refreshbtn").attr("disabled",false);
+                $("#refreshBtn").html("<span class=\"fa fa-refresh\"></span>");
                 enableallbtn();
             }
         });
@@ -112,7 +113,7 @@ $currentQuestionId = $row['value'];
         }else{
             $("#showAllToolToggle").html("显示所有工具按钮");
             isAllToolBtnShown = false;
-            refreshdata();
+            refreshData(true);
         }
 
     }
@@ -157,8 +158,7 @@ $currentQuestionId = $row['value'];
             return
         }
         disableallbtn();
-        $("#showidcbtn").attr("disabled",true);
-        $("#showidcbtn").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;显示验证码");
+        $("#showCaptchaBtn").find(".word").html("<span class=\"fa fa-spinner fa-spin\"></span>&nbsp;&nbsp;显示验证码");
         $.ajax({
             url: "<?php echo ROOT_PREFIX.API;?>/remote-control",
             type: "POST",
@@ -172,25 +172,24 @@ $currentQuestionId = $row['value'];
                     iosocket.emit('showidc',{'questionid':currentQuestionId});
                 }
                 questionState = 'showingCaptcha';
-                $("#showidcbtn").html("显示验证码");
+                $("#showCaptchaBtn").find(".word").html("显示验证码");
                 decideToShowToolBtns();
                 enableallbtn();
-                setTimeout(refreshdata(),1000);
+                setTimeout(refreshData(true),1000);
             }
         });
         
         
     }
         
-    function showquestion(){
+    function showQuestion(){
         if(isAllBtnDisabled){
             return;
         }else if(!isAllToolBtnShown && $(".btn-middle").children(".mask").width() > 0){
             return
         }
         disableallbtn();
-        $("#showquestionbtn").attr("disabled",true);
-        $("#showquestionbtn").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;显示题目");
+        $("#showQuestionBtn").find("word").html("<span class=\"fa fa-spinner fa-spin\"></span>&nbsp;&nbsp;显示题目");
         $.ajax({
             url: "<?php echo ROOT_PREFIX.API;?>/remote-control",
             type: "POST",
@@ -204,15 +203,15 @@ $currentQuestionId = $row['value'];
                     iosocket.emit('showquestion',{'questionid':currentQuestionId});
                 }
                 questionState = 'showingQuestion';
-                $("#showquestionbtn").html("显示题目");
+                $("#showQuestionBtn").find(".word").html("显示题目");
                 decideToShowToolBtns();
                 enableallbtn();
-                setTimeout(refreshdata(),1000);
+                setTimeout(refreshData(true),1000);
             }
         });
     }
     
-    function showkey(){
+    function showSolution(){
         if(isAllBtnDisabled){
             return;
         }else if(!isAllToolBtnShown && $(".btn-middle").children(".mask").width() > 0){
@@ -220,17 +219,16 @@ $currentQuestionId = $row['value'];
         }
         disableallbtn();
         if($("#questionstate").html()=="showingSolution"){
-            $("#showkeybtn").attr("disabled",true);
-            $("#showkeybtn").html("<span class=\"glyphicon glyphicon-remove\"></span>&nbsp;&nbsp;已经结算过了");
+            $("#showSolutionBtn").find(".word").html("<span class=\"glyphicon glyphicon-remove\"></span>&nbsp;&nbsp;已经结算过了");
             showTips("当前已经结算完毕");
             setTimeout(function(){
-                $("#showkeybtn").html("显示答案+结算分数");
+                $("#showSolutionBtn").find(".word").html("显示答案+结算分数");
                 enableallbtn();
             },2000);
             return;
         }
 
-        $("#showkeybtn").html("<i class=\"fa fa-spinner fa-spin\"></i>&nbsp;&nbsp;显示答案+结算分数");
+        $("#showSolutionBtn").find(".word").html("<span class=\"fa fa-spinner fa-spin\"></span>&nbsp;&nbsp;显示答案+结算分数");
         $.ajax({
             url: "<?php echo ROOT_PREFIX.API;?>/remote-control",
             type: "POST",
@@ -244,10 +242,10 @@ $currentQuestionId = $row['value'];
                     iosocket.emit('showkey',{'questionid':currentQuestionId});
                 }
                 questionState = 'showingSolution';
-                $("#showkeybtn").html("显示答案+结算分数");
+                $("#showSolutionBtn").find(".word").html("显示答案+结算分数");
                 decideToShowToolBtns();
                 enableallbtn();
-                setTimeout(refreshdata(),1000);
+                setTimeout(refreshData(true),1000);
             }
         });
     }
@@ -280,7 +278,7 @@ $currentQuestionId = $row['value'];
                 if(data.code == 0000){
                     showTips("成功切换");
                     iosocket.emit('showsponsor',{'questionid':currentQuestionId});
-                    refreshdata();
+                    refreshData(true);
                 }
             }
         });
@@ -299,7 +297,7 @@ $currentQuestionId = $row['value'];
                 showTips(data.info);
                 if(data.code == 0000){
                     iosocket.emit('showhonor',{'questionid':'nothing'});
-                    refreshdata();
+                    refreshData(true);
                 }
             }
         });
@@ -335,7 +333,7 @@ $currentQuestionId = $row['value'];
             }
         });
 
-        refreshdata();
+        refreshData(true);
     });
     </script>
 </head>
@@ -413,11 +411,11 @@ $currentQuestionId = $row['value'];
                         <div class="progress-bar red" id="pb_timeout"></div>
                     </div>
 
-                    <div id="refreshBtn" onclick="refreshdata()"><span class="fa fa-refresh"></span></div>
+                    <div id="refreshBtn" onclick="refreshData(false)"><span class="fa fa-refresh"></span></div>
                 </div>
                 <div id="showCaptchaBtn" class="btn btn-middle green" onclick="showCaptcha()"><div class="word">显示验证码</div><div class="mask"></div></div>
-                <div id="showQuestionBtn" class="btn btn-middle green" onclick="showquestion()"><div class="word">显示题目</div><div class="mask"></div></div>
-                <div id="showSolutionBtn" class="btn btn-middle green" onclick="showkey()"><div class="word">显示答案+结算分数</div><div class="mask"></div></div>
+                <div id="showQuestionBtn" class="btn btn-middle green" onclick="showQuestion()"><div class="word">显示题目</div><div class="mask"></div></div>
+                <div id="showSolutionBtn" class="btn btn-middle green" onclick="showSolution()"><div class="word">显示答案+结算分数</div><div class="mask"></div></div>
                 <div id="goNextSponsorBtn" class="btn btn-middle green" onclick="goNextSponsor()"><div class="word">切换到下一题</div><div class="mask"></div></div>
             </div>
         </div>
