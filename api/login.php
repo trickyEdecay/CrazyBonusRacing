@@ -281,6 +281,12 @@ function register($name,$tel){
         $db_player->close();
         die($errPack->parsePack());
     }else{
+        if($db_player->isTelExist($tel)){
+            $errPack->code = 0007;
+            $errPack->info = "此号码已经被注册过，请重试或联系工作人员";
+            $db_player->close();
+            die($errPack->parsePack());
+        }
         //不存在，注册
         $now = date("Y-m-d H:i:s");
         $ts =  floor(microtime()*1000);

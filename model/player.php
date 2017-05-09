@@ -140,6 +140,18 @@ class player extends sqlihelper {
             return true;
         }
     }
+    public function isTelExist($tel){
+        $year = YEAR;
+        $this->bindingQuery("select * from question_people where tel=? and lastactiveyear>{$year}-4 limit 1",
+        "s",
+        $tel
+        );
+        if($this->result->num_rows <= 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
 
     public function refreshRandomKey($name,$tel,$randomKey = ''){
         if($randomKey == ''){
