@@ -36,7 +36,7 @@
                     $currentsum = 0;
                     $prize = 0;
                     $year = date("Y");
-                    $result = $nc->mysql("select score,name from question_people where isbanned=0 and lastactiveyear='$year' order by ranking");
+                    $result = $nc->mysql("select score,name,tel from question_people where isbanned=0 and lastactiveyear='$year' order by ranking");
                     while($row = mysql_fetch_array($result)){
                         if($currentsum+$row['score']<=$limitsum){
                             $currentsum=$currentsum+$row['score'];
@@ -53,7 +53,7 @@
                 ?>
                 <div class="div-top-row">
                     <div style="position:relative;height:45px;">
-                        <div class="div-top-index-circle"><div class="div-top-index-number"><?php echo $index;?></div></div><span class="div-top-name">&nbsp;&nbsp;<?php echo $row['name']." - {$prize} 元";?></span>
+                        <div class="div-top-index-circle"><div class="div-top-index-number"><?php echo $index;?></div></div><span class="div-top-name">&nbsp;&nbsp;<?php echo $row['name']."(".$row['tel'].") - {$prize} 元";?></span>
                         <br style="clear:both">
                     </div>
                 </div>
