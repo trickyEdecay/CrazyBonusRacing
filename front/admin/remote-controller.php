@@ -26,7 +26,7 @@ $currentQuestionId = $row['value'];
     <!-- endbuild -->
 
     <script>
-        var iosocket = io.connect("ws://192.168.23.1:8080");
+        var iosocket = io.connect("ws://<?php echo NODE_HOST ?>:8080");
         var questionState = "";
         var currentQuestionId = <?php echo $currentQuestionId ?>;
         iosocket.on('connect', function () {

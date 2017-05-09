@@ -108,11 +108,12 @@ input[type="number"] {
             position: absolute;
             top:65px;
             right:15px;
-            height:0;
+            transform: scale3d(1,0,1);
+            transform-origin: right top;
             overflow: hidden;
 
             &.show{
-                height: 130px;
+                transform: scale3d(1,1,1);
             }
 
 

@@ -16,5 +16,7 @@
 
   "local_host": "本地地址，用于调试",
 
+  "node_host": "node服务器的地址",
+
   "node_port": 8080
 }

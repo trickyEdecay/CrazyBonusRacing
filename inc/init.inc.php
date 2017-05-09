@@ -64,3 +64,6 @@ define("DB_TABLE",$config_json["db_table"]);
 
 #当前年份
 define("YEAR",date("Y"));
+
+#node服务器地址
+define("NODE_HOST",$config_json['node_host']);
