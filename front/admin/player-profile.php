@@ -69,13 +69,13 @@ $delayarray = array_filter(explode(",",$delays));
         <title>玩家数据管理</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="utf-8">
-        <!-- build:js /assets/js/admin/player-profile.js -->
+        <!-- build:js /assets/js/player-profile.js -->
         <script src="/front/assets/js/jquery-1.12.4.js"></script>
         <script src="/front/assets/js/bootstrap.js"></script>
         <script src="/front/assets/js/chartist.js"></script>
         <!-- endbuild -->
 
-        <!-- build:css /assets/css/admin/player-profile.css -->
+        <!-- build:css /assets/css/player-profile.css -->
         <link href="/front/assets/style/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="/front/assets/style/font-awesome.css">
         <link rel="stylesheet" href="/front/assets/style/chartist.css">

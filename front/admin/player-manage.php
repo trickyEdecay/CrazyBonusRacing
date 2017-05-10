@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
 
-    <!-- build:js /assets/js/admin/player-manage.js -->
+    <!-- build:js /assets/js/player-manage.js -->
     <script src="/front/assets/js/jquery-1.12.4.js"></script>
     <script src="/front/assets/js/bootstrap.js"></script>
     <!-- endbuild -->
 
-    <!-- build:css /assets/css/admin/player-manage.css -->
+    <!-- build:css /assets/css/player-manage.css -->
     <link href="/front/assets/style/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="/front/assets/style/font-awesome.css">
     <!-- endbuild -->

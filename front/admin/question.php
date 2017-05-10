@@ -13,12 +13,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
 
-    <!-- build:js /assets/js/admin/question.js -->
+    <!-- build:js /assets/js/question.js -->
     <script src="/front/assets/js/jquery-1.12.4.js"></script>
     <script src="/front/assets/js/bootstrap.js"></script>
     <!-- endbuild -->
 
-    <!-- build:css /assets/css/admin/question.css -->
+    <!-- build:css /assets/css/question.css -->
     <link href="/front/assets/style/bootstrap.css" rel="stylesheet">
     <!-- endbuild -->
 

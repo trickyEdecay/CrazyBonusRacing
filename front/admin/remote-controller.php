@@ -15,12 +15,12 @@ $currentQuestionId = $row['value'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
 
-    <!-- build:js /assets/js/admin/controller.js -->
+    <!-- build:js /assets/js/remote-controller.js -->
     <script src="/front/assets/js/jquery-1.12.4.js"></script>
     <script src="/front/assets/js/socket.io-1-7-3.js"></script>
     <!-- endbuild -->
 
-    <!-- build:css /assets/css/admin/controller.css -->
+    <!-- build:css /assets/css/remote-controller.css -->
     <link rel="stylesheet" href="/front/assets/style/font-awesome.css">
     <link href="/front/assets/style/admin/remote-controller.less" rel="stylesheet">
     <!-- endbuild -->

@@ -28,11 +28,11 @@ if(isset($_GET["tip"])){
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="utf-8">
 
-        <!-- build:js /assets/js/user/login.js -->
+        <!-- build:js /assets/js/login.js -->
         <script src="/front/assets/js/jquery-1.12.4.js"></script>
         <!-- endbuild -->
 
-        <!-- build:css /assets/css/user/login.css -->
+        <!-- build:css /assets/css/login.css -->
         <link href="/front/assets/style/font-awesome.css" rel="stylesheet">
         <link href="/front/assets/style/user/login.css" rel="stylesheet">
         <!-- endbuild -->

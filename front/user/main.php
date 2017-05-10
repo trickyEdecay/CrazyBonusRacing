@@ -17,14 +17,14 @@ if($err['code']!=0000){
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="utf-8">
 
-        <!-- build:js /assets/js/user/main.js -->
+        <!-- build:js /assets/js/main.js -->
         <script src="/front/assets/js/jquery-1.12.4.js"></script>
         <script src="/front/assets/js/bootstrap.js"></script>
         <script src="/front/assets/js/jquery.easing.compatibility.1.4.1.js"></script>
         <script src="/front/assets/js/jquery.animateNumber.min.js"></script>
         <!-- endbuild -->
 
-        <!-- build:css /assets/css/user/main.css -->
+        <!-- build:css /assets/css/main.css -->
         <link href="/front/assets/style/bootstrap.css" rel="stylesheet">
         <link href="/front/assets/style/font-awesome.css" rel="stylesheet">
         <link href="/front/assets/style/user/main.less" rel="stylesheet">

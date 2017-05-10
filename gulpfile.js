@@ -136,11 +136,13 @@ gulp.task("build:production",function(){
         .pipe(gulp.dest("./"))
         .pipe(jsFilter.restore)
         .pipe(cssFilter)
+        .pipe(devCssUrls('\/front',config.cdn_host))
         .pipe(less())
         .pipe(gulp.dest("./"))
         .pipe(cssFilter.restore)
         .pipe(phpFilter)
-        .pipe(devRevUrls('',config.cdn_host))
+        .pipe(devRevUrls('\/front\/assets','\/assets'))
+        .pipe(devRevUrls('\/assets',config.cdn_host+"\/assets"))
         .pipe(gulp.dest(paths.dist.pages));
 });
 
@@ -406,12 +408,12 @@ function devRevUrls(reg,replacement){
                 var src = f.contents.toString('utf8');
 
                 //用这个来替换node部分的链接，以保证node部分没有端口号的静态资源请求
-                if(f.history[0].indexOf("\\front\\projector")>=0){
+                if(f.history[0].indexOf("\\front\\projector")>=0 && debug){
                     if(replacement.indexOf("//localhost")<0){
                         replacement = "//localhost"+replacement;
                     }
                 }else{
-                    if(replacement.indexOf("//localhost")>=0){
+                    if(replacement.indexOf("//localhost")>=0 && debug){
                         replacement = replacement.replace("//localhost","");
                     }
                 }
@@ -441,12 +443,12 @@ function devCssUrls(reg,replacement){
                 var src = f.contents.toString('utf8');
 
                 //用这个来替换node部分的链接，以保证node部分没有端口号的静态资源请求
-                if(f.history[0].indexOf("\\style\\projector")>=0){
+                if(f.history[0].indexOf("\\style\\projector")>=0 && debug){
                     if(replacement.indexOf("//localhost")<0){
                         replacement = "//localhost"+replacement;
                     }
                 }else{
-                    if(replacement.indexOf("//localhost")>=0){
+                    if(replacement.indexOf("//localhost")>=0 && debug){
                         replacement = replacement.replace("//localhost","");
                     }
                 }

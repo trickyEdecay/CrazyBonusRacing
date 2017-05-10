@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
 
-    <!-- build:js /assets/js/admin/rank.js -->
+    <!-- build:js /assets/js/rank.js -->
     <script src="/front/assets/js/jquery-1.12.4.js"></script>
     <script src="/front/assets/js/bootstrap.js"></script>
     <!-- endbuild -->
 
-    <!-- build:css /assets/css/admin/rank.css -->
+    <!-- build:css /assets/css/rank.css -->
     <link href="/front/assets/style/rank.less" rel="stylesheet">
     <!-- endbuild -->
 </head>
