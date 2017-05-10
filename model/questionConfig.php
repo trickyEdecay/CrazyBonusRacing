@@ -140,6 +140,8 @@ class questionConfig extends sqlihelper{
         $this->mysql("select `peopleid` from `question_buffer` where `questionid` = '{$questionId}' order by `time` asc limit 1");
         $fastPlayerId = $this->result->fetch_assoc()['peopleid'];
 
+        $year = YEAR;
+
         //手速最快
         $this->mysql("select `name` from `question_people` where `id` = '{$fastPlayerId}' limit 1");
         if($this->result->num_rows <= 0){
@@ -158,15 +160,21 @@ class questionConfig extends sqlihelper{
             $firstCorrectPlayerName = $this->result->fetch_assoc()['name'];
         }
 
-        //排名变化最大
-        $this->mysql("SELECT name,ranking-oldranking as `most` FROM `question_people` ORDER BY `most`  DESC limit 1");
+        //排名变化最大,但是至少是60名以上的变化，才会显示。
+        $this->mysql("SELECT name,ranking-oldranking as `most` FROM `question_people` where `lastactiveyear` = '{$year}' ORDER BY `most`  DESC limit 1");
         if($this->result->num_rows <= 0){
             $blackHorseName = "::null";
         }else{
-            $blackHorseName = $this->result->fetch_assoc()['name'];
+            $row = $this->result->fetch_assoc();
+            if($row['most']>60){
+                $blackHorseName = $row['name'];
+            }else{
+                $blackHorseName = "::null";
+            }
+
         }
         //准确率最高
-        $this->mysql("SELECT name,round(rightcount/rightcount+wrongcount) as `most` FROM `question_people` ORDER BY `most` DESC limit 1");
+        $this->mysql("SELECT name,rightcount/(rightcount+wrongcount) as `most` FROM `question_people` where `lastactiveyear` = '{$year}' ORDER BY `most` DESC limit 1");
         if($this->result->num_rows <= 0){
             $highHitRateName = "::null";
         }else{

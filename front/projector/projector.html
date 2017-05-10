@@ -342,9 +342,13 @@
 
             var fastPlayer = balancePlayersPack['fast'];
             var firstCorrectPlayer = balancePlayersPack['firstCorrect'];
+            var blackHorsePlayer = balancePlayersPack['blackHorse'];
+            var highHitRatePlayer = balancePlayersPack['highHitRate'];
 
             $("#fastPlayer").html(fastPlayer);
             $("#firstCorrectPlayer").html(firstCorrectPlayer);
+            $("#blackHorsePlayer").html(blackHorsePlayer);
+            $("#highHitRatePlayer").html(highHitRatePlayer);
             //3秒后显示答题统计
             setTimeout(function(){
 
@@ -364,6 +368,14 @@
                     }
                     if(firstCorrectPlayer !== "::null"){
                         $(".question-honor[data-type='firstCorrectPlayer']").addClass("show");
+                    }
+
+                    if(blackHorsePlayer !== "::null" && parseInt(questionpack['sort']) >=5){
+                        $(".question-honor[data-type='blackHorsePlayer']").addClass("show");
+                    }
+
+                    if(highHitRatePlayer !== "::null" && parseInt(questionpack['sort']) % 10 == 0){
+                        $(".question-honor[data-type='highHitRatePlayer']").addClass("show");
                     }
 
                 },800);
@@ -689,6 +701,14 @@
             <div class="question-honor" data-type='firstCorrectPlayer'>
                 <img src="/front/assets/img/honor_firstCorrect.png">
                 <h1 id="firstCorrectPlayer"></h1>
+            </div>
+            <div class="question-honor" data-type='blackHorsePlayer'>
+                <img src="/front/assets/img/honor_blackHorse.png">
+                <h1 id="blackHorsePlayer"></h1>
+            </div>
+            <div class="question-honor" data-type='highHitRatePlayer'>
+                <img src="/front/assets/img/honor_highHitRate.png">
+                <h1 id="highHitRatePlayer"></h1>
             </div>
         </div>
 
