@@ -1,0 +1,116 @@
+html,body{
+  margin:0;
+  color: #333;
+}
+
+@font-family: PingFang SC,Hiragino Sans GB,"思源黑体",Microsoft Yahei,WenQuanYi Micro Hei,sans-serif;
+
+*{
+  //禁止选中任何文字
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Chrome/Safari/Opera */
+  -khtml-user-select: none; /* Konqueror */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
+}
+
+@header-height: 60px;
+header{
+  display: block;
+  width: 100%;
+  height: @header-height;
+  background:#f04d60; /* 一些不支持背景渐变的浏览器 */
+  background:-moz-linear-gradient(0deg, #e93945, #d02d5c);
+  background:-o-linear-gradient(0deg, #e93945, #d02d5c);
+  background:-webkit-linear-gradient(0deg, #e93945, #d02d5c);
+
+  h1{
+    margin:0 0 0 20px;
+    height:@header-height;
+    line-height: @header-height;
+    color: #fff;
+    font-size:18px;
+    font-weight:bold;
+    font-family: @font-family;
+
+    span{
+      margin-right:6px;
+    }
+  }
+}
+
+main{
+
+  padding:0 20px;
+  h1{
+    margin: 16px 0;
+    color: #333;
+    font-size:16px;
+    font-weight:bold;
+    font-family: @font-family;
+    border-left:3px solid #e93945;
+    padding:2px 8px;
+  }
+}
+
+img{
+  width:100%;
+}
+
+p{
+  padding:0 5px;
+  font-size: 14px;
+  color: #333;
+  line-height:1.5em;
+  letter-spacing: .02em;
+}
+
+ul{
+  list-style: none;
+  padding: 0 5px;
+  font-size: 14px;
+  color: #333;
+
+  line-height:1.5em;
+  letter-spacing: .02em;
+
+  li{
+    margin:2px 0;
+  }
+  
+  strong{
+    color: #e93945;
+  }
+}
+
+section{
+  margin-bottom:50px;
+}
+.red{
+  color: #e93945;
+}
+.spliter{
+  display: inline-block;
+  background: #efefef;
+  width:40%;
+  height:1px;
+}
+
+footer{
+  padding:20px;
+  text-align: center;
+
+  p{
+    text-align: left;
+    color:#777;
+    font-size: 14px;
+    font-family: @font-family;
+    line-height:1.5em;
+    letter-spacing: .02em;
+  }
+}
+
+.underline{
+  border-bottom:1px solid #ccc;
+}

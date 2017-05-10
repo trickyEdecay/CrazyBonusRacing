@@ -110,7 +110,6 @@ input[type="number"] {
             right:15px;
             transform: scale3d(1,0,1);
             transform-origin: right top;
-            overflow: hidden;
 
             &.show{
                 transform: scale3d(1,1,1);
@@ -133,7 +132,8 @@ input[type="number"] {
                 border-radius:5px;
                 background: #ffb400;
                 color: #fff;
-                font-weight:bold;
+                font-size:12px;
+                letter-spacing: .1em;
                 margin-top: @size;
                 padding:10px 15px;
                 -webkit-box-sizing: border-box;
@@ -143,6 +143,21 @@ input[type="number"] {
                 -webkit-box-shadow:  0px 5px 19px rgba(175,10,0,.3);
                 -moz-box-shadow:  0px 5px 19px rgba(175,10,0,.3);
                 box-shadow:  0px 5px 19px rgba(175,10,0,.3);
+
+                #reasonForScore{
+                    display: block;
+                }
+                a{
+                    span{
+                        margin-right:2px;
+                    }
+                    display: inline-block;
+                    margin-top: 4px;
+                    letter-spacing: .1em;
+                    @link-color: rgba(255,255,255,.8);
+                    color: @link-color;
+                    border-bottom:1px solid @link-color;
+                }
             }
         }
 

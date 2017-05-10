@@ -76,10 +76,12 @@ class questionConfig extends sqlihelper{
         $this->setConfig("questionStatistics",$en_questionStatisticsPack);
     }
 
-    public function setBalancePlayersPack($fastPlayerName,$firstCorrectPlayerName){
+    public function setBalancePlayersPack($fastPlayerName,$firstCorrectPlayerName,$blackHorseName,$highHitRateName){
         $BalancePlayerInfo = new stdClass();
         $BalancePlayerInfo->{'fast'} = $fastPlayerName;
         $BalancePlayerInfo->{'firstCorrect'} = $firstCorrectPlayerName;
+        $BalancePlayerInfo->{'blackHorse'} = $blackHorseName;
+        $BalancePlayerInfo->{'highHitRate'} = $highHitRateName;
         $en_BalancePlayerInfo = json_encode($BalancePlayerInfo,JSON_UNESCAPED_UNICODE);
         $this->setConfig("balancePlayersPack",$en_BalancePlayerInfo);
     }
@@ -137,6 +139,8 @@ class questionConfig extends sqlihelper{
         $correctSolution = $questionPack['correctanswer'];
         $this->mysql("select `peopleid` from `question_buffer` where `questionid` = '{$questionId}' order by `time` asc limit 1");
         $fastPlayerId = $this->result->fetch_assoc()['peopleid'];
+
+        //手速最快
         $this->mysql("select `name` from `question_people` where `id` = '{$fastPlayerId}' limit 1");
         if($this->result->num_rows <= 0){
             $fastPlayerName = "::null";
@@ -144,6 +148,7 @@ class questionConfig extends sqlihelper{
             $fastPlayerName = $this->result->fetch_assoc()['name'];
         }
 
+        //最先答对
         $this->mysql("select `peopleid` from `question_buffer` where `questionid` = '{$questionId}' and `choose` = '{$correctSolution}' order by `done-time` asc limit 1");
         if($this->result->num_rows <= 0){
             $firstCorrectPlayerName = "::null";
@@ -152,7 +157,25 @@ class questionConfig extends sqlihelper{
             $this->mysql("select `name` from `question_people` where `id` = '{$firstCorrectPlayerId}' limit 1");
             $firstCorrectPlayerName = $this->result->fetch_assoc()['name'];
         }
-        $this->setBalancePlayersPack($fastPlayerName,$firstCorrectPlayerName);
+
+        //排名变化最大
+        $this->mysql("SELECT name,ranking-oldranking as `most` FROM `question_people` ORDER BY `most`  DESC limit 1");
+        if($this->result->num_rows <= 0){
+            $blackHorseName = "::null";
+        }else{
+            $blackHorseName = $this->result->fetch_assoc()['name'];
+        }
+        //准确率最高
+        $this->mysql("SELECT name,round(rightcount/rightcount+wrongcount) as `most` FROM `question_people` ORDER BY `most` DESC limit 1");
+        if($this->result->num_rows <= 0){
+            $highHitRateName = "::null";
+        }else{
+            $highHitRateName = $this->result->fetch_assoc()['name'];
+        }
+
+
+
+        $this->setBalancePlayersPack($fastPlayerName,$firstCorrectPlayerName,$blackHorseName,$highHitRateName);
 
     }
 }

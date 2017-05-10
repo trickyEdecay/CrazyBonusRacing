@@ -71,6 +71,7 @@ if($err['code']!=0000){
                     <div class="caret"></div>
                     <div class="content">
                         <span id="reasonForScore">因为答错被扣分了</span>
+                        <a target="_blank" href="score-rules"><span class="fa fa-question-circle-o"></span>计分细则</a>
                     </div>
                 </div>
             </div>
