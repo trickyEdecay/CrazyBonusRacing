@@ -306,7 +306,9 @@
         opacity: 0;
         display: inline-block;
         width: 0;
-        height:100%;
+        transform: scale3d(0,0,0);
+        height:220px;
+        overflow: hidden;
 
         img{
             transition: all .8s cubic-bezier(.4, 0, .2, 1);
@@ -329,6 +331,7 @@
     .question-honor.show{
         width: 240px;
         opacity:1;
+        transform: scale3d(1,1,1);
         img{
             width:160px;
             margin-top:0;
