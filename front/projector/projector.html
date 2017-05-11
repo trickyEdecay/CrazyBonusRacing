@@ -374,7 +374,7 @@
                         $(".question-honor[data-type='blackHorsePlayer']").addClass("show");
                     }
 
-                    if(highHitRatePlayer !== "::null" && parseInt(questionpack['sort']) % 10 == 0){
+                    if(highHitRatePlayer !== "::null" && parseInt(questionpack['sort']) % 10 == 0 && parseInt(questionpack['sort'])> 0){
                         $(".question-honor[data-type='highHitRatePlayer']").addClass("show");
                     }
 
