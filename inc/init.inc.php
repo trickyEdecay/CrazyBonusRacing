@@ -12,6 +12,9 @@ define("ROOT",dirname(dirname(__FILE__)));
 #php 插件目录
 define("VENDOR","/vendor");
 
+#log 日志目录
+define("LOG","/log");
+
 #页面目录
 define("PAGES","/pages");
 
