@@ -8,6 +8,9 @@ var rev = require('gulp-rev');
 var revCollector = require('gulp-rev-collector');
 var through = require('through2');
 var less = require('gulp-less');
+var csso = require('gulp-csso');
+var LessPluginCleanCSS = require('less-plugin-clean-css'),
+    cleanCSSPlugin = new LessPluginCleanCSS({advanced: true});
 // var gutil = require('gulp-util');
 // var rename = require("gulp-rename");
 var replace = require('gulp-replace');
@@ -123,8 +126,21 @@ gulp.task('clean:pages',function(){
 
 
 gulp.task("build:production",function(){
+
+    var options = {
+        removeComments: true,  //清除HTML注释
+        collapseWhitespace: false,  //压缩HTML
+        collapseBooleanAttributes: true,  //省略布尔属性的值 <input checked="true"/> ==> <input checked />
+        removeEmptyAttributes: true,  //删除所有空格作属性值 <input id="" /> ==> <input />
+        removeScriptTypeAttributes: true,  //删除<script>的type="text/javascript"
+        removeStyleLinkTypeAttributes: true,  //删除<style>和<link>的type="text/css"
+        minifyJS: true,  //压缩页面JS
+        minifyCSS: true  //压缩页面CSS
+    };
+
+
     var jsFilter = filter("**/*.js", { restore: true });
-    var cssFilter = filter("**/*.css", { restore: true });
+    var cssFilter = filter(["**/*.css","**/*.less"], { restore: true });
     var phpFilter = filter(paths.src.pages, { restore: true });
     return gulp.src(paths.src.pages,{cwd:"./"})
         .pipe(useref({
@@ -138,11 +154,13 @@ gulp.task("build:production",function(){
         .pipe(cssFilter)
         .pipe(devCssUrls('\/front',config.cdn_host))
         .pipe(less())
+        .pipe(csso())
         .pipe(gulp.dest("./"))
         .pipe(cssFilter.restore)
         .pipe(phpFilter)
         .pipe(devRevUrls('\/front\/assets','\/assets'))
         .pipe(devRevUrls('\/assets',config.cdn_host+"\/assets"))
+        .pipe(htmlmin(options))
         .pipe(gulp.dest(paths.dist.pages));
 });
 

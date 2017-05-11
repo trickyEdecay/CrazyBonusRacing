@@ -6,11 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>计分细则 - 全民答疯抢</title>
 
-    <!-- build:js /assets/js/main.js -->
+    <!-- build:js /assets/js/score-rules.js -->
     <script src="/front/assets/js/jquery-1.12.4.js"></script>
     <!-- endbuild -->
 
-    <!-- build:css /assets/css/main.css -->
+    <!-- build:css /assets/css/score-rules.css -->
     <link href="/front/assets/style/font-awesome.css" rel="stylesheet">
     <link href="/front/assets/style/user/score-rules.less" rel="stylesheet">
     <!-- endbuild -->
