@@ -1,7 +1,7 @@
 <?php 
 //对访问者的浏览器ua进行记录
 //FILE_APPEND: 如果文件 user_brower_ua.txt 已经存在，追加数据而不是覆盖。
-file_put_contents("user_brower_ua.txt",$_SERVER['REMOTE_ADDR'].PHP_EOL.$_SERVER['HTTP_USER_AGENT'].PHP_EOL.PHP_EOL,FILE_APPEND);
+file_put_contents(ROOT.LOG."/user_brower_ua.txt",$_SERVER['REMOTE_ADDR'].PHP_EOL.$_SERVER['HTTP_USER_AGENT'].PHP_EOL.PHP_EOL,FILE_APPEND);
 ?> 
 <?php
 //验证在线,如果在线直接跳转到登录后的页面
