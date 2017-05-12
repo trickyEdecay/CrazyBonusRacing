@@ -311,10 +311,21 @@ input[type="number"] {
 }
 
 #question-area{
+    position: relative;
     margin-top: 20px;
     width: 100%;
     min-height:150px;
     text-align: center;
+
+    .question-mask{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 400;
+    }
+
 }
 //题号的圆圈直径
 @circleSize: 60px;

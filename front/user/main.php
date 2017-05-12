@@ -127,6 +127,7 @@ if($err['code']!=0000){
                         </div>
                     </div>
                 </div>
+                <div class="question-mask"></div>
             </div>
 
             <div id="answer-group">
