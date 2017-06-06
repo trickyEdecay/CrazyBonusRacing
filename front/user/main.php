@@ -16,6 +16,8 @@ if($err['code']!=0000){
         <title>全民答疯抢</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="utf-8">
+        <meta name="browsermode" content="application"/>
+        <meta name="nightmode" content="disable"/>
 
         <!-- build:js /assets/js/main.js -->
         <script src="/front/assets/js/jquery-1.12.4.js"></script>
@@ -451,6 +453,13 @@ if($err['code']!=0000){
             
             $(document).ready(function(){
                 //---------------idcpanel的js内容
+
+                //禁止弹出任何菜单
+                window.oncontextmenu = function(event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    return false;
+                };
                 
                 
                 //判断是不是老玩家
