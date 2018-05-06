@@ -426,7 +426,7 @@ function devRevUrls(reg,replacement){
                 var src = f.contents.toString('utf8');
 
                 //用这个来替换node部分的链接，以保证node部分没有端口号的静态资源请求
-                if(f.history[0].indexOf("\\front\\projector")>=0 && debug){
+                if(f.history[0].replace(/\//g,'\\').indexOf("\\front\\projector")>=0 && debug){
                     if(replacement.indexOf("//localhost")<0){
                         replacement = "//localhost"+replacement;
                     }
@@ -461,7 +461,7 @@ function devCssUrls(reg,replacement){
                 var src = f.contents.toString('utf8');
 
                 //用这个来替换node部分的链接，以保证node部分没有端口号的静态资源请求
-                if(f.history[0].indexOf("\\style\\projector")>=0 && debug){
+                if(f.history[0].replace(/\//g,'\\').indexOf("\\style\\projector")>=0 && debug){
                     if(replacement.indexOf("//localhost")<0){
                         replacement = "//localhost"+replacement;
                     }
