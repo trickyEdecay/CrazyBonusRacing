@@ -182,6 +182,7 @@ if(isset($_GET["tip"])){
                             success: function(data,status){
                                 data = JSON.parse(data);
                                 if(data.code == 0000){
+                                    $submitButton.html(btnText);
                                     window.location.href = "<?php echo ROOT_PREFIX;?>/main";
                                 }else{
                                     $("#loginTips").html(data.info);

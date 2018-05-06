@@ -7,3 +7,4 @@ node_modules/
 /assets/*
 /pages/*
 /config/config.json
+/log/*

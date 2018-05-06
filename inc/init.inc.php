@@ -16,7 +16,7 @@ define("VENDOR","/vendor");
 define("LOG","/log");
 
 #页面目录
-define("PAGES","/pages");
+define("PAGES","./pages");
 
 #config 目录
 define("CONFIG","/config");
