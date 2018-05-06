@@ -2,10 +2,10 @@ html,body{
     margin:0;
     width:100%;
     min-height:100%;
-    background:#f04d60; /* 一些不支持背景渐变的浏览器 */
-    background:-moz-linear-gradient(-45deg, #f04d60, #e8449d);
-    background:-o-linear-gradient(-45deg, #f04d60, #e8449d);
-    background:-webkit-linear-gradient(-45deg, #f04d60, #e8449d);
+    background:#784b92; /* 一些不支持背景渐变的浏览器 */
+    background:-moz-linear-gradient(-45deg, #784b92, #7c5490);
+    background:-o-linear-gradient(-45deg, #784b92, #7c5490);
+    background:-webkit-linear-gradient(-45deg, #784b92, #7c5490);
 
     font-family: "思源黑体","Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -151,6 +151,7 @@ input[type='tel'],input[type='text']{
 }
 
 #login_form .input_group>.input_container>input{
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /*禁止ios弹出灰色框框*/
     width:100%;
     line-height:28px;
     height:28px;
@@ -201,6 +202,35 @@ input[type='tel'],input[type='text']{
     -webkit-box-shadow:  0 9px 38px rgba(185,39,137,.4);
     -moz-box-shadow:  0 9px 38px rgba(185,39,137,.4);
     box-shadow:  0 9px 38px rgba(185,39,137,.4);
+}
+
+/*适配iphone系列字体粗细*/
+/*iphone 6,7,8*/
+@media only screen
+and (min-device-width: 375px)
+and (max-device-width: 667px)
+and (-webkit-min-device-pixel-ratio: 2) {
+    #login_form .submit_btn{
+        font-weight: 300;
+    }
+}
+/*iphone 6+,7+,8+*/
+@media only screen
+and (min-device-width: 414px)
+and (max-device-width: 736px)
+and (-webkit-min-device-pixel-ratio: 3) {
+    #login_form .submit_btn{
+        font-weight: 300;
+    }
+}
+/*iphone x*/
+@media only screen
+and (min-device-width: 375px)
+and (max-device-width: 812px)
+and (-webkit-min-device-pixel-ratio: 3) {
+    #login_form .submit_btn{
+        font-weight: 300;
+    }
 }
 
 #loginTips{

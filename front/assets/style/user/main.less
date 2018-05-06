@@ -255,6 +255,7 @@ input[type="number"] {
         border-radius:20px;
 
         input{
+            -webkit-tap-highlight-color: rgba(0,0,0,0); /*禁止ios弹出灰色框框*/
             width:100%;
             line-height:38px;
             height:38px;
@@ -295,6 +296,34 @@ input[type="number"] {
     -webkit-box-shadow:  0 9px 38px rgba(185,39,137,.4);
     -moz-box-shadow:  0 9px 38px rgba(185,39,137,.4);
     box-shadow:  0 9px 38px rgba(185,39,137,.4);
+}
+/*适配iphone系列字体粗细*/
+/*iphone 6,7,8*/
+@media only screen
+and (min-device-width: 375px)
+and (max-device-width: 667px)
+and (-webkit-min-device-pixel-ratio: 2) {
+    .submit_btn{
+        font-weight: 300;
+    }
+}
+/*iphone 6+,7+,8+*/
+@media only screen
+and (min-device-width: 414px)
+and (max-device-width: 736px)
+and (-webkit-min-device-pixel-ratio: 3) {
+    .submit_btn{
+        font-weight: 300;
+    }
+}
+/*iphone x*/
+@media only screen
+and (min-device-width: 375px)
+and (max-device-width: 812px)
+and (-webkit-min-device-pixel-ratio: 3) {
+    .submit_btn{
+        font-weight: 300;
+    }
 }
 
 
@@ -403,6 +432,34 @@ input[type="number"] {
     font-weight: lighter;
 
     z-index: 200;
+}
+/*适配iphone系列字体粗细*/
+/*iphone 6,7,8*/
+@media only screen
+and (min-device-width: 375px)
+and (max-device-width: 667px)
+and (-webkit-min-device-pixel-ratio: 2) {
+    .question-sort{
+        font-weight: 300;
+    }
+}
+/*iphone 6+,7+,8+*/
+@media only screen
+and (min-device-width: 414px)
+and (max-device-width: 736px)
+and (-webkit-min-device-pixel-ratio: 3) {
+    .question-sort{
+        font-weight: 300;
+    }
+}
+/*iphone x*/
+@media only screen
+and (min-device-width: 375px)
+and (max-device-width: 812px)
+and (-webkit-min-device-pixel-ratio: 3) {
+    .question-sort{
+        font-weight: 300;
+    }
 }
 .question{
     width:100%;

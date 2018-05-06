@@ -70,7 +70,7 @@ if(isset($_GET["tip"])){
             </div>
         </noscript>
         <header>
-            <img id="logo" src="/front/assets/img/logo_withshadow.png">
+            <img id="logo" src="/front/assets/img/loginpage_logo.png">
         </header>
         <form id="login_form">
             <div class="inner">

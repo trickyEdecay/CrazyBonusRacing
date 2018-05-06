@@ -25,7 +25,7 @@ $klein->respond('GET', ROOT_PREFIX.ADMIN_PREFIX."/[:action]", function ($request
 });
 
 $klein->respond(array('POST','GET'),ROOT_PREFIX.'/api/[:action]', function ($request) {
-    require_once (API."/".$request->action.".php");
+    require_once ("./api/".$request->action.".php");
     die();
 });
 
