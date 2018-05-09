@@ -894,7 +894,7 @@ function checkidc($idc){
         $result = $nc->mysql("insert into question_buffer(peopleid,questionid,time,state,ts) values ('$peopleid','$currentquestionid','$now','waiting','$ts')");
         if(!$result){
             $err->{'code'} = 0002;
-            $err->{'info'} = "连接出错啦~重新试试吧".mysql_error();
+            $err->{'info'} = "连接出错啦~重新试试吧";
             die(json_encode($err));
         }
         $result = $nc->mysql("select id from question_buffer where questionid='$currentquestionid' and peopleid='$peopleid' limit 1");
