@@ -240,7 +240,7 @@ function iveBeenTimeout($questionId){
     $peopleId = $_SESSION['peopleid'];
 
     //记录到数据库中
-    if($db_questionBuffer->setPeopleState($peopleId,$questionId,QuestionBufferState::Timeout)){
+    if(!$db_questionBuffer->setPeopleState($peopleId,$questionId,QuestionBufferState::Timeout)){
         $errPack->code = 0002;
         $errPack->info = "操作中断了";
         $db_questionBuffer->close();
@@ -358,6 +358,7 @@ function getQuestionPack(){
     $responsePack ->{'addscore'} = $questionPack['addscore'];
     $responsePack ->{'minusscore'} = $questionPack['minusscore'];
     $responsePack ->{'question'} = $questionPack['question'];
+    $responsePack ->{'sort'} = $questionPack['sort'];
     $responsePack ->{'availabletime'} = $questionPack['availabletime'];
     $responsePack ->{'answera'} = $questionPack['answera'];
     $responsePack ->{'answerb'} = $questionPack['answerb'];
