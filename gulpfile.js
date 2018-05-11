@@ -66,7 +66,7 @@ gulp.task("build:all",function(){
         return runSequence("clean:assets","build:img","build:font","clean:pages","build:scripts","build:styles","build:pages");
     }else{
         //产品模式下
-        return runSequence("clean:assets","clean:pages","build:production");
+        return runSequence("clean:assets","clean:pages","build:img","build:font","build:production");
     }
 
 });

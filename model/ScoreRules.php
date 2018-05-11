@@ -138,7 +138,7 @@ class ScoreRules {
         ");
 
         // 记录操作结果信息
-        file_put_contents(ROOT.LOG."/operate.txt","[".date('Y-m-d H:i:s')."] "."对答对的人进行加分 [".mysqli_affected_rows()." 行]".PHP_EOL.PHP_EOL,FILE_APPEND);
+        file_put_contents(ROOT.LOG."/operate.txt","[".date('Y-m-d H:i:s')."] "."对答对的人进行加分 [".mysqli_affected_rows($sqlihelper->getMysqli())." 行]".PHP_EOL.PHP_EOL,FILE_APPEND);
 
 
         //对这些答对但是不是前面答对的人进行记录
@@ -159,7 +159,7 @@ class ScoreRules {
         ");
 
         // 记录操作结果信息
-        file_put_contents(ROOT.LOG."/operate.txt","[".date('Y-m-d H:i:s')."] "."对这些答对但是不是前面答对的人进行记录 [".mysqli_affected_rows()." 行]".PHP_EOL.PHP_EOL,FILE_APPEND);
+        file_put_contents(ROOT.LOG."/operate.txt","[".date('Y-m-d H:i:s')."] "."对这些答对但是不是前面答对的人进行记录 [".mysqli_affected_rows($sqlihelper->getMysqli())." 行]".PHP_EOL.PHP_EOL,FILE_APPEND);
 
     }
 
@@ -218,7 +218,7 @@ class ScoreRules {
         );
 
         // 记录操作结果信息
-        file_put_contents(ROOT.LOG."/operate.txt","[".date('Y-m-d H:i:s')."] "."倒数 15% 的人里面答错、答题超时、没有作答的 [".mysqli_affected_rows()." 行]".PHP_EOL.PHP_EOL,FILE_APPEND);
+        file_put_contents(ROOT.LOG."/operate.txt","[".date('Y-m-d H:i:s')."] "."倒数 15% 的人里面答错、答题超时、没有作答的 [".mysqli_affected_rows($sqlihelper->getMysqli())." 行]".PHP_EOL.PHP_EOL,FILE_APPEND);
 
         //倒数15%以外没有作答、超时被扣分
         $sqlihelper->mysql("update question_people as player,
@@ -248,7 +248,7 @@ class ScoreRules {
         );
 
         // 记录操作结果信息
-        file_put_contents(ROOT.LOG."/operate.txt","[".date('Y-m-d H:i:s')."] "."15%以外的没有作答、超时的 [".mysqli_affected_rows()." 行]".PHP_EOL.PHP_EOL,FILE_APPEND);
+        file_put_contents(ROOT.LOG."/operate.txt","[".date('Y-m-d H:i:s')."] "."15%以外的没有作答、超时的 [".mysqli_affected_rows($sqlihelper->getMysqli())." 行]".PHP_EOL.PHP_EOL,FILE_APPEND);
 
         //0分题可以作为不扣分的题
         if($minusScore>=1){
@@ -287,7 +287,7 @@ class ScoreRules {
             );
 
             // 记录操作结果信息
-            file_put_contents(ROOT.LOG."/operate.txt","[".date('Y-m-d H:i:s')."] "."答错要被扣分但是因为它低于15分 [".mysqli_affected_rows()." 行]".PHP_EOL.PHP_EOL,FILE_APPEND);
+            file_put_contents(ROOT.LOG."/operate.txt","[".date('Y-m-d H:i:s')."] "."答错要被扣分但是因为它低于15分 [".mysqli_affected_rows($sqlihelper->getMysqli())." 行]".PHP_EOL.PHP_EOL,FILE_APPEND);
         }
 
 
@@ -296,7 +296,7 @@ class ScoreRules {
         $sqlihelper ->mysql("update question_people set score=score-{$passiveMinusScore},`achievetime`=now(6),activeminusscore=activeminusscore+{$passiveMinusScore},`reason-for-score` = 'passive' where active>=2 and lastactiveyear='{$year}'");
 
         // 记录操作结果信息
-        file_put_contents(ROOT.LOG."/operate.txt","[".date('Y-m-d H:i:s')."] "."扣除消极作答的人的分数 [".mysqli_affected_rows()." 行]".PHP_EOL.PHP_EOL,FILE_APPEND);
+        file_put_contents(ROOT.LOG."/operate.txt","[".date('Y-m-d H:i:s')."] "."扣除消极作答的人的分数 [".mysqli_affected_rows($sqlihelper->getMysqli())." 行]".PHP_EOL.PHP_EOL,FILE_APPEND);
 
         $sqlihelper ->mysql("update question_people set active=active+1 where lastactiveyear='{$year}'");
 
