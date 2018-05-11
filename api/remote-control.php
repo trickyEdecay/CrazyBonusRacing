@@ -181,6 +181,9 @@ function showCaptcha(){
         die($errPack->parsePack());
     }
 
+    // 记录操作结果信息
+    file_put_contents(ROOT.LOG."/operate.txt","[".date('Y-m-d H:i:s')."] "."指令：显示验证码".PHP_EOL.PHP_EOL,FILE_APPEND);
+
     $db_questionConfig->close();
 
     $errPack->code = 0000;
@@ -212,6 +215,9 @@ function showQuestion(){
         die($errPack->parsePack());
     }
 
+    // 记录操作结果信息
+    file_put_contents(ROOT.LOG."/operate.txt","[".date('Y-m-d H:i:s')."] "."指令：显示题目".PHP_EOL.PHP_EOL,FILE_APPEND);
+
     $db_questionConfig->close();
 
     $errPack->code = 0000;
@@ -240,6 +246,9 @@ function showSolution(){
         $errPack->info = "操作中断了,请重试";
         die($errPack->parsePack());
     }
+
+    // 记录操作结果信息
+    file_put_contents(ROOT.LOG."/operate.txt","[".date('Y-m-d H:i:s')."] "."指令：显示答案".PHP_EOL.PHP_EOL,FILE_APPEND);
 
     $now = date("Y-m-d H:i:s");
 
@@ -311,6 +320,9 @@ function showWinners(){
         die($errPack->parsePack());
     }
 
+    // 记录操作结果信息
+    file_put_contents(ROOT.LOG."/operate.txt","[".date('Y-m-d H:i:s')."] "."指令：显示玩家最终排行榜".PHP_EOL.PHP_EOL,FILE_APPEND);
+
     $db_questionConfig->close();
 
     $errPack->code = 0000;
@@ -336,6 +348,9 @@ function toggleReging($changeTo){
         $errPack->info = "操作中断了,请重试";
         die($errPack->parsePack());
     }
+
+    // 记录操作结果信息
+    file_put_contents(ROOT.LOG."/operate.txt","[".date('Y-m-d H:i:s')."] "."指令：开关注册".$changeTo.PHP_EOL.PHP_EOL,FILE_APPEND);
 
     $db_questionConfig->close();
 
