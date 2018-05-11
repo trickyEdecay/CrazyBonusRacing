@@ -25,7 +25,7 @@ if(isset($_GET["tip"])){
 <html>
     <head>
         <title>全民答疯抢</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
         <meta charset="utf-8">
 
         <!-- build:js /assets/js/login.js -->
@@ -39,6 +39,11 @@ if(isset($_GET["tip"])){
     </head>
 
     <body>
+<!--    页面装饰性元素-->
+        <div class="decoration">
+            <div class="o o1"></div>
+            <div class="o o2"></div>
+        </div>
         <div class="top_warn" id="wechatDetected">
             <div class="warp">
                 <div class="icon">
@@ -144,10 +149,12 @@ if(isset($_GET["tip"])){
 
                 if(isWeiXin()){
                     $("#wechatDetected").css("display","block");
+                    $(".decoration").css("display","none");
                 }
 
                 if(!navigator.cookieEnabled){
                     $("#cookieDisabledDetected").css("display","block");
+                    $(".decoration").css("display","none");
                 }
 
 

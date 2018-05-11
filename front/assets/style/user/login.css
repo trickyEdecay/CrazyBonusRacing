@@ -41,11 +41,36 @@ input[type='tel'],input[type='text']{
     display: none;
 }
 
+.decoration .o{
+    position: absolute;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    border-radius: 1000px;
+    border: 3px solid;
+}
+.decoration .o1{
+    width: 80px;
+    height: 80px;
+    left: -49px;
+    top: 42px;
+    border-color: #66C2D0;
+}
+.decoration .o2{
+    width: 500px;
+    height: 500px;
+    right: -153px;
+    top: -443px;
+    border-color: #f0ad3b;
+}
+
 .top_warn,noscript{
     display: block;
     padding:15px 15px 0 15px;
     color: #fff;
     width:100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 .top_warn>.warp,noscript>.warp{
     padding:20px 20px 15px 20px;
@@ -72,7 +97,7 @@ input[type='tel'],input[type='text']{
 
 #logo{
     display: inline-block;
-    width: 80%;
+    width: 70%;
     margin-top:100px;
 
 }

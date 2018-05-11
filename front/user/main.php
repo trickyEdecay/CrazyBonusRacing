@@ -14,7 +14,7 @@ if($err['code']!=0000){
 <html>
     <head>
         <title>全民答疯抢</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
         <meta charset="utf-8">
         <meta name="browsermode" content="application"/>
         <meta name="nightmode" content="disable"/>
@@ -41,7 +41,7 @@ if($err['code']!=0000){
             <header>
                 <img id="logo" src="/front/assets/img/caq_logo_white.png">
                 <br>
-                <img id="ad" src="/front/assets/img/banner_ad.png">
+                <img id="ad" src="/front/assets/img/2018/player_ad.png">
             </header>
 
 <!--            个人信息-->
@@ -114,7 +114,7 @@ if($err['code']!=0000){
         <section id="answerpanel">
 
             <div id="question-area">
-                <div class="question-sort" id="answerpanelranking">N</div>
+                <div class="question-sort" id="question-sort">N</div>
                 <div class="question-bg">
                     <div class="scores-container">
                         <div class="minusscore" id="minusscore">0</div>
@@ -352,6 +352,8 @@ if($err['code']!=0000){
                     $("#addscore").html("+"+answerpanelpack.addscore);
                     $("#minusscore").html("-"+answerpanelpack.minusscore);
                     $("#question").html(answerpanelpack.question);
+
+                    $("#question-sort").html(answerpanelpack["sort"]);
                     questionid = answerpanelpack.questionid;
                     availabletime = answerpanelpack.availabletime * 1000;
                     $("#answer-a").html(answerpanelpack.answera);
