@@ -28,7 +28,7 @@ class CaptchaDelay extends sqlihelper {
     public function recordInputTime($peopleId, $questionId, $now){
         $this->result = $this->mysql("insert into `question_idcinputtime` 
           (`peopleid`,`questionid`,`idcinputtime`,`delay`) 
-          select * from (select {$peopleId},{$questionId},'{$now}',0) as tmp
+          select {$peopleId},{$questionId},'{$now}',0
           where not exists(
             select `peopleid`,`questionid` from `question_idcinputtime` where `peopleid` = {$peopleId} and `questionid` = {$questionId}
           )"
