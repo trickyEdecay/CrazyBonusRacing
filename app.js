@@ -55,7 +55,7 @@ function onRequest(req,res){
     
 }
 
-var server = http.createServer(onRequest).listen(port, serverStarted);
+var server = http.createServer(onRequest).listen(port,"0.0.0.0", serverStarted);
 
 
 
